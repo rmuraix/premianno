@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lib": "pnpm -C packages/lib",
+    "biome": "biome check . --fix"
   },
   "keywords": [],
   "author": "",
