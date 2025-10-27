@@ -1,0 +1,17 @@
+{
+  "name": "premianno",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lib": "pnpm -C packages/lib",
+    "biome": "biome check . --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.3",
+  "devDependencies": {
+    "@biomejs/biome": "2.3.1"
+  }
+}
