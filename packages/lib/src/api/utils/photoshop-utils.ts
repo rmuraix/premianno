@@ -9,7 +9,7 @@ const { batchPlay } = photoshop.action;
 
 export const asModal = async (
   commandName: string,
-  callback: () => Promise<unknown>,
+  callback: () => unknown | Promise<unknown>,
 ) => {
   return await executeAsModal(async () => await callback(), { commandName });
 };
