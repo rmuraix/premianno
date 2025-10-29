@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { runAction, uxp } from "vite-uxp-plugin";
@@ -13,7 +14,7 @@ const shouldNotEmptyDir =
   mode === "dev" && config.manifest.requiredPermissions?.enableAddon;
 
 export default defineConfig({
-  plugins: [uxp(config, mode), react()],
+  plugins: [uxp(config, mode), react(), tailwindcss()],
   build: {
     sourcemap: !!(mode && ["dev", "build"].includes(mode)),
     minify: false,

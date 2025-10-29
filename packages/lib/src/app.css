@@ -1,3 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color variables from variables.scss */
+  --color-darkest: #222222;
+  --color-darker: #333333;
+  --color-dark: #444444;
+  --color-font: #bbbbbb;
+  --color-highlight: #aaaaaa;
+
+  --color-primary: #88715a;
+  --color-secondary: #4a3928;
+
+  --color-active: #20639b;
+  --color-changed: #3caea3;
+  --color-warning: #f6d55c;
+  --color-error: #ed553b;
+}
+
 :root,
 uxp-panel {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -13,6 +32,12 @@ uxp-panel {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  height: 100vh;
+  background-color: #242424;
 }
 
 a {
@@ -37,6 +62,11 @@ h1 {
   line-height: 1.1;
 }
 
+p {
+  font-size: 1rem;
+  color: #bbbbbb;
+}
+
 .card {
   padding: 2em;
 }
@@ -45,6 +75,11 @@ h1 {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  text-align: center;
+}
+
+.app {
+  background-color: #282c34;
   text-align: center;
 }
 
@@ -65,6 +100,31 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.stack-icons {
+  color: #bbbbbb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stack-icons span {
+  font-size: 2.5rem;
+}
+
+.logo {
+  height: 5rem;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo-lg {
+  height: 6rem;
+}
+
+.read-the-docs {
+  color: #888;
 }
 
 @media (prefers-color-scheme: light) {
