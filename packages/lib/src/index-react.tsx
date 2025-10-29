@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.scss";
+import "./app.css";
 import { App } from "./main";
 
 console.clear(); // Clear logs on each reload

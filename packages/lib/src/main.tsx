@@ -31,8 +31,8 @@ export const App = () => {
   };
   return (
     <>
-      <main>
-        <div className="button-group">
+      <main className="flex flex-col justify-center items-center [&>*]:mt-4">
+        <div className="flex justify-center items-center [&>*]:mr-2">
           <button type="button" onClick={increment}>
             count is {count}
           </button>
@@ -42,8 +42,8 @@ export const App = () => {
         </div>
         <div>
           <p>
-            Edit <span className="code">main.tsx</span> and save to test HMR
-            updates.
+            Edit <span className="font-mono mx-1">main.tsx</span> and save to
+            test HMR updates.
           </p>
         </div>
       </main>
