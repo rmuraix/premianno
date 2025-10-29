@@ -7,7 +7,10 @@ export const notify = async (message: string) => {
 export const createBin = async (_name: string) => {
   const project = await app.Project.getActiveProject();
   const root = await project.getRootItem();
-  project.executeTransaction((actions: any) => {
-    actions.addAction(root.createBinAction("Bin1", true));
-  }, "Create Bin");
+  project.executeTransaction(
+    (actions: { addAction: (action: unknown) => void }) => {
+      actions.addAction(root.createBinAction("Bin1", true));
+    },
+    "Create Bin",
+  );
 };

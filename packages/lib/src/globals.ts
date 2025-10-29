@@ -16,10 +16,10 @@ export const photoshop = (
 
 export const indesign = (
   hostName === "indesign" ? require("indesign") : {}
-) as any;
+) as unknown;
 export const premierepro = (
   hostName === "premierepro" ? require("premierepro") : {}
 ) as premiereproTypes;
 export const illustrator = (
   hostName === "illustrator" ? require("illustrator") : {}
-) as any;
+) as unknown;

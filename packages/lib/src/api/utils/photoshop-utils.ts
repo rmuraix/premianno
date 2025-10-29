@@ -7,7 +7,10 @@ import { photoshop } from "../../globals";
 const { executeAsModal } = photoshop.core;
 const { batchPlay } = photoshop.action;
 
-export const asModal = async (commandName: string, callback: Function) => {
+export const asModal = async (
+  commandName: string,
+  callback: () => unknown | Promise<unknown>,
+) => {
   return await executeAsModal(async () => await callback(), { commandName });
 };
 
