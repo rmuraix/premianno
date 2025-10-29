@@ -42,11 +42,8 @@ export const App = () => {
         </div>
         <div>
           <p>
-            Edit{" "}
-            <span className="font-['Courier_New',monospace] mx-1">
-              main.tsx
-            </span>{" "}
-            and save to test HMR updates.
+            Edit <span className="font-mono mx-1">main.tsx</span> and save to
+            test HMR updates.
           </p>
         </div>
       </main>

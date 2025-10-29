@@ -64,7 +64,7 @@ h1 {
 
 p {
   font-size: 1rem;
-  color: #bbbbbb;
+  color: var(--color-font);
 }
 
 .card {
@@ -103,7 +103,7 @@ button:focus-visible {
 }
 
 .stack-icons {
-  color: #bbbbbb;
+  color: var(--color-font);
   display: flex;
   justify-content: center;
   align-items: center;
