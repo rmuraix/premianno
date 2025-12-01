@@ -12,6 +12,6 @@
   "license": "ISC",
   "packageManager": "pnpm@10.18.3",
   "devDependencies": {
-    "@biomejs/biome": "2.3.7"
+    "@biomejs/biome": "2.3.8"
   }
 }
