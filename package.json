@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lib": "pnpm -C packages/lib",
+    "docs": "pnpm -C packages/docs",
     "biome": "biome check . --fix"
   },
   "keywords": [],
