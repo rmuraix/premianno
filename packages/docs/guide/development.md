@@ -7,7 +7,7 @@ This guide covers how to set up a development environment for PremiAnno and cont
 Before you begin, ensure you have:
 
 - **Node.js**: v20 or later
-- **pnpm**: v10.18.3 (specified in package.json)
+- **pnpm**: v10.18.3 or later (see `packageManager` in root package.json)
 - **Adobe Premiere Pro**: For testing
 - **Adobe UXP Developer Tool**: For debugging
 - **Git**: For version control
