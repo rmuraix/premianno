@@ -40,7 +40,7 @@ importers:
         specifier: ^20.19.25
         version: 20.19.25
       '@types/photoshop':
-        specifier: ^25.0.2
+        specifier: ^25.0.4
         version: 25.0.4
       '@types/react':
         specifier: ^19.1.6
