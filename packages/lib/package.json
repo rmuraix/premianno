@@ -18,7 +18,7 @@
   "devDependencies": {
     "@adobe/cc-ext-uxp-types": "https://github.com/justintaylor-dev/cc-ext-uxp-types.git",
     "@tailwindcss/vite": "^4.1.16",
-    "@types/node": "^20.8.10",
+    "@types/node": "^20.19.25",
     "@types/photoshop": "^25.0.2",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",
