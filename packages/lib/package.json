@@ -24,7 +24,7 @@
     "@types/react-dom": "^19.1.6",
     "@types/ws": "^8.5.14",
     "@vitejs/plugin-react": "^4.7.0",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.1.0",
     "dotenv": "^16.6.1",
     "npm-run-all2": "^8.0.4",
     "tailwindcss": "^4.1.16",
