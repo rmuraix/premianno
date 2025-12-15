@@ -19,7 +19,7 @@ importers:
         version: 5.9.3
       vitepress:
         specifier: ^1.5.0
-        version: 1.6.4(@algolia/client-search@5.45.0)(@types/node@20.19.25)(lightningcss@1.30.2)(postcss@8.5.6)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.9.3)
+        version: 1.6.4(@algolia/client-search@5.45.0)(@types/node@20.19.27)(lightningcss@1.30.2)(postcss@8.5.6)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.9.3)
 
   packages/lib:
     dependencies:
@@ -35,10 +35,10 @@ importers:
         version: https://codeload.github.com/justintaylor-dev/cc-ext-uxp-types/tar.gz/4d5d1d2b9b33729a5de44c63aba202efa575d88d
       '@tailwindcss/vite':
         specifier: ^4.1.16
-        version: 4.1.16(vite@6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))
+        version: 4.1.16(vite@6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))
       '@types/node':
-        specifier: ^20.19.25
-        version: 20.19.25
+        specifier: ^20.19.26
+        version: 20.19.27
       '@types/photoshop':
         specifier: ^25.0.4
         version: 25.0.4
@@ -53,7 +53,7 @@ importers:
         version: 8.18.1
       '@vitejs/plugin-react':
         specifier: ^4.5.2
-        version: 4.7.0(vite@6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))
+        version: 4.7.0(vite@6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -71,10 +71,10 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^6.3.5
-        version: 6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2)
+        version: 6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2)
       vite-uxp-plugin:
         specifier: ^1.1.1
-        version: 1.1.1(@types/node@20.19.25)
+        version: 1.1.1(@types/node@20.19.27)
       ws:
         specifier: ^8.14.2
         version: 8.18.3
@@ -1025,8 +1025,8 @@ packages:
   '@types/mdurl@2.0.0':
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
 
-  '@types/node@20.19.25':
-    resolution: {integrity: sha512-ZsJzA5thDQMSQO788d7IocwwQbI8B5OPzmqNvpf3NY/+MHDAS759Wo0gd2WQeXYt5AAAQjzcrTVC6SKCuYgoCQ==}
+  '@types/node@20.19.27':
+    resolution: {integrity: sha512-N2clP5pJhB2YnZJ3PIHFk5RkygRX5WO/5f0WC08tp0wd+sv0rsJk3MqWn3CbNmT2J505a5336jaQj4ph1AdMug==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3139,12 +3139,12 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.16
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.16
 
-  '@tailwindcss/vite@4.1.16(vite@6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))':
+  '@tailwindcss/vite@4.1.16(vite@6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))':
     dependencies:
       '@tailwindcss/node': 4.1.16
       '@tailwindcss/oxide': 4.1.16
       tailwindcss: 4.1.16
-      vite: 6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2)
+      vite: 6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2)
 
   '@ts-morph/common@0.18.1':
     dependencies:
@@ -3201,7 +3201,7 @@ snapshots:
 
   '@types/mdurl@2.0.0': {}
 
-  '@types/node@20.19.25':
+  '@types/node@20.19.27':
     dependencies:
       undici-types: 6.21.0
 
@@ -3229,11 +3229,11 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 20.19.25
+      '@types/node': 20.19.27
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@vitejs/plugin-react@4.7.0(vite@6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))':
+  '@vitejs/plugin-react@4.7.0(vite@6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
@@ -3241,13 +3241,13 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2)
+      vite: 6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@5.2.4(vite@5.4.21(@types/node@20.19.25)(lightningcss@1.30.2)(sass@1.93.2))(vue@3.5.25(typescript@5.9.3))':
+  '@vitejs/plugin-vue@5.2.4(vite@5.4.21(@types/node@20.19.27)(lightningcss@1.30.2)(sass@1.93.2))(vue@3.5.25(typescript@5.9.3))':
     dependencies:
-      vite: 5.4.21(@types/node@20.19.25)(lightningcss@1.30.2)(sass@1.93.2)
+      vite: 5.4.21(@types/node@20.19.27)(lightningcss@1.30.2)(sass@1.93.2)
       vue: 3.5.25(typescript@5.9.3)
 
   '@vue/compiler-core@3.5.25':
@@ -4002,7 +4002,7 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  meta-bolt@0.0.17(@types/node@20.19.25):
+  meta-bolt@0.0.17(@types/node@20.19.27):
     dependencies:
       '@clack/prompts': 0.7.0
       '@types/prettier': 3.0.0
@@ -4019,7 +4019,7 @@ snapshots:
       radash: 11.0.0
       resolve-dir: 1.0.1
       ts-morph: 17.0.1
-      ts-node: 10.9.2(@types/node@20.19.25)(typescript@4.9.5)
+      ts-node: 10.9.2(@types/node@20.19.27)(typescript@4.9.5)
       typescript: 4.9.5
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -4440,14 +4440,14 @@ snapshots:
       '@ts-morph/common': 0.18.1
       code-block-writer: 11.0.3
 
-  ts-node@10.9.2(@types/node@20.19.25)(typescript@4.9.5):
+  ts-node@10.9.2(@types/node@20.19.27)(typescript@4.9.5):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.19.25
+      '@types/node': 20.19.27
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -4516,10 +4516,10 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-uxp-plugin@1.1.1(@types/node@20.19.25):
+  vite-uxp-plugin@1.1.1(@types/node@20.19.27):
     dependencies:
       archiver: 5.3.0
-      meta-bolt: 0.0.17(@types/node@20.19.25)
+      meta-bolt: 0.0.17(@types/node@20.19.27)
       typescript: 5.9.3
       ws: 8.18.3
     transitivePeerDependencies:
@@ -4531,18 +4531,18 @@ snapshots:
       - react-native-b4a
       - utf-8-validate
 
-  vite@5.4.21(@types/node@20.19.25)(lightningcss@1.30.2)(sass@1.93.2):
+  vite@5.4.21(@types/node@20.19.27)(lightningcss@1.30.2)(sass@1.93.2):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.6
       rollup: 4.52.5
     optionalDependencies:
-      '@types/node': 20.19.25
+      '@types/node': 20.19.27
       fsevents: 2.3.3
       lightningcss: 1.30.2
       sass: 1.93.2
 
-  vite@6.4.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2):
+  vite@6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2):
     dependencies:
       esbuild: 0.25.11
       fdir: 6.5.0(picomatch@4.0.3)
@@ -4551,13 +4551,13 @@ snapshots:
       rollup: 4.52.5
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 20.19.25
+      '@types/node': 20.19.27
       fsevents: 2.3.3
       jiti: 2.6.1
       lightningcss: 1.30.2
       sass: 1.93.2
 
-  vitepress@1.6.4(@algolia/client-search@5.45.0)(@types/node@20.19.25)(lightningcss@1.30.2)(postcss@8.5.6)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.9.3):
+  vitepress@1.6.4(@algolia/client-search@5.45.0)(@types/node@20.19.27)(lightningcss@1.30.2)(postcss@8.5.6)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.9.3):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.45.0)(search-insights@2.17.3)
@@ -4566,7 +4566,7 @@ snapshots:
       '@shikijs/transformers': 2.5.0
       '@shikijs/types': 2.5.0
       '@types/markdown-it': 14.1.2
-      '@vitejs/plugin-vue': 5.2.4(vite@5.4.21(@types/node@20.19.25)(lightningcss@1.30.2)(sass@1.93.2))(vue@3.5.25(typescript@5.9.3))
+      '@vitejs/plugin-vue': 5.2.4(vite@5.4.21(@types/node@20.19.27)(lightningcss@1.30.2)(sass@1.93.2))(vue@3.5.25(typescript@5.9.3))
       '@vue/devtools-api': 7.7.9
       '@vue/shared': 3.5.25
       '@vueuse/core': 12.8.2(typescript@5.9.3)
@@ -4575,7 +4575,7 @@ snapshots:
       mark.js: 8.11.1
       minisearch: 7.2.0
       shiki: 2.5.0
-      vite: 5.4.21(@types/node@20.19.25)(lightningcss@1.30.2)(sass@1.93.2)
+      vite: 5.4.21(@types/node@20.19.27)(lightningcss@1.30.2)(sass@1.93.2)
       vue: 3.5.25(typescript@5.9.3)
     optionalDependencies:
       postcss: 8.5.6
