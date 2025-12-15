@@ -58,7 +58,7 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       dotenv:
-        specifier: ^16.4.5
+        specifier: ^16.4.7
         version: 16.6.1
       npm-run-all2:
         specifier: ^5.0.0
