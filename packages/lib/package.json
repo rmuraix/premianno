@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@adobe/cc-ext-uxp-types": "https://github.com/justintaylor-dev/cc-ext-uxp-types.git",
-    "@tailwindcss/vite": "^4.1.16",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^20.19.26",
     "@types/photoshop": "^25.0.4",
     "@types/react": "^19.1.6",
@@ -27,7 +27,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.6.1",
     "npm-run-all2": "^8.0.4",
-    "tailwindcss": "^4.1.16",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
     "vite-uxp-plugin": "^1.1.1",
