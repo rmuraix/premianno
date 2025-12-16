@@ -24,10 +24,10 @@ importers:
   packages/lib:
     dependencies:
       react:
-        specifier: ^19.1.0
+        specifier: ^19.1.4
         version: 19.2.0
       react-dom:
-        specifier: ^19.1.0
+        specifier: ^19.1.4
         version: 19.2.0(react@19.2.0)
     devDependencies:
       '@adobe/cc-ext-uxp-types':
@@ -43,10 +43,10 @@ importers:
         specifier: ^25.0.4
         version: 25.0.4
       '@types/react':
-        specifier: ^19.1.6
+        specifier: ^19.1.17
         version: 19.2.2
       '@types/react-dom':
-        specifier: ^19.1.6
+        specifier: ^19.1.11
         version: 19.2.2(@types/react@19.2.2)
       '@types/ws':
         specifier: ^8.18.1
