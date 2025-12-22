@@ -37,7 +37,7 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18(vite@6.4.1(@types/node@20.19.27)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.93.2))
       '@types/node':
-        specifier: ^20.19.26
+        specifier: ^20.19.27
         version: 20.19.27
       '@types/photoshop':
         specifier: ^25.0.4
