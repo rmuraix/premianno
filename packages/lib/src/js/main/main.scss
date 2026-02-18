@@ -110,13 +110,13 @@
   color: #d6dbe7;
 }
 
-.interval-label {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.5rem;
-  align-items: center;
+  .interval-label {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem;
+    align-items: center;
 
-  input {
+  select {
     width: 100%;
     background: #12151b;
     border: 1px solid #2a3140;
@@ -124,9 +124,10 @@
     padding: 0.45rem 0.6rem;
     border-radius: 6px;
     font-size: 0.85rem;
+    appearance: none;
   }
 
-  input:focus {
+  select:focus {
     outline: 1px solid #4d6fff;
   }
 

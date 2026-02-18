@@ -2,8 +2,13 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   buildAnnotationSet,
   loadAnnotationSet,
+  loadClassList,
+  parseClassCsv,
+  promptCsvPath,
   promptSavePath,
+  readCsvFile,
   saveAnnotationSet,
+  saveClassList,
   scanCutIntervals,
   serializeToToml,
   writeTomlFile,
@@ -37,11 +42,17 @@ type Status = {
 
 type IntervalRowProps = {
   interval: Interval;
+  classOptions: string[];
   onLabelChange: (id: string, value: string) => void;
   onClear: (id: string) => void;
 };
 
-const IntervalRow = ({ interval, onLabelChange, onClear }: IntervalRowProps) => {
+const IntervalRow = ({
+  interval,
+  classOptions,
+  onLabelChange,
+  onClear,
+}: IntervalRowProps) => {
   return (
     <div
       className={`interval-row ${
@@ -53,12 +64,17 @@ const IntervalRow = ({ interval, onLabelChange, onClear }: IntervalRowProps) => 
         <div className="timecode">{formatTimecode(interval.endSeconds)}</div>
       </div>
       <div className="interval-label">
-        <input
-          type="text"
+        <select
           value={interval.label ?? ""}
-          placeholder="Unlabeled"
           onChange={(event) => onLabelChange(interval.id, event.target.value)}
-        />
+        >
+          <option value="">Unlabeled</option>
+          {classOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
         <button
           className="clear-button"
           onClick={() => onClear(interval.id)}
@@ -79,6 +95,7 @@ export const App = () => {
   const [status, setStatus] = useState<Status | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanWarning, setScanWarning] = useState<string | null>(null);
+  const [classOptions, setClassOptions] = useState<string[]>([]);
 
   const intervals = annotationSet?.intervals ?? [];
 
@@ -129,6 +146,14 @@ export const App = () => {
     handleScan();
   }, [handleScan]);
 
+  useEffect(() => {
+    if (!window.cep) return;
+    const storedClasses = loadClassList();
+    if (storedClasses.length > 0) {
+      setClassOptions(storedClasses);
+    }
+  }, []);
+
   const handleLabelChange = useCallback((id: string, value: string) => {
     setAnnotationSet((prev) => {
       if (!prev) return prev;
@@ -176,6 +201,33 @@ export const App = () => {
     }
   }, [annotationSet]);
 
+  const handleImportClasses = useCallback(() => {
+    const csvPath = promptCsvPath();
+    if (!csvPath) {
+      setStatus({ kind: "info", message: "Class import canceled." });
+      return;
+    }
+    try {
+      const csvText = readCsvFile(csvPath);
+      const classes = parseClassCsv(csvText);
+      if (!classes.length) {
+        setStatus({
+          kind: "error",
+          message: "No classes found in CSV. Expect index,class columns.",
+        });
+        return;
+      }
+      saveClassList(classes);
+      setClassOptions(classes);
+      setStatus({
+        kind: "success",
+        message: `Imported ${classes.length} classes.`,
+      });
+    } catch (error) {
+      setStatus({ kind: "error", message: "Failed to import class list." });
+    }
+  }, []);
+
   const summary = useMemo(() => {
     if (!annotationSet) return "No active sequence loaded.";
     return `${annotationSet.sequence.name} • ${intervals.length} intervals`;
@@ -191,6 +243,9 @@ export const App = () => {
         <div className="header-actions">
           <button type="button" onClick={handleScan} disabled={isScanning}>
             {isScanning ? "Scanning..." : "Scan Cuts"}
+          </button>
+          <button type="button" onClick={handleImportClasses}>
+            Import Classes
           </button>
           <button
             type="button"
@@ -210,10 +265,18 @@ export const App = () => {
         <div className="status warning">{scanWarning}</div>
       ) : null}
 
+      {classOptions.length === 0 ? (
+        <div className="status warning">
+          No class list loaded. Import a CSV to enable labeling.
+        </div>
+      ) : null}
+
       <section className="intervals">
         <div className="intervals-header">
           <span>Intervals</span>
-          <span className="hint">Labels are optional. Leave blank to skip.</span>
+          <span className="hint">
+            Labels come from the class list CSV. Unlabeled is allowed.
+          </span>
         </div>
         <div className="intervals-list">
           {intervals.length === 0 ? (
@@ -223,6 +286,7 @@ export const App = () => {
               <MemoIntervalRow
                 key={interval.id}
                 interval={interval}
+                classOptions={classOptions}
                 onLabelChange={handleLabelChange}
                 onClear={handleClearLabel}
               />

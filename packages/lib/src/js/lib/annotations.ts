@@ -9,6 +9,7 @@ import type {
 
 const STORAGE_DIR = "premianno-annotations";
 const SOURCE_VERSION = "1";
+const CLASS_LIST_FILE = "class-list.json";
 
 const sanitizeKey = (value: string) =>
   value.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 80);
@@ -69,7 +70,10 @@ export const serializeToToml = (exportFile: ExportFile) => {
   lines.push("[sequence]");
   lines.push(`id = "${exportFile.sequence.id}"`);
   lines.push(`name = "${exportFile.sequence.name}"`);
-  lines.push(`timebase = "${exportFile.sequence.timebase}"`);
+  lines.push(`timebase_ticks = "${exportFile.sequence.timebase}"`);
+  if (exportFile.sequence.frameRate) {
+    lines.push(`frame_rate = ${exportFile.sequence.frameRate}`);
+  }
   if (exportFile.sequence.projectPath) {
     lines.push(`project_path = "${exportFile.sequence.projectPath}"`);
   }
@@ -109,4 +113,72 @@ export const promptSavePath = (defaultName: string) => {
 
 export const writeTomlFile = (filePath: string, toml: string) => {
   fs.writeFileSync(filePath, toml, "utf8");
+};
+
+export const loadClassList = (): string[] => {
+  const filePath = path.join(getStorageDir(), CLASS_LIST_FILE);
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    const raw = fs.readFileSync(filePath, "utf8");
+    const parsed = JSON.parse(raw) as string[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+};
+
+export const saveClassList = (classes: string[]) => {
+  const filePath = path.join(getStorageDir(), CLASS_LIST_FILE);
+  fs.writeFileSync(filePath, JSON.stringify(classes, null, 2), "utf8");
+};
+
+type ClassRow = {
+  index: number;
+  label: string;
+};
+
+export const parseClassCsv = (csvText: string): string[] => {
+  const lines = csvText.split(/\r?\n/).filter((line) => line.trim().length > 0);
+  if (!lines.length) return [];
+
+  const header = lines[0].split(",").map((value) => value.trim().toLowerCase());
+  const indexIdx = header.indexOf("index");
+  const classIdx = header.indexOf("class");
+  const startRow = indexIdx !== -1 && classIdx !== -1 ? 1 : 0;
+
+  const rows: ClassRow[] = [];
+
+  for (let i = startRow; i < lines.length; i += 1) {
+    const parts = lines[i].split(",").map((value) => value.trim());
+    const idx = indexIdx !== -1 ? indexIdx : 0;
+    const cls = classIdx !== -1 ? classIdx : 1;
+    if (parts.length <= Math.max(idx, cls)) continue;
+    const parsedIndex = parseInt(parts[idx], 10);
+    const label = parts[cls];
+    if (!label) continue;
+    rows.push({ index: isNaN(parsedIndex) ? i : parsedIndex, label });
+  }
+
+  rows.sort((a, b) => a.index - b.index);
+  return rows.map((row) => row.label);
+};
+
+export const promptCsvPath = () => {
+  const cepFs = (window as any)?.cep?.fs;
+  if (!cepFs || !cepFs.showOpenDialogEx) return null;
+  const result = cepFs.showOpenDialogEx(
+    false,
+    false,
+    "Import class list CSV",
+    "",
+    ["csv"]
+  );
+  if (!result || result.err !== 0 || !result.data || !result.data[0]) {
+    return null;
+  }
+  return result.data[0] as string;
+};
+
+export const readCsvFile = (filePath: string) => {
+  return fs.readFileSync(filePath, "utf8");
 };

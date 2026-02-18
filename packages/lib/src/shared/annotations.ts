@@ -2,6 +2,7 @@ export type Sequence = {
   id: string;
   name: string;
   timebase: string;
+  frameRate?: number;
   projectPath?: string;
 };
 

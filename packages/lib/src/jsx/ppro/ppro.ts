@@ -12,6 +12,7 @@ type SequenceInfo = {
   id: string;
   name: string;
   timebase: string;
+  frameRate?: number;
   projectPath?: string;
 };
 
@@ -32,10 +33,17 @@ const getActiveSequence = (): SequenceInfo | null => {
   const sequenceId = (sequence.sequenceID || sequence.name).toString();
   const projectPath = app.project.path ? app.project.path.toString() : "";
 
+  const settings = sequence.getSettings ? sequence.getSettings() : null;
+  const frameSeconds =
+    settings && settings.videoFrameRate ? settings.videoFrameRate.seconds : 0;
+  const frameRate =
+    frameSeconds && frameSeconds > 0 ? 1 / frameSeconds : undefined;
+
   return {
     id: sequenceId,
     name: sequence.name,
     timebase: sequence.timebase ? sequence.timebase.toString() : "",
+    frameRate,
     projectPath,
   };
 };
@@ -73,9 +81,11 @@ const uniqueSorted = (values: number[]): number[] => {
 };
 
 const getFps = (sequence: any): number => {
-  if (!sequence || !sequence.timebase) return 0;
-  const fps = parseFloat(sequence.timebase.toString());
-  return isNaN(fps) ? 0 : fps;
+  if (!sequence || !sequence.getSettings) return 0;
+  const settings = sequence.getSettings();
+  if (!settings || !settings.videoFrameRate) return 0;
+  const seconds = settings.videoFrameRate.seconds;
+  return seconds && seconds > 0 ? 1 / seconds : 0;
 };
 
 export const getActiveSequenceInfo = (): SequenceInfo | null => {
