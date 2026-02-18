@@ -5,7 +5,7 @@ export default defineConfig({
   title: "PremiAnno",
   description: "A Premiere Pro UXP Plugin for Dataset Annotation",
   base: "/premianno/",
-  
+
   locales: {
     root: {
       label: "English",
