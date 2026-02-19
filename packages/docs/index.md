@@ -14,16 +14,13 @@ hero:
       link: https://github.com/rmuraix/premianno
 
 features:
-  - icon: 🕒
-    title: Time-based Annotation
-    details: Attach notes, labels, or metadata to specific timestamps or clip ranges seamlessly integrated with the Premiere Pro timeline.
-  - icon: 💬
-    title: Custom Tag Sets
-    details: Define your own annotation schema for emotions, actions, scenes, or any custom categories relevant to your project.
-  - icon: 🎞️
-    title: Timeline Integration
-    details: Annotations follow clip movements and edits, maintaining synchronization throughout your editing workflow.
+  - icon: ✂️
+    title: Cut-based Interval Scan
+    details: Scan the active sequence and build contiguous intervals from clip boundaries across video tracks.
+  - icon: 🏷️
+    title: CSV Class Import
+    details: Import class labels from a CSV file (supports header `index,class`) and use them as label options.
   - icon: 📦
-    title: Export Options
-    details: Export annotations as JSON/CSV for downstream AI tasks, machine learning workflows, and data analysis.
+    title: TOML Export
+    details: Export sequence metadata and labeled intervals to TOML for downstream processing.
 ---

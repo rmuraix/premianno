@@ -1,158 +1,128 @@
 # APIリファレンス
 
-PremiAnno APIは、アノテーションデータと機能へのプログラマティックなアクセスを提供します。
+このページでは、PremiAnnoの現行データ形式を説明します。
 
-## 概要
+## 対象範囲
 
-PremiAnnoは、外部ツールやスクリプトで利用できる標準的なエクスポート形式を通じてデータを公開します。このセクションでは、データ構造とエクスポート形式について説明します。
+PremiAnnoが現在扱うデータ出力は以下です。
 
-## エクスポート形式
+- 内部保存: JSON（`AnnotationSet`）
+- エクスポート: TOML（`ExportFile` のシリアライズ）
+- クラス一覧: JSON配列（CSVから読み込み）
 
-### JSON形式
+## 型定義
 
-JSONエクスポートは、すべてのアノテーションの構造化された表現を提供します：
+コードベースの共有型:
+
+```ts
+export type Sequence = {
+  id: string;
+  name: string;
+  timebase: string;
+  frameRate?: number;
+  projectPath?: string;
+};
+
+export type Interval = {
+  id: string;
+  startSeconds: number;
+  endSeconds: number;
+  durationFrames: number;
+  orderIndex: number;
+  label?: string | null;
+};
+
+export type AnnotationSet = {
+  sequence: Sequence;
+  intervals: Interval[];
+  lastUpdatedAt: string;
+  sourceVersion: string;
+};
+
+export type ExportFile = {
+  sequence: Sequence;
+  exportedAt: string;
+  intervals: Interval[];
+};
+```
+
+## 内部JSON（AnnotationSet）
+
+シーケンス単位のアノテーションは、ユーザーデータ配下 `premianno-annotations/` にJSON保存されます。
 
 ```json
 {
-  "version": "1.0.0",
-  "project": {
-    "name": "My Project",
-    "sequence": "Main Sequence",
-    "duration": 120.5
+  "sequence": {
+    "id": "4f2e8...",
+    "name": "Main Sequence",
+    "timebase": "254016000000",
+    "frameRate": 29.97,
+    "projectPath": "/path/to/project.prproj"
   },
-  "annotations": [
+  "intervals": [
     {
-      "id": "unique-id",
-      "timestamp": 10.5,
-      "duration": 5.0,
-      "tags": ["action", "important"],
-      "notes": "Key scene begins",
-      "metadata": {
-        "custom_field": "value"
-      }
+      "id": "0.000000-3.336667",
+      "startSeconds": 0,
+      "endSeconds": 3.336667,
+      "durationFrames": 100,
+      "orderIndex": 0,
+      "label": "Intro"
     }
-  ]
+  ],
+  "lastUpdatedAt": "2026-02-19T00:00:00.000Z",
+  "sourceVersion": "1"
 }
 ```
 
-### CSV形式
+## TOMLエクスポート形式
 
-CSVエクスポートは、スプレッドシートアプリケーションに適したフラットな表現を提供します：
+`Export TOML` で出力される形式:
+
+```toml
+[sequence]
+id = "4f2e8..."
+name = "Main Sequence"
+timebase_ticks = "254016000000"
+frame_rate = 29.97
+project_path = "/path/to/project.prproj"
+exported_at = "2026-02-19T00:00:00.000Z"
+
+[[intervals]]
+start_seconds = 0
+end_seconds = 3.336667
+duration_frames = 100
+order_index = 0
+label = "Intro"
+```
+
+## クラスCSV読み込み形式
+
+推奨CSV:
 
 ```csv
-id,timestamp,duration,tags,notes
-unique-id,10.5,5.0,"action,important","Key scene begins"
+index,class
+0,Intro
+1,Dialogue
+2,B-roll
 ```
 
-## データ構造
+動作:
+- `index,class` ヘッダーがあればその列を使用
+- ヘッダー無しの場合は1列目=index、2列目=classとして処理
+- `index` でソート
+- 生成されたクラス配列がUIドロップダウン候補になる
 
-### Annotationオブジェクト
+## 連携例
 
-| フィールド | 型 | 説明 |
-|-------|------|-------------|
-| `id` | string | アノテーションの一意の識別子 |
-| `timestamp` | number | 開始時刻（秒） |
-| `duration` | number | 期間（秒）（ポイントアノテーションの場合は0） |
-| `tags` | string[] | タグラベルの配列 |
-| `notes` | string | 自由形式のノート |
-| `metadata` | object | カスタムメタデータフィールド |
-
-### Projectオブジェクト
-
-| フィールド | 型 | 説明 |
-|-------|------|-------------|
-| `name` | string | プロジェクト名 |
-| `sequence` | string | アクティブなシーケンス名 |
-| `duration` | number | 合計時間（秒） |
-
-## 統合例
-
-### Python
+Python（3.11+ の `tomllib`）:
 
 ```python
-import json
+import tomllib
 
-# アノテーションを読み込む
-with open('annotations.json', 'r') as f:
-    data = json.load(f)
+with open("annotations.toml", "rb") as f:
+    data = tomllib.load(f)
 
-# アノテーションを処理
-for annotation in data['annotations']:
-    timestamp = annotation['timestamp']
-    tags = annotation['tags']
-    print(f"Annotation at {timestamp}s: {tags}")
+for interval in data["intervals"]:
+    label = interval.get("label")
+    print(interval["start_seconds"], interval["end_seconds"], label)
 ```
-
-### JavaScript/Node.js
-
-```javascript
-import fs from 'fs'
-
-// アノテーションを読み込む
-const data = JSON.parse(fs.readFileSync('annotations.json', 'utf8'))
-
-// タグでフィルタリング
-const actionAnnotations = data.annotations.filter(a => 
-  a.tags.includes('action')
-)
-
-console.log(`Found ${actionAnnotations.length} action annotations`)
-```
-
-### pandas (Python)
-
-```python
-import pandas as pd
-
-# CSVを読み込む
-df = pd.read_csv('annotations.csv')
-
-# タイミングを分析
-print(f"Total annotations: {len(df)}")
-print(f"Average duration: {df['duration'].mean()}")
-
-# 時間範囲でフィルタリング
-early_annotations = df[df['timestamp'] < 60]
-```
-
-## ユースケース
-
-### 機械学習パイプライン
-
-1. PremiAnnoからアノテーションを**エクスポート**
-2. パイプラインでJSONデータを**解析**
-3. アノテーションされたタイムスタンプでビデオフレームを**抽出**
-4. ラベル付きデータを使用してモデルを**トレーニング**
-
-### ビデオ分析
-
-1. 分析のためにCSVに**エクスポート**
-2. スプレッドシートまたはデータベースに**インポート**
-3. アノテーションパターンを**可視化**
-4. レポートと統計を**生成**
-
-### カスタムツール
-
-1. JSONエクスポートを**解析**
-2. ユースケースに合わせてデータを**変換**
-3. 既存のワークフローと**統合**
-4. 処理パイプラインを**自動化**
-
-## 将来のAPI計画
-
-::: warning 作業中
-以下の機能は将来のリリースで計画されています：
-:::
-
-- リアルタイムアノテーションアクセスのためのREST API
-- ライブアップデート用のWebSocketサポート
-- カスタム拡張機能用のプラグインSDK
-- 一括インポート機能
-
-## 貢献
-
-追加のAPI機能が必要な場合や提案がある場合：
-
-- [Issueを開く](https://github.com/rmuraix/premianno/issues)
-- [プルリクエストを提出](https://github.com/rmuraix/premianno/pulls)
-- [開発ガイド](/ja/guide/development)を確認

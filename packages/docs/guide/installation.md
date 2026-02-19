@@ -14,7 +14,7 @@ This guide provides detailed instructions for installing PremiAnno in Adobe Prem
 
 1. **Download PremiAnno**
    - Visit the [Release Page](https://github.com/rmuraix/premianno/releases)
-   - Download the latest `.ccx` file
+   - Download the latest `.zxp` file
 
 2. **Install ZXP/UXP Installer**
    - Download from [aescripts.com](https://aescripts.com/learn/zxp-installer/)
@@ -22,7 +22,7 @@ This guide provides detailed instructions for installing PremiAnno in Adobe Prem
 
 3. **Install PremiAnno Plugin**
    - Open ZXP/UXP Installer
-   - Drag and drop the PremiAnno `.ccx` file into the installer window
+   - Drag and drop the PremiAnno `.zxp` file into the installer window
    - Wait for the installation to complete
 
 4. **Restart Premiere Pro**
@@ -81,12 +81,11 @@ After installation, verify that PremiAnno is working:
 ### Installation Fails
 
 - Verify that ZXP/UXP Installer is up to date
-- Check that you have the correct CCX file for your OS
+- Check that you downloaded the correct ZXP release asset
 - Ensure you have administrator privileges on your system
 
 ### Plugin Crashes
 
-- Check the Adobe UXP logs for error messages
 - Report issues on [GitHub Issues](https://github.com/rmuraix/premianno/issues)
 
 ## Next Steps

@@ -1,122 +1,81 @@
 # Usage Guide
 
-Learn how to use PremiAnno to annotate your video projects in Adobe Premiere Pro.
+Learn the current PremiAnno workflow in Adobe Premiere Pro.
 
 ## Overview
 
-PremiAnno provides a streamlined interface for adding time-synchronized annotations to your video timeline. This guide covers the main features and workflows.
+PremiAnno works on cut-based intervals. You scan the active sequence, import a class list, label each interval, then export to TOML.
 
 ## Basic Workflow
 
-### 1. Opening PremiAnno
+### 1. Open PremiAnno
 
 1. Launch Adobe Premiere Pro
-2. Open or create a project
+2. Open a project and select the target sequence
 3. Go to **Window > Extensions > PremiAnno**
-4. The PremiAnno panel will dock in your workspace
 
-### 2. Creating Annotations
+### 2. Scan Cuts
 
-Annotations can be added to specific points or ranges on your timeline:
+1. Click **Scan Cuts**
+2. PremiAnno analyzes clip boundaries across video tracks
+3. Intervals are generated as start/end time ranges
 
-1. **Position the Playhead**: Move the playhead to the desired timestamp
-2. **Select Content** (optional): Select a clip or range on the timeline
-3. **Add Annotation**: Use the PremiAnno panel to create a new annotation
-4. **Add Details**: Fill in the annotation fields (tags, notes, metadata)
+If the sequence changed since your last scan, PremiAnno shows a warning that labels may be misaligned.
 
-### 3. Managing Annotations
+### 3. Import Class List (CSV)
 
-Once created, annotations can be:
+1. Click **Import Classes**
+2. Select a CSV file
+3. Recommended format:
 
-- **Edited**: Modify tags, notes, or metadata
-- **Moved**: Adjust timing as your edit changes
-- **Deleted**: Remove annotations you no longer need
-- **Filtered**: View specific types of annotations
+```csv
+index,class
+0,Intro
+1,Dialogue
+2,B-roll
+```
 
-### 4. Exporting Data
+Notes:
+- Header `index,class` is supported and recommended
+- Rows are sorted by `index`
+- If header is missing, the parser falls back to first and second columns
 
-When you're ready to use your annotated data:
+### 4. Label Intervals
 
-1. Click **Export** in the PremiAnno panel
-2. Choose your format (JSON or CSV)
-3. Select the output location
-4. Your annotated dataset is ready for analysis
+1. Each interval row shows start and end timecodes
+2. Choose a label from the dropdown
+3. Use **Clear** to set an interval back to unlabeled
 
-## Advanced Features
+Labels are saved automatically.
 
-### Custom Tag Sets
+### 5. Export TOML
 
-Define your own annotation schema:
+1. Click **Export TOML**
+2. Choose an output path in the save dialog
+3. Use the exported TOML in downstream scripts/tools
 
-1. Open the **Tag Configuration** panel
-2. Create custom categories (e.g., emotions, actions, objects)
-3. Add specific tags under each category
-4. Use these tags consistently across your project
+## Local Data Behavior
 
-### Timeline Synchronization
-
-PremiAnno maintains annotation synchronization:
-
-- Annotations move with clips when rearranged
-- Timing updates when clips are trimmed
-- Markers stay accurate through edits
-
-### Batch Operations
-
-Work efficiently with multiple annotations:
-
-- Select multiple annotations for bulk editing
-- Apply tags to ranges of content
-- Export filtered subsets of your annotations
-
-## Best Practices
-
-### Organization
-
-- Use consistent naming conventions for tags
-- Create a schema before starting annotation
-- Document your annotation categories
-
-### Efficiency
-
-- Use keyboard shortcuts (when available)
-- Create templates for common annotation types
-- Export regularly to preserve your work
-
-### Collaboration
-
-- Share tag schemas with team members
-- Use consistent annotation formats
-- Export and merge datasets from multiple editors
-
-## Tips and Tricks
-
-- **Save Often**: Export your annotations regularly
-- **Preview Mode**: Use Premiere's playback to verify annotation timing
-- **Tag Hierarchies**: Organize tags into logical categories
-- **Metadata Fields**: Use custom fields for project-specific data
+- Annotation data is saved as JSON in user data directory under `premianno-annotations/`
+- Data is keyed by project path + sequence id/name
+- Class list is saved to `class-list.json` in the same directory
 
 ## Troubleshooting
 
-### Annotations Not Saving
+### No active sequence found
 
-- Ensure the project file is writable
-- Check available disk space
-- Try exporting to verify data integrity
+- Open a Premiere project and make sure a sequence is active
 
-### Timing Issues
+### No class list loaded
 
-- Verify your sequence settings match source media
-- Check for gaps or cuts that might affect timing
-- Re-sync annotations if timeline is significantly changed
+- Import a class CSV before labeling
 
-### Performance
+### No classes found in CSV
 
-- Close unused panels to improve performance
-- Export and archive old annotations
-- Restart Premiere Pro if the plugin becomes sluggish
+- Check CSV content and ensure class labels exist
+- Prefer `index,class` header format
 
 ## Next Steps
 
-- [Development Guide](/guide/development) - Build PremiAnno from source
-- [API Reference](/api/) - Integrate PremiAnno data into your tools
+- [API Reference](/api/) - Data format and schema details
+- [Development Guide](/guide/development) - Build and maintain from source

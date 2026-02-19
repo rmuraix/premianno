@@ -1,158 +1,128 @@
 # API Reference
 
-The PremiAnno API provides programmatic access to annotation data and functionality.
+This page documents the current data formats used by PremiAnno.
 
-## Overview
+## Scope
 
-PremiAnno exposes its data through standard export formats that can be consumed by external tools and scripts. This section documents the data structures and export formats.
+PremiAnno currently exposes data through local files:
 
-## Export Formats
+- Internal annotation store: JSON (`AnnotationSet`)
+- Export output: TOML (`ExportFile` serialization)
+- Class list: JSON array, imported from CSV
 
-### JSON Format
+## Type Definitions
 
-The JSON export provides a structured representation of all annotations:
+Current shared types in the codebase:
+
+```ts
+export type Sequence = {
+  id: string;
+  name: string;
+  timebase: string;
+  frameRate?: number;
+  projectPath?: string;
+};
+
+export type Interval = {
+  id: string;
+  startSeconds: number;
+  endSeconds: number;
+  durationFrames: number;
+  orderIndex: number;
+  label?: string | null;
+};
+
+export type AnnotationSet = {
+  sequence: Sequence;
+  intervals: Interval[];
+  lastUpdatedAt: string;
+  sourceVersion: string;
+};
+
+export type ExportFile = {
+  sequence: Sequence;
+  exportedAt: string;
+  intervals: Interval[];
+};
+```
+
+## Internal JSON (AnnotationSet)
+
+PremiAnno stores per-sequence annotations in JSON files under user data directory `premianno-annotations/`.
 
 ```json
 {
-  "version": "1.0.0",
-  "project": {
-    "name": "My Project",
-    "sequence": "Main Sequence",
-    "duration": 120.5
+  "sequence": {
+    "id": "4f2e8...",
+    "name": "Main Sequence",
+    "timebase": "254016000000",
+    "frameRate": 29.97,
+    "projectPath": "/path/to/project.prproj"
   },
-  "annotations": [
+  "intervals": [
     {
-      "id": "unique-id",
-      "timestamp": 10.5,
-      "duration": 5.0,
-      "tags": ["action", "important"],
-      "notes": "Key scene begins",
-      "metadata": {
-        "custom_field": "value"
-      }
+      "id": "0.000000-3.336667",
+      "startSeconds": 0,
+      "endSeconds": 3.336667,
+      "durationFrames": 100,
+      "orderIndex": 0,
+      "label": "Intro"
     }
-  ]
+  ],
+  "lastUpdatedAt": "2026-02-19T00:00:00.000Z",
+  "sourceVersion": "1"
 }
 ```
 
-### CSV Format
+## Export TOML Format
 
-The CSV export provides a flat representation suitable for spreadsheet applications:
+`Export TOML` writes sequence metadata and intervals:
+
+```toml
+[sequence]
+id = "4f2e8..."
+name = "Main Sequence"
+timebase_ticks = "254016000000"
+frame_rate = 29.97
+project_path = "/path/to/project.prproj"
+exported_at = "2026-02-19T00:00:00.000Z"
+
+[[intervals]]
+start_seconds = 0
+end_seconds = 3.336667
+duration_frames = 100
+order_index = 0
+label = "Intro"
+```
+
+## Class CSV Import Format
+
+Recommended CSV:
 
 ```csv
-id,timestamp,duration,tags,notes
-unique-id,10.5,5.0,"action,important","Key scene begins"
+index,class
+0,Intro
+1,Dialogue
+2,B-roll
 ```
 
-## Data Structures
+Behavior:
+- If `index,class` header exists, those columns are used
+- Without header, parser uses first column as index and second as class
+- Rows are sorted by index
+- Parsed class labels become dropdown options in UI
 
-### Annotation Object
+## Integration Example
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | Unique identifier for the annotation |
-| `timestamp` | number | Start time in seconds |
-| `duration` | number | Duration in seconds (0 for point annotations) |
-| `tags` | string[] | Array of tag labels |
-| `notes` | string | Free-form notes |
-| `metadata` | object | Custom metadata fields |
-
-### Project Object
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | string | Project name |
-| `sequence` | string | Active sequence name |
-| `duration` | number | Total duration in seconds |
-
-## Integration Examples
-
-### Python
+Python (`tomllib` in Python 3.11+):
 
 ```python
-import json
+import tomllib
 
-# Load annotations
-with open('annotations.json', 'r') as f:
-    data = json.load(f)
+with open("annotations.toml", "rb") as f:
+    data = tomllib.load(f)
 
-# Process annotations
-for annotation in data['annotations']:
-    timestamp = annotation['timestamp']
-    tags = annotation['tags']
-    print(f"Annotation at {timestamp}s: {tags}")
+for interval in data["intervals"]:
+    label = interval.get("label")
+    print(interval["start_seconds"], interval["end_seconds"], label)
 ```
-
-### JavaScript/Node.js
-
-```javascript
-import fs from 'fs'
-
-// Load annotations
-const data = JSON.parse(fs.readFileSync('annotations.json', 'utf8'))
-
-// Filter by tag
-const actionAnnotations = data.annotations.filter(a => 
-  a.tags.includes('action')
-)
-
-console.log(`Found ${actionAnnotations.length} action annotations`)
-```
-
-### pandas (Python)
-
-```python
-import pandas as pd
-
-# Load CSV
-df = pd.read_csv('annotations.csv')
-
-# Analyze timing
-print(f"Total annotations: {len(df)}")
-print(f"Average duration: {df['duration'].mean()}")
-
-# Filter by time range
-early_annotations = df[df['timestamp'] < 60]
-```
-
-## Use Cases
-
-### Machine Learning Pipeline
-
-1. **Export** annotations from PremiAnno
-2. **Parse** JSON data in your pipeline
-3. **Extract** video frames at annotated timestamps
-4. **Train** models using labeled data
-
-### Video Analysis
-
-1. **Export** to CSV for analysis
-2. **Import** into spreadsheet or database
-3. **Visualize** annotation patterns
-4. **Generate** reports and statistics
-
-### Custom Tooling
-
-1. **Parse** JSON export
-2. **Transform** data for your use case
-3. **Integrate** with existing workflows
-4. **Automate** processing pipelines
-
-## Future API Plans
-
-::: warning Work in Progress
-The following features are planned for future releases:
-:::
-
-- REST API for real-time annotation access
-- WebSocket support for live updates
-- Plugin SDK for custom extensions
-- Bulk import functionality
-
-## Contributing
-
-If you need additional API features or have suggestions:
-
-- [Open an issue](https://github.com/rmuraix/premianno/issues)
-- [Submit a pull request](https://github.com/rmuraix/premianno/pulls)
-- Review the [Development Guide](/guide/development)

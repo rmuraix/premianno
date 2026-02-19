@@ -40,11 +40,8 @@ pnpm lib build
 # ウォッチモードでビルド（ホットリロード）
 pnpm lib dev
 
-# CCXファイルとしてパッケージ化
-pnpm lib ccx
-
-# 配布用zipを作成
-pnpm lib zip
+# ZXPとしてビルド・パッケージ化
+pnpm lib zxp
 ```
 
 ### ドキュメントを実行
@@ -102,10 +99,9 @@ premianno/
 ├── packages/
 │   ├── lib/              # メインUXPプラグイン
 │   │   ├── src/
-│   │   │   ├── api/      # APIレイヤー
-│   │   │   ├── lib/      # コアライブラリ
-│   │   │   ├── types/    # TypeScript型
-│   │   │   └── ...
+│   │   │   ├── js/       # Reactパネルアプリ + CEPブリッジ
+│   │   │   ├── jsx/      # ExtendScriptホスト関数
+│   │   │   └── shared/   # 共有型定義
 │   │   ├── dist/         # ビルド出力
 │   │   └── package.json
 │   └── docs/             # VitePressドキュメント
@@ -129,15 +125,15 @@ PremiAnnoは以下を使用して構築されています：
 - **React 19**: UIフレームワーク
 - **TypeScript**: 型安全な開発
 - **Vite**: ビルドツールと開発サーバー
-- **Tailwind CSS**: スタイリング
-- **Adobe UXP**: Premiere Pro統合
+- **vite-cep-plugin**: CEP/ホスト連携とパッケージング
+- **Adobe Premiere Pro CEP/ExtendScript**: ホスト連携
 
 ### 主要コンポーネント
 
-- **APIレイヤー**: Premiere Pro APIとのインターフェース
-- **UIコンポーネント**: Reactベースのユーザーインターフェース
-- **状態管理**: Reactフックによるローカル状態
-- **データエクスポート**: JSON/CSVエクスポート機能
+- **ReactパネルUI**: スキャン/読み込み/ラベル/エクスポートの操作フロー
+- **ホストブリッジ**: パネルからExtendScript関数を呼び出し
+- **アノテーション保存層**: プロジェクト/シーケンス単位のローカルJSON保存
+- **エクスポート層**: 下流処理向けTOMLシリアライズ
 
 ## 貢献
 
@@ -172,50 +168,18 @@ PremiAnnoは以下を使用して構築されています：
 
 ## 配布用ビルド
 
-### CCXパッケージの作成
+### ZXPパッケージの作成
 
 ```bash
 # ビルドとパッケージ化
-pnpm lib ccx
+pnpm lib zxp
 ```
 
-これにより、`packages/lib/dist/`にユーザーに配布できるCCXファイルが作成されます。
-
-### 配布用zipの作成
-
-```bash
-# リリース用にCCXファイルをバンドル
-pnpm lib zip
-```
-
-これにより、GitHubリリース用の`packages/lib/public-zip/`にzipファイルが作成されます。
-
-## トラブルシューティング
-
-### ビルドの失敗
-
-- node_modulesをクリアして再インストール: `rm -rf node_modules && pnpm install`
-- Node.jsバージョンを確認: `node --version`
-- pnpmバージョンを確認: `pnpm --version`
-
-### ホットリロードが機能しない
-
-- UDTを再起動してプラグインをリロード
-- コンソールでWebSocket接続を確認
-- UDTのウォッチモードの代わりに`pnpm lib dev`を使用
-
-### 型エラー
-
-- TypeScript型を再ビルド: `pnpm lib build`
-- tsconfig.json設定を確認
-- Adobe UXP型がインストールされていることを確認
+これにより、`packages/lib/dist/zxp/`に配布用アーティファクトが生成されます。
 
 ## リソース
 
-- [Adobe UXPドキュメント](https://developer.adobe.com/photoshop/uxp/)
-- [VitePressドキュメント](https://vitepress.dev/)
-- [Reactドキュメント](https://react.dev/)
-- [Bolt UXP](https://github.com/hyperbrew/bolt-uxp)
+- [Bolt CEP](https://github.com/hyperbrew/bolt-cep)
 
 ## ヘルプ
 
