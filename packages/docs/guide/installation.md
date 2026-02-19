@@ -53,11 +53,10 @@ For developers or advanced users who want to install from source:
    pnpm lib build
    ```
 
-4. **Load in Adobe UXP Developer Tool**
-   - Download and install Adobe UXP Developer Tool from Adobe CC
-   - Open UXP Developer Tool
-   - Click "Add Plugin" and select `packages/lib/dist/manifest.json`
-   - Click "Load" to load the extension
+4. **Load the Extension**
+   - The extension will be automatically symlinked to Adobe's CEP extensions folder
+   - Restart Adobe Premiere Pro
+   - Navigate to **Window > Extensions > PremiAnno**
 
 For more details on development setup, see the [Development Guide](/guide/development).
 

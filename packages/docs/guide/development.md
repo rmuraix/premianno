@@ -9,7 +9,6 @@ Before you begin, ensure you have:
 - **Node.js**: v20 or later
 - **pnpm**: v10.18.3 or later (see `packageManager` in root package.json)
 - **Adobe Premiere Pro**: For testing
-- **Adobe UXP Developer Tool**: For debugging
 - **Git**: For version control
 
 ## Setup
@@ -69,28 +68,25 @@ pnpm biome check . --fix
 
 ## CEP Development Setup
 
-### Installing Adobe UXP Developer Tool
+### Loading the Extension for Development
 
-1. Open Adobe Creative Cloud app
-2. Navigate to the Stock & Marketplace section
-3. Search for "UXP Developer Tool"
-4. Install version 2.0 or later
-
-### Loading the Extension
+CEP extensions can be loaded for development by symlinking to Adobe's extensions folder.
 
 1. Build the extension with `pnpm lib build`
-2. Open Adobe UXP Developer Tool
-3. Click **Add Plugin**
-4. Select `packages/lib/dist/manifest.json`
-5. Click **Load** to load the extension
+2. The extension will be symlinked automatically to the CEP extensions folder
+3. Restart Adobe Premiere Pro
+4. Navigate to **Window > Extensions > PremiAnno**
 
 ### Debugging
 
-1. Click the **Debug** button in UXP Developer Tool
-2. Chrome DevTools will open
-3. Use the Console, Elements, and Sources tabs to debug
+CEP extensions use Chromium DevTools for debugging:
 
-**Note**: Use `pnpm lib dev` with the built-in WebSocket reload system instead of UDT's "Load and Watch" feature for more reliable hot reloading.
+1. Enable debug mode by creating a `.debug` file in your extension directory
+2. Set the debug port in `cep.config.ts` (default: 8860)
+3. Open Chrome and navigate to `http://localhost:8860`
+4. Use the Console, Elements, and Sources tabs to debug
+
+**Note**: Use `pnpm lib dev` with the built-in WebSocket reload system for more reliable hot reloading during development.
 
 ## Project Structure
 

@@ -32,7 +32,7 @@ By integrating annotation into Premiere Pro, PremiAnno bridges the gap between c
 pnpm i
 # Build the extension
 pnpm lib build
-# Run the extension in hot reload mode for development with UDT
+# Run the extension in hot reload mode for development
 pnpm lib dev
 # Build & package the extension as ZXP
 pnpm lib zxp

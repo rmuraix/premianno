@@ -53,11 +53,10 @@
    pnpm lib build
    ```
 
-4. **Adobe UXP Developer Toolで読み込み**
-   - Adobe CCからAdobe UXP Developer Toolをダウンロードしてインストール
-   - UXP Developer Toolを開く
-   - 「Add Plugin」をクリックし、`packages/lib/dist/manifest.json`を選択
-   - 「Load」をクリックしてエクステンションを読み込む
+4. **エクステンションを読み込む**
+   - エクステンションが自動的にAdobeのCEPエクステンションフォルダにシンボリックリンクされます
+   - Adobe Premiere Proを再起動
+   - **ウィンドウ > エクステンション > PremiAnno**に移動
 
 開発環境のセットアップの詳細については、[開発ガイド](/ja/guide/development)を参照してください。
 
