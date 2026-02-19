@@ -4,7 +4,7 @@
 
 ## 前提条件
 
-始める前に、以下を確認してください：
+始める前に、以下を用意してください：
 
 - Adobe Premiere Pro（最新バージョン推奨）
 - プラグインインストール用の[ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
@@ -13,26 +13,29 @@
 
 ### 1. PremiAnnoをダウンロード
 
-[リリースページ](https://github.com/rmuraix/premianno/releases)から最新のPremiAnno CCXファイルをダウンロードします。
+[リリースページ](https://github.com/rmuraix/premianno/releases)から最新のPremiAnno ZXPファイルをダウンロードします。
 
 ### 2. プラグインをインストール
 
 1. ZXP/UXP Installerを開く
-2. ダウンロードしたCCXファイルをインストーラーにドラッグ＆ドロップ
+2. ダウンロードしたZXPファイルをインストーラーにドラッグ＆ドロップ
 3. インストール画面の指示に従う
 
 ### 3. PremiAnnoを起動
 
 1. Adobe Premiere Proを開く
-2. **ウィンドウ > 拡張機能 > PremiAnno** に移動
+2. **ウィンドウ > エクステンション > Premianno** に移動
 3. PremiAnnoパネルがワークスペースに表示されます
+
+![PremiAnnoパネルのスクリーンショット](../../images/panel.png)
 
 ### 4. アノテーションを開始
 
-1. タイムライン上のクリップまたは位置を選択
-2. PremiAnnoパネルを使用してアノテーションを追加
-3. 必要に応じてカスタムタグとメタデータを定義
-4. 準備ができたらアノテーションをエクスポート
+1. タイムライン上でカットを行う
+2. **Scan Cuts** を実行して区間を生成
+3. **Import Classes** でクラスリストを読み込む
+4. 各区間にドロップダウンでラベルを付ける
+5. **Export TOML** で書き出す
 
 ## 次のステップ
 

@@ -2,9 +2,9 @@
 
 This repository incorporates material as listed below or described in the code.
 
-## hyperbrew/bolt-uxp
+## hyperbrew/bolt-cep
 
-https://github.com/hyperbrew/bolt-uxp
+https://github.com/hyperbrew/bolt-cep
 
 ```
 MIT License

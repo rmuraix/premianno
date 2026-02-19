@@ -13,12 +13,12 @@ Before you begin, ensure you have:
 
 ### 1. Download PremiAnno
 
-Download the latest PremiAnno CCX file from the [Release Page](https://github.com/rmuraix/premianno/releases).
+Download the latest PremiAnno ZXP file from the [Release Page](https://github.com/rmuraix/premianno/releases).
 
 ### 2. Install the Plugin
 
 1. Open ZXP/UXP Installer
-2. Drag and drop the downloaded CCX file into the installer
+2. Drag and drop the downloaded ZXP file into the installer
 3. Follow the installation prompts
 
 ### 3. Launch PremiAnno
@@ -27,12 +27,14 @@ Download the latest PremiAnno CCX file from the [Release Page](https://github.co
 2. Navigate to **Window > Extensions > PremiAnno**
 3. The PremiAnno panel will appear in your workspace
 
+![PremiAnno panel](../images/panel.png)
+
 ### 4. Start Annotating
 
-1. Select a clip or position on your timeline
-2. Use the PremiAnno panel to add annotations
-3. Define custom tags and metadata as needed
-4. Export your annotations when ready
+1. Click **Scan Cuts** to generate timeline intervals
+2. Click **Import Classes** and load a class CSV
+3. Assign labels to each interval from the dropdown
+4. Click **Export TOML** when ready
 
 ## What's Next?
 

@@ -5,7 +5,7 @@ export default defineConfig({
   title: "PremiAnno",
   description: "A Premiere Pro UXP Plugin for Dataset Annotation",
   base: "/premianno/",
-  
+
   locales: {
     root: {
       label: "English",
@@ -45,7 +45,7 @@ export default defineConfig({
         ],
 
         footer: {
-          message: "Released under the ISC License.",
+          message: "Released under the MIT License.",
           copyright: "Copyright © 2025-present rmuraix",
         },
       },
@@ -87,7 +87,7 @@ export default defineConfig({
         ],
 
         footer: {
-          message: "ISCライセンスの下でリリースされています。",
+          message: "MITライセンスの下でリリースされています。",
           copyright: "Copyright © 2025-present rmuraix",
         },
       },

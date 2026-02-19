@@ -40,11 +40,8 @@ pnpm lib build
 # Build in watch mode (hot reload)
 pnpm lib dev
 
-# Package as CCX file
-pnpm lib ccx
-
-# Create distribution zip
-pnpm lib zip
+# Build and package as ZXP
+pnpm lib zxp
 ```
 
 ### Running Documentation
@@ -102,10 +99,9 @@ premianno/
 ├── packages/
 │   ├── lib/              # Main UXP plugin
 │   │   ├── src/
-│   │   │   ├── api/      # API layer
-│   │   │   ├── lib/      # Core libraries
-│   │   │   ├── types/    # TypeScript types
-│   │   │   └── ...
+│   │   │   ├── js/       # React panel app + CEP bridge
+│   │   │   ├── jsx/      # ExtendScript host functions
+│   │   │   └── shared/   # Shared type definitions
 │   │   ├── dist/         # Build output
 │   │   └── package.json
 │   └── docs/             # VitePress documentation
@@ -129,15 +125,15 @@ PremiAnno is built using:
 - **React 19**: UI framework
 - **TypeScript**: Type-safe development
 - **Vite**: Build tool and dev server
-- **Tailwind CSS**: Styling
-- **Adobe UXP**: Premiere Pro integration
+- **vite-cep-plugin**: CEP/host integration and packaging
+- **Adobe Premiere Pro CEP/ExtendScript**: Host integration
 
 ### Key Components
 
-- **API Layer**: Interfaces with Premiere Pro APIs
-- **UI Components**: React-based user interface
-- **State Management**: Local state with React hooks
-- **Data Export**: JSON/CSV export functionality
+- **React Panel UI**: Scan/import/label/export workflow
+- **Host Bridge**: Calls ExtendScript functions from panel code
+- **Annotation Store**: Local JSON persistence per project/sequence
+- **Export Layer**: TOML serialization for downstream processing
 
 ## Contributing
 
@@ -172,50 +168,18 @@ PremiAnno is built using:
 
 ## Building for Distribution
 
-### Creating a CCX Package
+### Creating a ZXP Package
 
 ```bash
 # Build and package
-pnpm lib ccx
+pnpm lib zxp
 ```
 
-This creates a CCX file in `packages/lib/dist/` that can be distributed to users.
-
-### Creating Distribution Zip
-
-```bash
-# Bundle CCX file for release
-pnpm lib zip
-```
-
-This creates a zip file in `packages/lib/public-zip/` ready for GitHub releases.
-
-## Troubleshooting
-
-### Build Failures
-
-- Clear node_modules and reinstall: `rm -rf node_modules && pnpm install`
-- Check Node.js version: `node --version`
-- Verify pnpm version: `pnpm --version`
-
-### Hot Reload Not Working
-
-- Restart UDT and reload the plugin
-- Check WebSocket connection in console
-- Use `pnpm lib dev` instead of UDT's watch mode
-
-### Type Errors
-
-- Rebuild TypeScript types: `pnpm lib build`
-- Check tsconfig.json settings
-- Verify Adobe UXP types are installed
+This generates release artifacts under `packages/lib/dist/zxp/`.
 
 ## Resources
 
-- [Adobe UXP Documentation](https://developer.adobe.com/photoshop/uxp/)
-- [VitePress Documentation](https://vitepress.dev/)
-- [React Documentation](https://react.dev/)
-- [Bolt UXP](https://github.com/hyperbrew/bolt-uxp)
+- [Bolt CEP](https://github.com/hyperbrew/bolt-cep)
 
 ## Getting Help
 

@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.25.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build ZXP
+        run: pnpm lib zxp
+
+      - name: Create release and upload ZXP assets
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          TAG_NAME: ${{ github.ref_name }}
+        shell: pwsh
+        run: |
+          gh release view $env:TAG_NAME *> $null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $env:TAG_NAME --title $env:TAG_NAME --generate-notes
+          }
+
+          $files = Get-ChildItem -Path "packages/lib/dist/zxp" -Recurse -File
+          if ($files.Count -eq 0) {
+            throw "No build artifacts found under packages/lib/dist/zxp/"
+          }
+
+          gh release upload $env:TAG_NAME $files.FullName --clobber
