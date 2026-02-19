@@ -1,10 +1,10 @@
 # Premianno
 
-A Premiere Pro UXP Plugin for Dataset Annotation
+A Premiere Pro CEP Extension for Dataset Annotation
 
 ## Overview
 
-PremiAnno is a UXP-based plugin for Adobe Premiere Pro that enables time-synchronized annotation directly on the timeline.
+PremiAnno is a CEP-based extension for Adobe Premiere Pro that enables time-synchronized annotation directly on the timeline.
 It is designed for AI research projects and media analysis workflows, allowing researchers and creators to label timeline intervals without leaving the editing environment.
 
 By integrating annotation into Premiere Pro, PremiAnno bridges the gap between creative editing and data collection for machine learning, video understanding, and multimodal AI research.
@@ -20,8 +20,8 @@ By integrating annotation into Premiere Pro, PremiAnno bridges the gap between c
 ## Install Premianno
 
 1. Download the latest PremiAnno ZXP asset from the [Release Page](https://github.com/rmuraix/premianno/releases)
-2. Install [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
-3. Open ZXP/UXP Installer and drag and drop the downloaded ZXP file
+2. Install [ZXP/CEP Installer](https://aescripts.com/learn/zxp-installer/)
+3. Open ZXP/CEP Installer and drag and drop the downloaded ZXP file
 
 ## Development
 
@@ -30,11 +30,11 @@ By integrating annotation into Premiere Pro, PremiAnno bridges the gap between c
 ```bash
 # Install dependencies
 pnpm i
-# Build the plugin
+# Build the extension
 pnpm lib build
-# Run the plugin in hot reload mode for development with UDT
+# Run the extension in hot reload mode for development with UDT
 pnpm lib dev
-# Build & package the plugin as ZXP
+# Build & package the extension as ZXP
 pnpm lib zxp
 ```
 

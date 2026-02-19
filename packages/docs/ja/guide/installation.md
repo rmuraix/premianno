@@ -6,22 +6,22 @@
 
 - **Adobe Premiere Pro**: 2024以降（推奨）
 - **オペレーティングシステム**: Windows 10/11またはmacOS 12以降
-- **ZXP/UXP Installer**: プラグインのインストールに必要
+- **ZXP/CEP Installer**: エクステンションのインストールに必要
 
 ## インストール手順
 
-### 方法1: ZXP/UXP Installerを使用（推奨）
+### 方法1: ZXP/CEP Installerを使用（推奨）
 
 1. **PremiAnnoをダウンロード**
    - [リリースページ](https://github.com/rmuraix/premianno/releases)にアクセス
    - 最新の`.zxp`ファイルをダウンロード
 
-2. **ZXP/UXP Installerをインストール**
+2. **ZXP/CEP Installerをインストール**
    - [aescripts.com](https://aescripts.com/learn/zxp-installer/)からダウンロード
    - システムにアプリケーションをインストール
 
-3. **PremiAnnoプラグインをインストール**
-   - ZXP/UXP Installerを開く
+3. **PremiAnnoエクステンションをインストール**
+   - ZXP/CEP Installerを開く
    - PremiAnnoの`.zxp`ファイルをインストーラーウィンドウにドラッグ＆ドロップ
    - インストールが完了するまで待つ
 
@@ -48,7 +48,7 @@
    pnpm install
    ```
 
-3. **プラグインをビルド**
+3. **エクステンションをビルド**
    ```bash
    pnpm lib build
    ```
@@ -57,7 +57,7 @@
    - Adobe CCからAdobe UXP Developer Toolをダウンロードしてインストール
    - UXP Developer Toolを開く
    - 「Add Plugin」をクリックし、`packages/lib/dist/manifest.json`を選択
-   - 「Load」をクリックしてプラグインを読み込む
+   - 「Load」をクリックしてエクステンションを読み込む
 
 開発環境のセットアップの詳細については、[開発ガイド](/ja/guide/development)を参照してください。
 
@@ -76,11 +76,11 @@
 
 - インストール後にPremiere Proを再起動したことを確認
 - 互換性のあるバージョンのPremiere Proを使用していることを確認
-- プラグインを再インストールしてみる
+- エクステンションを再インストールしてみる
 
 ### インストールが失敗する
 
-- ZXP/UXP Installerが最新であることを確認
+- ZXP/CEP Installerが最新であることを確認
 - 正しいZXPリリースアセットをダウンロードしていることを確認
 - システムに管理者権限があることを確認
 

@@ -31,10 +31,10 @@ pnpm install
 
 ## 開発コマンド
 
-### プラグインをビルド
+### エクステンションをビルド
 
 ```bash
-# プラグインをビルド
+# エクステンションをビルド
 pnpm lib build
 
 # ウォッチモードでビルド（ホットリロード）
@@ -67,7 +67,7 @@ pnpm biome check .
 pnpm biome check . --fix
 ```
 
-## UXP開発セットアップ
+## CEP開発セットアップ
 
 ### Adobe UXP Developer Toolのインストール
 
@@ -76,13 +76,13 @@ pnpm biome check . --fix
 3. "UXP Developer Tool"を検索
 4. バージョン2.0以降をインストール
 
-### プラグインを読み込む
+### エクステンションを読み込む
 
-1. `pnpm lib build`でプラグインをビルド
+1. `pnpm lib build`でエクステンションをビルド
 2. Adobe UXP Developer Toolを開く
 3. **Add Plugin**をクリック
 4. `packages/lib/dist/manifest.json`を選択
-5. **Load**をクリックしてプラグインを読み込む
+5. **Load**をクリックしてエクステンションを読み込む
 
 ### デバッグ
 
@@ -97,7 +97,7 @@ pnpm biome check . --fix
 ```
 premianno/
 ├── packages/
-│   ├── lib/              # メインUXPプラグイン
+│   ├── lib/              # メインCEPエクステンション
 │   │   ├── src/
 │   │   │   ├── js/       # Reactパネルアプリ + CEPブリッジ
 │   │   │   ├── jsx/      # ExtendScriptホスト関数
@@ -118,9 +118,9 @@ premianno/
 
 ## アーキテクチャ
 
-### プラグインアーキテクチャ
+### エクステンションアーキテクチャ
 
-PremiAnnoは以下を使用して構築されています：
+PremiAnnoは以下を使用して構築されています:
 
 - **React 19**: UIフレームワーク
 - **TypeScript**: 型安全な開発

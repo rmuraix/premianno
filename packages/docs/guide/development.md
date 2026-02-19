@@ -31,10 +31,10 @@ This will install all dependencies for the monorepo, including both the lib pack
 
 ## Development Commands
 
-### Building the Plugin
+### Building the Extension
 
 ```bash
-# Build the plugin
+# Build the extension
 pnpm lib build
 
 # Build in watch mode (hot reload)
@@ -67,7 +67,7 @@ pnpm biome check .
 pnpm biome check . --fix
 ```
 
-## UXP Development Setup
+## CEP Development Setup
 
 ### Installing Adobe UXP Developer Tool
 
@@ -76,13 +76,13 @@ pnpm biome check . --fix
 3. Search for "UXP Developer Tool"
 4. Install version 2.0 or later
 
-### Loading the Plugin
+### Loading the Extension
 
-1. Build the plugin with `pnpm lib build`
+1. Build the extension with `pnpm lib build`
 2. Open Adobe UXP Developer Tool
 3. Click **Add Plugin**
 4. Select `packages/lib/dist/manifest.json`
-5. Click **Load** to load the plugin
+5. Click **Load** to load the extension
 
 ### Debugging
 
@@ -97,7 +97,7 @@ pnpm biome check . --fix
 ```
 premianno/
 ├── packages/
-│   ├── lib/              # Main UXP plugin
+│   ├── lib/              # Main CEP extension
 │   │   ├── src/
 │   │   │   ├── js/       # React panel app + CEP bridge
 │   │   │   ├── jsx/      # ExtendScript host functions
@@ -118,7 +118,7 @@ premianno/
 
 ## Architecture
 
-### Plugin Architecture
+### Extension Architecture
 
 PremiAnno is built using:
 

@@ -6,22 +6,22 @@ This guide provides detailed instructions for installing PremiAnno in Adobe Prem
 
 - **Adobe Premiere Pro**: 2024 or later (recommended)
 - **Operating System**: Windows 10/11 or macOS 12+
-- **ZXP/UXP Installer**: Required for plugin installation
+- **ZXP/CEP Installer**: Required for extension installation
 
 ## Installation Steps
 
-### Method 1: Using ZXP/UXP Installer (Recommended)
+### Method 1: Using ZXP/CEP Installer (Recommended)
 
 1. **Download PremiAnno**
    - Visit the [Release Page](https://github.com/rmuraix/premianno/releases)
    - Download the latest `.zxp` file
 
-2. **Install ZXP/UXP Installer**
+2. **Install ZXP/CEP Installer**
    - Download from [aescripts.com](https://aescripts.com/learn/zxp-installer/)
    - Install the application on your system
 
-3. **Install PremiAnno Plugin**
-   - Open ZXP/UXP Installer
+3. **Install PremiAnno Extension**
+   - Open ZXP/CEP Installer
    - Drag and drop the PremiAnno `.zxp` file into the installer window
    - Wait for the installation to complete
 
@@ -48,7 +48,7 @@ For developers or advanced users who want to install from source:
    pnpm install
    ```
 
-3. **Build the Plugin**
+3. **Build the Extension**
    ```bash
    pnpm lib build
    ```
@@ -57,7 +57,7 @@ For developers or advanced users who want to install from source:
    - Download and install Adobe UXP Developer Tool from Adobe CC
    - Open UXP Developer Tool
    - Click "Add Plugin" and select `packages/lib/dist/manifest.json`
-   - Click "Load" to load the plugin
+   - Click "Load" to load the extension
 
 For more details on development setup, see the [Development Guide](/guide/development).
 
@@ -76,11 +76,11 @@ After installation, verify that PremiAnno is working:
 
 - Ensure you've restarted Premiere Pro after installation
 - Check that you're using a compatible version of Premiere Pro
-- Try reinstalling the plugin
+- Try reinstalling the extension
 
 ### Installation Fails
 
-- Verify that ZXP/UXP Installer is up to date
+- Verify that ZXP/CEP Installer is up to date
 - Check that you downloaded the correct ZXP release asset
 - Ensure you have administrator privileges on your system
 
