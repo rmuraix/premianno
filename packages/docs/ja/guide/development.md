@@ -120,7 +120,7 @@ premianno/
 
 ### エクステンションアーキテクチャ
 
-PremiAnnoは以下を使用して構築されています:
+PremiAnnoは以下を使用して構築されています：
 
 - **React 19**: UIフレームワーク
 - **TypeScript**: 型安全な開発
