@@ -1,0 +1,7 @@
+- Install deps (repo): `pnpm install`
+- Root convenience commands: `pnpm lib <script>`, `pnpm docs <script>`
+- Plugin dev: `pnpm lib dev`
+- Plugin build: `pnpm lib build`
+- Plugin zxp package: `pnpm lib zxp`
+- Docs dev/build/preview: `pnpm docs dev`, `pnpm docs build`, `pnpm docs preview`
+- Lint/format (root): `pnpm biome` or `pnpm biome check .`
