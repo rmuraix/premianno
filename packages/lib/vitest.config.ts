@@ -7,8 +7,13 @@ export default defineConfig({
     environment: "node",
     include: ["tests/**/*.test.ts"],
     coverage: {
-      include: ["src/js/lib/annotations.ts", "src/jsx/utils/utils.ts"],
-      reporter: ["text", "json-summary"],
+      include: [
+        "src/js/lib/annotations.ts",
+        "src/jsx/utils/utils.ts",
+        "src/jsx/ppro/ppro.ts",
+        "src/jsx/utils/samples.ts",
+      ],
+      reporter: ["text", "json-summary", "lcov"],
       provider: "v8",
     },
   },

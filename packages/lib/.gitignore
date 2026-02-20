@@ -2,6 +2,7 @@ node_modules/
 dist/
 dist-ssr/
 build/
+coverage/
 *.log
 *.local
 .env*
