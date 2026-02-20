@@ -67,5 +67,6 @@ jobs:
         with:
           files: packages/lib/coverage/lcov.info
           fail_ci_if_error: true
+          slug: rmuraix/premianno
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
