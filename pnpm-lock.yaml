@@ -142,7 +142,7 @@ importers:
         specifier: ^0.7.4
         version: 0.7.6
       types-for-adobe:
-        specifier: ^7.2.3
+        specifier: ^7.2.5
         version: 7.2.5
       types-for-adobe-extras:
         specifier: ^0.0.9
