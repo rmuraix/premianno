@@ -9,7 +9,6 @@
 - **Node.js**: v20以降
 - **pnpm**: v10.18.3以降（ルートpackage.jsonの`packageManager`を参照）
 - **Adobe Premiere Pro**: テスト用
-- **Adobe UXP Developer Tool**: デバッグ用
 - **Git**: バージョン管理用
 
 ## セットアップ
@@ -31,10 +30,10 @@ pnpm install
 
 ## 開発コマンド
 
-### プラグインをビルド
+### エクステンションをビルド
 
 ```bash
-# プラグインをビルド
+# エクステンションをビルド
 pnpm lib build
 
 # ウォッチモードでビルド（ホットリロード）
@@ -67,37 +66,34 @@ pnpm biome check .
 pnpm biome check . --fix
 ```
 
-## UXP開発セットアップ
+## CEP開発セットアップ
 
-### Adobe UXP Developer Toolのインストール
+### 開発用エクステンションの読み込み
 
-1. Adobe Creative Cloudアプリを開く
-2. Stock & Marketplaceセクションに移動
-3. "UXP Developer Tool"を検索
-4. バージョン2.0以降をインストール
+CEPエクステンションは、Adobeのエクステンションフォルダへのシンボリックリンクで開発環境に読み込めます。
 
-### プラグインを読み込む
-
-1. `pnpm lib build`でプラグインをビルド
-2. Adobe UXP Developer Toolを開く
-3. **Add Plugin**をクリック
-4. `packages/lib/dist/manifest.json`を選択
-5. **Load**をクリックしてプラグインを読み込む
+1. `pnpm lib build`でエクステンションをビルド
+2. エクステンションが自動的にCEPエクステンションフォルダにシンボリックリンクされます
+3. Adobe Premiere Proを再起動
+4. **ウィンドウ > エクステンション > PremiAnno**に移動
 
 ### デバッグ
 
-1. UXP Developer Toolで**Debug**ボタンをクリック
-2. Chrome DevToolsが開きます
-3. Console、Elements、Sourcesタブを使用してデバッグ
+CEPエクステンションはChromium DevToolsを使用してデバッグします：
 
-**注意**: UDTの"Load and Watch"機能の代わりに、`pnpm lib dev`を組み込みのWebSocketリロードシステムで使用すると、より信頼性の高いホットリロードが可能です。
+1. エクステンションディレクトリに`.debug`ファイルを作成してデバッグモードを有効化
+2. `cep.config.ts`でデバッグポートを設定（デフォルト: 8860）
+3. Chromeを開き`http://localhost:8860`に移動
+4. Console、Elements、Sourcesタブを使用してデバッグ
+
+**注意**: 開発中により信頼性の高いホットリロードを実現するため、`pnpm lib dev`を組み込みのWebSocketリロードシステムで使用してください。
 
 ## プロジェクト構造
 
 ```
 premianno/
 ├── packages/
-│   ├── lib/              # メインUXPプラグイン
+│   ├── lib/              # メインCEPエクステンション
 │   │   ├── src/
 │   │   │   ├── js/       # Reactパネルアプリ + CEPブリッジ
 │   │   │   ├── jsx/      # ExtendScriptホスト関数
@@ -118,7 +114,7 @@ premianno/
 
 ## アーキテクチャ
 
-### プラグインアーキテクチャ
+### エクステンションアーキテクチャ
 
 PremiAnnoは以下を使用して構築されています：
 

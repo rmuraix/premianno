@@ -7,7 +7,7 @@
 始める前に、以下を用意してください：
 
 - Adobe Premiere Pro（最新バージョン推奨）
-- プラグインインストール用の[ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
+- エクステンションインストール用の[ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
 
 ## クイックスタート
 
@@ -15,7 +15,7 @@
 
 [リリースページ](https://github.com/rmuraix/premianno/releases)から最新のPremiAnno ZXPファイルをダウンロードします。
 
-### 2. プラグインをインストール
+### 2. エクステンションをインストール
 
 1. ZXP/UXP Installerを開く
 2. ダウンロードしたZXPファイルをインストーラーにドラッグ＆ドロップ

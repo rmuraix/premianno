@@ -1,6 +1,6 @@
 # PremiAnnoとは？
 
-PremiAnnoは、Adobe Premiere Pro向けのUXPプラグインです。タイムラインのカット境界から区間を生成し、各区間にクラスラベルを付与できます。
+PremiAnnoは、Adobe Premiere Pro向けのCEPエクステンションです。タイムラインのカット境界から区間を生成し、各区間にクラスラベルを付与できます。
 
 ![PremiAnnoのUI](../../images/overview.png)
 

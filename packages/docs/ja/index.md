@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "PremiAnno"
   text: "Premiere Pro用データセットアノテーション"
-  tagline: Adobe Premiere Proのタイムラインで直接、時間同期アノテーションを可能にするUXPベースのプラグイン
+  tagline: Adobe Premiere Proのタイムラインで直接、時間同期アノテーションを可能にするCEPベースのエクステンション
   actions:
     - theme: brand
       text: はじめる

@@ -6,7 +6,7 @@ This guide provides detailed instructions for installing PremiAnno in Adobe Prem
 
 - **Adobe Premiere Pro**: 2024 or later (recommended)
 - **Operating System**: Windows 10/11 or macOS 12+
-- **ZXP/UXP Installer**: Required for plugin installation
+- **ZXP/UXP Installer**: Required for extension installation
 
 ## Installation Steps
 
@@ -20,7 +20,7 @@ This guide provides detailed instructions for installing PremiAnno in Adobe Prem
    - Download from [aescripts.com](https://aescripts.com/learn/zxp-installer/)
    - Install the application on your system
 
-3. **Install PremiAnno Plugin**
+3. **Install PremiAnno Extension**
    - Open ZXP/UXP Installer
    - Drag and drop the PremiAnno `.zxp` file into the installer window
    - Wait for the installation to complete
@@ -48,16 +48,15 @@ For developers or advanced users who want to install from source:
    pnpm install
    ```
 
-3. **Build the Plugin**
+3. **Build the Extension**
    ```bash
    pnpm lib build
    ```
 
-4. **Load in Adobe UXP Developer Tool**
-   - Download and install Adobe UXP Developer Tool from Adobe CC
-   - Open UXP Developer Tool
-   - Click "Add Plugin" and select `packages/lib/dist/manifest.json`
-   - Click "Load" to load the plugin
+4. **Load the Extension**
+   - The extension will be automatically symlinked to Adobe's CEP extensions folder
+   - Restart Adobe Premiere Pro
+   - Navigate to **Window > Extensions > PremiAnno**
 
 For more details on development setup, see the [Development Guide](/guide/development).
 
@@ -76,7 +75,7 @@ After installation, verify that PremiAnno is working:
 
 - Ensure you've restarted Premiere Pro after installation
 - Check that you're using a compatible version of Premiere Pro
-- Try reinstalling the plugin
+- Try reinstalling the extension
 
 ### Installation Fails
 
