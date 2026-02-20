@@ -7,7 +7,7 @@ This guide will help you get started with PremiAnno quickly.
 Before you begin, ensure you have:
 
 - Adobe Premiere Pro (latest version recommended)
-- [ZXP/CEP Installer](https://aescripts.com/learn/zxp-installer/) for extension installation
+- [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/) for extension installation
 
 ## Quick Start
 
@@ -17,7 +17,7 @@ Download the latest PremiAnno ZXP file from the [Release Page](https://github.co
 
 ### 2. Install the Extension
 
-1. Open ZXP/CEP Installer
+1. Open ZXP/UXP Installer
 2. Drag and drop the downloaded ZXP file into the installer
 3. Follow the installation prompts
 

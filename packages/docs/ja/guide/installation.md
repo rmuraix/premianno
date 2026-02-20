@@ -6,22 +6,22 @@
 
 - **Adobe Premiere Pro**: 2024以降（推奨）
 - **オペレーティングシステム**: Windows 10/11またはmacOS 12以降
-- **ZXP/CEP Installer**: エクステンションのインストールに必要
+- **ZXP/UXP Installer**: エクステンションのインストールに必要
 
 ## インストール手順
 
-### 方法1: ZXP/CEP Installerを使用（推奨）
+### 方法1: ZXP/UXP Installerを使用（推奨）
 
 1. **PremiAnnoをダウンロード**
    - [リリースページ](https://github.com/rmuraix/premianno/releases)にアクセス
    - 最新の`.zxp`ファイルをダウンロード
 
-2. **ZXP/CEP Installerをインストール**
+2. **ZXP/UXP Installerをインストール**
    - [aescripts.com](https://aescripts.com/learn/zxp-installer/)からダウンロード
    - システムにアプリケーションをインストール
 
 3. **PremiAnnoエクステンションをインストール**
-   - ZXP/CEP Installerを開く
+   - ZXP/UXP Installerを開く
    - PremiAnnoの`.zxp`ファイルをインストーラーウィンドウにドラッグ＆ドロップ
    - インストールが完了するまで待つ
 
@@ -79,7 +79,7 @@
 
 ### インストールが失敗する
 
-- ZXP/CEP Installerが最新であることを確認
+- ZXP/UXP Installerが最新であることを確認
 - 正しいZXPリリースアセットをダウンロードしていることを確認
 - システムに管理者権限があることを確認
 

@@ -20,8 +20,8 @@ By integrating annotation into Premiere Pro, PremiAnno bridges the gap between c
 ## Install Premianno
 
 1. Download the latest PremiAnno ZXP asset from the [Release Page](https://github.com/rmuraix/premianno/releases)
-2. Install [ZXP/CEP Installer](https://aescripts.com/learn/zxp-installer/)
-3. Open ZXP/CEP Installer and drag and drop the downloaded ZXP file
+2. Install [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
+3. Open ZXP/UXP Installer and drag and drop the downloaded ZXP file
 
 ## Development
 
