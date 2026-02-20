@@ -35,3 +35,38 @@ jobs:
         
       - name: Build lib
         run: pnpm lib zxp
+
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.25.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests with coverage
+        run: pnpm lib test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: packages/lib/coverage/lcov.info
+          fail_ci_if_error: true
+          slug: rmuraix/premianno
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
