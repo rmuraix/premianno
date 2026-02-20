@@ -37,7 +37,7 @@
     "@rollup/plugin-replace": "^6.0.3",
     "@testing-library/react": "^16.3.2",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^16.11.7",
+    "@types/node": "^16.18.126",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",
     "@types/trusted-types": "^2.0.2",
