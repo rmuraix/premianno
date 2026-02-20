@@ -47,7 +47,7 @@
     "babel-plugin-transform-scss": "^1.2.0",
     "babel-preset-env": "^1.7.0",
     "core-js": "3",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.1.0",
     "fs-extra": "^11.3.3",
     "jsdom": "^28.1.0",
     "rimraf": "^3.0.2",
