@@ -55,7 +55,7 @@
     "rollup-plugin-multi-input": "^1.5.0",
     "rollup-plugin-node-copy": "^1.0.4",
     "rollup-plugin-scss": "^4.0.1",
-    "sass": "^1.89.1",
+    "sass": "^1.97.3",
     "source-map": "^0.7.4",
     "types-for-adobe": "^7.2.3",
     "types-for-adobe-extras": "^0.0.9",
