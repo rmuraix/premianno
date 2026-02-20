@@ -1,14 +1,19 @@
 import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
+  plugins: [react()],
   test: {
     globals: true,
     environment: "node",
-    include: ["tests/**/*.test.ts"],
+    environmentMatchGlobs: [["tests/**/*.test.tsx", "jsdom"]],
+    include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
     coverage: {
       include: [
         "src/js/lib/annotations.ts",
+        "src/js/main/annotationStore.ts",
+        "src/js/main/main.tsx",
         "src/jsx/utils/utils.ts",
         "src/jsx/ppro/ppro.ts",
         "src/jsx/utils/samples.ts",
