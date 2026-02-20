@@ -109,7 +109,7 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       core-js:
-        specifier: '3'
+        specifier: 3.48.0
         version: 3.48.0
       cross-env:
         specifier: ^10.1.0
