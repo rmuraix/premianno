@@ -73,7 +73,7 @@ importers:
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.57.1)
       '@rollup/plugin-replace':
-        specifier: ^6.0.2
+        specifier: ^6.0.3
         version: 6.0.3(rollup@4.57.1)
       '@testing-library/react':
         specifier: ^16.3.2
