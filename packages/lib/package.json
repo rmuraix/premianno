@@ -52,7 +52,7 @@
     "jsdom": "^28.1.0",
     "rimraf": "^3.0.2",
     "rollup": "^4.57.1",
-    "rollup-plugin-multi-input": "^1.5.0",
+    "rollup-plugin-multi-input": "^1.7.0",
     "rollup-plugin-node-copy": "^1.0.4",
     "rollup-plugin-scss": "^4.0.1",
     "sass": "^1.97.3",
