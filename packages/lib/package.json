@@ -56,7 +56,7 @@
     "rollup-plugin-node-copy": "^1.0.4",
     "rollup-plugin-scss": "^4.0.1",
     "sass": "^1.97.3",
-    "source-map": "^0.7.4",
+    "source-map": "^0.7.6",
     "types-for-adobe": "^7.2.5",
     "types-for-adobe-extras": "^0.0.9",
     "typescript": "^5.9.3",

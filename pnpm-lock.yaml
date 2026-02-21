@@ -139,7 +139,7 @@ importers:
         specifier: ^1.97.3
         version: 1.97.3
       source-map:
-        specifier: ^0.7.4
+        specifier: ^0.7.6
         version: 0.7.6
       types-for-adobe:
         specifier: ^7.2.5
