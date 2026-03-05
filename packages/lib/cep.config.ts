@@ -6,6 +6,15 @@ import {
   extensionId,
 } from "./src/shared/extensionMeta";
 
+const isZxpPackaging = process.env.ZXP_PACKAGE === "true";
+const zxpPassword = process.env.ZXP_PASSWORD;
+
+if (isZxpPackaging && (!zxpPassword || zxpPassword.trim().length === 0)) {
+  throw new Error(
+    "ZXP_PASSWORD is required when ZXP_PACKAGE=true. Set it in your environment before packaging."
+  );
+}
+
 const config: CEP_Config = {
   version,
   id: extensionId,
@@ -47,6 +56,7 @@ const config: CEP_Config = {
     country: "US",
     province: "CA",
     org: extensionCompany,
+    password: zxpPassword,
     tsa: [
       "http://timestamp.digicert.com/", // Windows Only
       "http://timestamp.apple.com/ts01", // MacOS Only
