@@ -1,5 +1,7 @@
 import { CEP_Config } from "vite-cep-plugin";
 import { version } from "./package.json";
+import fs from "fs";
+import path from "path";
 import {
   extensionCompany,
   extensionDisplayName,
@@ -7,7 +9,23 @@ import {
 } from "./src/shared/extensionMeta";
 
 const isZxpPackaging = process.env.ZXP_PACKAGE === "true";
-const zxpPassword = process.env.ZXP_PASSWORD;
+
+const getDotEnvPassword = () => {
+  const envPath = path.resolve(__dirname, ".env");
+  if (!fs.existsSync(envPath)) return undefined;
+
+  const source = fs.readFileSync(envPath, "utf8");
+  const line = source
+    .split(/\r?\n/)
+    .find((row) => /^\s*ZXP_PASSWORD\s*=/.test(row));
+  if (!line) return undefined;
+
+  const raw = line.replace(/^\s*ZXP_PASSWORD\s*=\s*/, "").trim();
+  const unquoted = raw.replace(/^['"]|['"]$/g, "");
+  return unquoted.length > 0 ? unquoted : undefined;
+};
+
+const zxpPassword = process.env.ZXP_PASSWORD || getDotEnvPassword();
 
 if (isZxpPackaging && (!zxpPassword || zxpPassword.trim().length === 0)) {
   throw new Error(
