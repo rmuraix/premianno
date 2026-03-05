@@ -30,6 +30,8 @@ jobs:
         run: pnpm install
 
       - name: Build ZXP
+        env:
+          ZXP_PASSWORD: ${{ secrets.ZXP_PASSWORD }}
         run: pnpm lib zxp
 
       - name: Create release and upload ZXP assets
