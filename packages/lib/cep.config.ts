@@ -1,10 +1,15 @@
 import { CEP_Config } from "vite-cep-plugin";
 import { version } from "./package.json";
+import {
+  extensionCompany,
+  extensionDisplayName,
+  extensionId,
+} from "./src/shared/extensionMeta";
 
 const config: CEP_Config = {
   version,
-  id: "com.rmurai.premianno", 
-  displayName: "premianno", 
+  id: extensionId,
+  displayName: extensionDisplayName,
   symlink: "local",
   port: 3000,
   servePort: 5000,
@@ -28,7 +33,7 @@ const config: CEP_Config = {
     {
       mainPath: "./main/index.html",
       name: "main",
-      panelDisplayName: "premianno", 
+      panelDisplayName: extensionDisplayName,
       autoVisible: true,
       width: 600,
       height: 650,
@@ -41,7 +46,7 @@ const config: CEP_Config = {
   zxp: {
     country: "US",
     province: "CA",
-    org: "Company",
+    org: extensionCompany,
     password:
       (typeof process !== "undefined" &&
       process &&
