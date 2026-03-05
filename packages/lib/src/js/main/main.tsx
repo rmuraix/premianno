@@ -95,6 +95,7 @@ export const App = () => {
   const [status, setStatus] = useState<Status | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanWarning, setScanWarning] = useState<string | null>(null);
+  const [scanErrorDetail, setScanErrorDetail] = useState<string | null>(null);
   const [classOptions, setClassOptions] = useState<string[]>([]);
 
   const intervals = annotationSet?.intervals ?? [];
@@ -103,6 +104,7 @@ export const App = () => {
     setIsScanning(true);
     setStatus({ kind: "info", message: "Scanning timeline cuts..." });
     setScanWarning(null);
+    setScanErrorDetail(null);
 
     try {
       const result = await scanCutIntervals();
@@ -132,6 +134,18 @@ export const App = () => {
       setAnnotationSet(nextSet);
       setStatus({ kind: "success", message: "Scan complete." });
     } catch (error) {
+      const err = error as
+        | { name?: string; message?: string; fileName?: string; line?: number }
+        | undefined;
+      const parts = [
+        err?.name,
+        err?.message,
+        err?.fileName,
+        typeof err?.line === "number" ? `line:${err.line}` : undefined,
+      ].filter((value): value is string => Boolean(value));
+      const detail = parts.length > 0 ? parts.join(" | ") : String(error);
+      setScanErrorDetail(detail);
+      console.error("scanCutIntervals failed:", error);
       setStatus({
         kind: "error",
         message: "Scan failed. Check the console for details.",
@@ -263,6 +277,9 @@ export const App = () => {
 
       {scanWarning ? (
         <div className="status warning">{scanWarning}</div>
+      ) : null}
+      {scanErrorDetail ? (
+        <div className="status error">{scanErrorDetail}</div>
       ) : null}
 
       {classOptions.length === 0 ? (

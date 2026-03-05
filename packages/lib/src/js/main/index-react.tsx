@@ -4,10 +4,13 @@ import { initBolt } from "../lib/utils/bolt";
 import "../index.scss";
 import { App } from "./main";
 
-initBolt();
+const bootstrap = async () => {
+  await initBolt();
+  ReactDOM.createRoot(document.getElementById("app") as HTMLElement).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+};
 
-ReactDOM.createRoot(document.getElementById("app") as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+bootstrap();
