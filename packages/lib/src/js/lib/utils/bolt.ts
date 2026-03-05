@@ -201,17 +201,17 @@ export const dispatchTS = <Key extends string & keyof EventTS>(
 
 // js utils
 
-export const initBolt = (log = true) => {
+export const initBolt = async (log = true) => {
   if (window.cep) {
     const extRoot = csi.getSystemPath("extension");
     const jsxSrc = `${extRoot}/jsx/index.js`;
     const jsxBinSrc = `${extRoot}/jsx/index.jsxbin`;
     if (fs.existsSync(jsxSrc)) {
       if (log) console.log(jsxSrc);
-      evalFile(jsxSrc);
+      await evalFile(jsxSrc);
     } else if (fs.existsSync(jsxBinSrc)) {
       if (log) console.log(jsxBinSrc);
-      evalFile(jsxBinSrc);
+      await evalFile(jsxBinSrc);
     }
     initializeCEP();
   }

@@ -1,5 +1,6 @@
-import config from "../../cep.config";
-export const ns = config.id;
-export const company = config.zxp.org;
-export const displayName = config.displayName;
-export const version = config.version;
+// Keep runtime constants free from Node-only config fields (e.g. process.env).
+// This file is consumed by ExtendScript bundles.
+export const ns = "com.rmurai.premianno";
+export const company = "Company";
+export const displayName = "premianno";
+export const version = "0.1.0";
