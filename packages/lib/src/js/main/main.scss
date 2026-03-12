@@ -88,12 +88,24 @@
 
 .interval-row {
   display: grid;
-  grid-template-columns: 160px 1fr;
+  grid-template-columns: auto 160px 1fr;
   gap: 1rem;
   padding: 0.75rem;
   border-radius: 8px;
   background: #1b1f27;
   border: 1px solid #232936;
+}
+
+.jump-button {
+  align-self: center;
+  background: transparent;
+  border: 1px solid #2a3140;
+  color: $subtext;
+}
+
+.jump-button:hover {
+  color: $font;
+  border-color: #4d6fff;
 }
 
 .interval-row.unlabeled {

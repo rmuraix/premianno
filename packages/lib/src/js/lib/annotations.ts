@@ -37,6 +37,10 @@ export const scanCutIntervals = async () => {
   return evalTS("scanCutIntervals");
 };
 
+export const jumpToAnnotationStart = async (startSeconds: number) => {
+  return evalTS("jumpToAnnotationStart", startSeconds);
+};
+
 export const loadAnnotationSet = (sequence: Sequence): AnnotationSet | null => {
   const filePath = getStoragePath(sequence);
   if (!fs.existsSync(filePath)) return null;

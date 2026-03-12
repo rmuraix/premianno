@@ -44,6 +44,7 @@ import {
   readCsvFile,
   getActiveSequenceInfo,
   scanCutIntervals,
+  jumpToAnnotationStart,
 } from "@esTypes/js/lib/annotations";
 
 import type { Sequence, Interval, AnnotationSet, ExportFile } from "@esTypes/shared/annotations";
@@ -582,5 +583,13 @@ describe("scanCutIntervals", () => {
     mockEvalTS.mockResolvedValue({ sequence: null, intervals: [] });
     await scanCutIntervals();
     expect(mockEvalTS).toHaveBeenCalledWith("scanCutIntervals");
+  });
+});
+
+describe("jumpToAnnotationStart", () => {
+  it("calls evalTS with 'jumpToAnnotationStart'", async () => {
+    mockEvalTS.mockResolvedValue({ ok: true, positionSeconds: 12.5 });
+    await jumpToAnnotationStart(12.5);
+    expect(mockEvalTS).toHaveBeenCalledWith("jumpToAnnotationStart", 12.5);
   });
 });

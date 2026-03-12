@@ -2,12 +2,13 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 
-const { mockScanCutIntervals, mockLoadAnnotationSet, mockSaveAnnotationSet,
+const { mockScanCutIntervals, mockJumpToAnnotationStart, mockLoadAnnotationSet, mockSaveAnnotationSet,
   mockBuildAnnotationSet, mockLoadClassList, mockSaveClassList,
   mockParseClassCsv, mockPromptCsvPath, mockPromptSavePath,
   mockReadCsvFile, mockSerializeToToml, mockWriteTomlFile } = vi.hoisted(() => {
   return {
     mockScanCutIntervals: vi.fn(),
+    mockJumpToAnnotationStart: vi.fn(),
     mockLoadAnnotationSet: vi.fn(),
     mockSaveAnnotationSet: vi.fn(),
     mockBuildAnnotationSet: vi.fn(),
@@ -24,6 +25,7 @@ const { mockScanCutIntervals, mockLoadAnnotationSet, mockSaveAnnotationSet,
 
 vi.mock("@esTypes/js/lib/annotations", () => ({
   scanCutIntervals: mockScanCutIntervals,
+  jumpToAnnotationStart: mockJumpToAnnotationStart,
   loadAnnotationSet: mockLoadAnnotationSet,
   saveAnnotationSet: mockSaveAnnotationSet,
   buildAnnotationSet: mockBuildAnnotationSet,
@@ -84,6 +86,7 @@ beforeEach(() => {
   mockLoadClassList.mockReturnValue([]);
   mockLoadAnnotationSet.mockReturnValue(null);
   mockScanCutIntervals.mockResolvedValue(null);
+  mockJumpToAnnotationStart.mockResolvedValue({ ok: true, positionSeconds: 0 });
   mockSerializeToToml.mockReturnValue("[sequence]\nid = \"abc\"");
   mockIntervalsAligned.mockReturnValue(true);
   mockMergeStoredLabels.mockImplementation((current: Interval[]) => current);
@@ -402,6 +405,58 @@ describe("App label change and clear", () => {
       "0-5",
       ""
     );
+  });
+});
+
+describe("App interval jump", () => {
+  const setupWithInterval = async () => {
+    const seq = makeSequence();
+    const interval = makeInterval({ id: "0-5", startSeconds: 5, endSeconds: 10 });
+    const annSet = makeAnnotationSet({ sequence: seq, intervals: [interval] });
+    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [interval] });
+    mockLoadAnnotationSet.mockReturnValue(null);
+    mockBuildAnnotationSet.mockReturnValue(annSet);
+    vi.stubGlobal("window", { cep: { fs: {} } });
+    await act(async () => { render(<App />); });
+    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    return interval;
+  };
+
+  it("renders a jump button for each interval row", async () => {
+    await setupWithInterval();
+    expect(screen.getByTitle("Jump to interval start")).toBeTruthy();
+  });
+
+  it("calls jumpToAnnotationStart with the interval start seconds", async () => {
+    await setupWithInterval();
+    await act(async () => {
+      fireEvent.click(screen.getByTitle("Jump to interval start"));
+    });
+    expect(mockJumpToAnnotationStart).toHaveBeenCalledWith(5);
+  });
+
+  it("shows error when jumping the playhead fails", async () => {
+    mockJumpToAnnotationStart.mockResolvedValue({ ok: false, reason: "no-active-sequence" });
+    await setupWithInterval();
+    await act(async () => {
+      fireEvent.click(screen.getByTitle("Jump to interval start"));
+    });
+    expect(screen.getByText("Failed to move playhead.")).toBeTruthy();
+  });
+
+  it("does not call jumpToAnnotationStart when window.cep is not set", async () => {
+    const seq = makeSequence();
+    const interval = makeInterval({ id: "0-5", startSeconds: 5, endSeconds: 10 });
+    const annSet = makeAnnotationSet({ sequence: seq, intervals: [interval] });
+    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [interval] });
+    mockLoadAnnotationSet.mockReturnValue(null);
+    mockBuildAnnotationSet.mockReturnValue(annSet);
+    render(<App />);
+    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    await act(async () => {
+      fireEvent.click(screen.getByTitle("Jump to interval start"));
+    });
+    expect(mockJumpToAnnotationStart).not.toHaveBeenCalled();
   });
 });
 

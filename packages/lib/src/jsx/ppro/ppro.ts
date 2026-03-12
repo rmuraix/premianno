@@ -24,6 +24,12 @@ type IntervalInfo = {
   orderIndex: number;
 };
 
+type JumpResult = {
+  ok: boolean;
+  positionSeconds?: number;
+  reason?: string;
+};
+
 const getActiveSequence = (): SequenceInfo | null => {
   if (!app || !app.project || !app.project.activeSequence) {
     return null;
@@ -141,6 +147,27 @@ export const scanCutIntervals = (): {
   }
 
   return { sequence: sequenceInfo, intervals: intervals };
+};
+
+export const jumpToAnnotationStart = (startSeconds: number): JumpResult => {
+  if (!app || !app.project || !app.project.activeSequence) {
+    return { ok: false, reason: "no-active-sequence" };
+  }
+  if (!isFinite(startSeconds)) {
+    return { ok: false, reason: "invalid-time" };
+  }
+
+  const sequence = app.project.activeSequence;
+  const clampedSeconds = startSeconds < 0 ? 0 : startSeconds;
+  const time = new Time();
+  time.seconds = clampedSeconds;
+
+  if (!sequence.setPlayerPosition) {
+    return { ok: false, reason: "unsupported-operation" };
+  }
+
+  sequence.setPlayerPosition(time.ticks);
+  return { ok: true, positionSeconds: clampedSeconds };
 };
 
 export const qeDomFunction = () => {

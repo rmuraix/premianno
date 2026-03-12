@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 // Mock shared (imports cep.config via shared.ts)
 vi.mock("@esTypes/shared/shared", () => ({
@@ -8,6 +8,7 @@ vi.mock("@esTypes/shared/shared", () => ({
 import {
   getActiveSequenceInfo,
   scanCutIntervals,
+  jumpToAnnotationStart,
   helloWorld,
   qeDomFunction,
 } from "@esTypes/jsx/ppro/ppro";
@@ -35,6 +36,7 @@ const makeSequenceMock = (overrides: {
   tracks?: ReturnType<typeof makeTrack>[];
   endSeconds?: number;
   sequenceID?: string;
+  setPlayerPosition?: ReturnType<typeof vi.fn>;
 } = {}) => {
   // Use "in" check so that frameRate: null means "no getSettings"
   // while not specifying frameRate (undefined) means default 24
@@ -53,6 +55,10 @@ const makeSequenceMock = (overrides: {
     name: overrides.name ?? "Test Sequence",
     timebase: overrides.timebase !== undefined ? overrides.timebase : "254016000000",
     getSettings: fps !== null ? () => settings : undefined,
+    setPlayerPosition:
+      overrides.setPlayerPosition !== undefined
+        ? overrides.setPlayerPosition
+        : vi.fn(),
     videoTracks: {
       numTracks: tracks.length,
       ...Object.fromEntries(tracks.map((t, i) => [i, t])),
@@ -72,6 +78,18 @@ const stubApp = (sequenceMock: any, projectPath = "/test.prproj") => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+});
+
+beforeEach(() => {
+  vi.stubGlobal("Time", function Time(this: { ticks: string; seconds?: number }) {
+    this.ticks = "0";
+    Object.defineProperty(this, "seconds", {
+      get: () => parseInt(this.ticks, 10) / 10000000,
+      set: (value: number) => {
+        this.ticks = String(Math.round(value * 10000000));
+      },
+    });
+  } as any);
 });
 
 // ─── getActiveSequenceInfo ────────────────────────────────────────────────────
@@ -296,6 +314,43 @@ describe("scanCutIntervals", () => {
     const result = scanCutIntervals();
     expect(result.intervals).toHaveLength(1);
     expect(result.intervals[0].durationFrames).toBe(0);
+  });
+});
+
+describe("jumpToAnnotationStart", () => {
+  it("returns no-active-sequence when there is no active sequence", () => {
+    vi.stubGlobal("app", { project: { activeSequence: null } });
+    expect(jumpToAnnotationStart(5)).toEqual({
+      ok: false,
+      reason: "no-active-sequence",
+    });
+  });
+
+  it("returns invalid-time when the input is NaN", () => {
+    const seq = makeSequenceMock();
+    stubApp(seq);
+    expect(jumpToAnnotationStart(Number.NaN)).toEqual({
+      ok: false,
+      reason: "invalid-time",
+    });
+  });
+
+  it("clamps negative seconds to zero before moving the playhead", () => {
+    const setPlayerPosition = vi.fn();
+    const seq = makeSequenceMock({ setPlayerPosition });
+    stubApp(seq);
+    const result = jumpToAnnotationStart(-3);
+    expect(setPlayerPosition).toHaveBeenCalledWith("0");
+    expect(result).toEqual({ ok: true, positionSeconds: 0 });
+  });
+
+  it("moves the playhead to the provided start time", () => {
+    const setPlayerPosition = vi.fn();
+    const seq = makeSequenceMock({ setPlayerPosition });
+    stubApp(seq);
+    const result = jumpToAnnotationStart(12.5);
+    expect(setPlayerPosition).toHaveBeenCalledWith("125000000");
+    expect(result).toEqual({ ok: true, positionSeconds: 12.5 });
   });
 });
 

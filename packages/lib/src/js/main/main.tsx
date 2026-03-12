@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   buildAnnotationSet,
+  jumpToAnnotationStart,
   loadAnnotationSet,
   loadClassList,
   parseClassCsv,
@@ -45,6 +46,7 @@ type IntervalRowProps = {
   classOptions: string[];
   onLabelChange: (id: string, value: string) => void;
   onClear: (id: string) => void;
+  onJump: (startSeconds: number) => void;
 };
 
 const IntervalRow = ({
@@ -52,6 +54,7 @@ const IntervalRow = ({
   classOptions,
   onLabelChange,
   onClear,
+  onJump,
 }: IntervalRowProps) => {
   return (
     <div
@@ -59,6 +62,14 @@ const IntervalRow = ({
         interval.label && interval.label.trim().length > 0 ? "" : "unlabeled"
       }`}
     >
+      <button
+        className="jump-button"
+        onClick={() => onJump(interval.startSeconds)}
+        title="Jump to interval start"
+        type="button"
+      >
+        Jump
+      </button>
       <div className="interval-time">
         <div className="timecode">{formatTimecode(interval.startSeconds)}</div>
         <div className="timecode">{formatTimecode(interval.endSeconds)}</div>
@@ -186,6 +197,26 @@ export const App = () => {
     handleLabelChange(id, "");
   }, [handleLabelChange]);
 
+  const handleJumpToIntervalStart = useCallback(async (startSeconds: number) => {
+    if (!window.cep) return;
+
+    try {
+      const result = await jumpToAnnotationStart(startSeconds);
+      if (!result?.ok) {
+        setStatus({
+          kind: "error",
+          message:
+            result?.reason === "invalid-time"
+              ? "Invalid interval start time."
+              : "Failed to move playhead.",
+        });
+      }
+    } catch (error) {
+      console.error("jumpToAnnotationStart failed:", error);
+      setStatus({ kind: "error", message: "Failed to move playhead." });
+    }
+  }, []);
+
   const handleExport = useCallback(() => {
     if (!annotationSet) {
       setStatus({ kind: "error", message: "No annotations to export." });
@@ -306,6 +337,7 @@ export const App = () => {
                 classOptions={classOptions}
                 onLabelChange={handleLabelChange}
                 onClear={handleClearLabel}
+                onJump={handleJumpToIntervalStart}
               />
             ))
           )}
