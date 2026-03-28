@@ -2,7 +2,7 @@
 
 export const forEachChild = (
   item: ProjectItem,
-  callback: (item: ProjectItem) => void
+  callback: (item: ProjectItem) => void,
 ) => {
   const len = item.children.numItems;
   for (let i = 0; i < len; i++) {
@@ -51,7 +51,7 @@ export const getChildFromTreePath = (project: Project, treePath: string) => {
 
 export const getDescendantByNodeId = (
   item: ProjectItem,
-  nodeId: string
+  nodeId: string,
 ): ProjectItem | undefined => {
   for (let i = 0; i < item.children.numItems; i++) {
     const child = item.children[i];
@@ -82,7 +82,7 @@ export const getParentItem = (item: ProjectItem) => {
 
 export const findItemByPath = (
   item: ProjectItem,
-  path: string
+  path: string,
 ): ProjectItem | undefined => {
   const len = item.children.numItems;
   for (let i = 0; i < len; i++) {
@@ -113,14 +113,14 @@ export const getSequenceLengthInFrames = (seq: Sequence) => {
   const settings = seq.getSettings();
   const end = seq.end;
   const fps = settings.videoFrameRate.ticks;
-  const frames = parseInt(end) / parseInt(fps);
+  const frames = parseInt(end, 10) / parseInt(fps, 10);
   return frames;
 };
 
 export const forEachVideoTrack = (
   sequence: Sequence,
   callback: (track: Track, index: number) => void,
-  reverse?: boolean
+  reverse?: boolean,
 ) => {
   const num = sequence.videoTracks.numTracks;
   if (reverse) {
@@ -137,7 +137,7 @@ export const forEachVideoTrack = (
 export const forEachAudioTrack = (
   sequence: Sequence,
   callback: (track: Track, index: number) => void,
-  reverse?: boolean
+  reverse?: boolean,
 ) => {
   const num = sequence.audioTracks.numTracks;
   if (reverse) {
@@ -154,7 +154,7 @@ export const forEachAudioTrack = (
 export const forEachClip = (
   track: Track,
   callback: (clip: TrackItem, index: number) => void,
-  reverse?: boolean
+  reverse?: boolean,
 ) => {
   const num = track.clips.numItems;
   if (reverse) {
@@ -171,33 +171,33 @@ export const forEachClip = (
 // Time Helpers
 
 export const addTime = (a: Time, b: Time) => {
-  const ticks = parseInt(a.ticks) + parseInt(b.ticks);
-  let time = new Time();
+  const ticks = parseInt(a.ticks, 10) + parseInt(b.ticks, 10);
+  const time = new Time();
   time.ticks = ticks.toString();
   return time;
 };
 
 export const subtractTime = (a: Time, b: Time) => {
-  const ticks = parseInt(a.ticks) - parseInt(b.ticks);
-  let time = new Time();
+  const ticks = parseInt(a.ticks, 10) - parseInt(b.ticks, 10);
+  const time = new Time();
   time.ticks = ticks.toString();
   return time;
 };
 export const multiplyTime = (a: Time, factor: number) => {
-  const ticks = parseInt(a.ticks) * factor;
-  let time = new Time();
+  const ticks = parseInt(a.ticks, 10) * factor;
+  const time = new Time();
   time.ticks = ticks.toString();
   return time;
 };
 export const divideTime = (a: Time, factor: number) => {
-  const ticks = parseInt(a.ticks) / factor;
-  let time = new Time();
+  const ticks = parseInt(a.ticks, 10) / factor;
+  const time = new Time();
   time.ticks = ticks.toString();
   return time;
 };
 
 export const ticksToTime = (ticks: string) => {
-  let time = new Time();
+  const time = new Time();
   time.ticks = ticks;
   return time;
 };
@@ -233,33 +233,33 @@ export const getItemDuration = (item: ProjectItem) => {
 };
 
 export const getFPSTime = (fps: number) => {
-  let time = new Time();
-  let ticks = fpsTicksTable[fps];
+  const time = new Time();
+  const ticks = fpsTicksTable[fps];
   if (!ticks) return false;
   time.ticks = ticks.toString();
   return time;
 };
 
 export const ticksToFrames = (ticks: string, timebase: string) => {
-  const timebaseNum = parseInt(timebase);
-  return parseInt(ticks) / timebaseNum;
+  const timebaseNum = parseInt(timebase, 10);
+  return parseInt(ticks, 10) / timebaseNum;
 };
 
 export const timecodeToSeconds = (timecode: string, frameRate: number) => {
   const segments = timecode.split(":");
-  const hours = parseInt(segments[0]);
-  const minutes = parseInt(segments[1]);
-  const seconds = parseInt(segments[2]);
-  const frames = parseInt(segments[3]);
+  const hours = parseInt(segments[0], 10);
+  const minutes = parseInt(segments[1], 10);
+  const seconds = parseInt(segments[2], 10);
+  const frames = parseInt(segments[3], 10);
   return hours * 3600 + minutes * 60 + seconds + frames / frameRate;
 };
 
 export const timecodeToTicks = (timecode: string, frameRate: number) => {
   const segments = timecode.split(":");
-  const hours = parseInt(segments[0]);
-  const minutes = parseInt(segments[1]);
-  const seconds = parseInt(segments[2]);
-  const frames = parseInt(segments[3]);
+  const hours = parseInt(segments[0], 10);
+  const minutes = parseInt(segments[1], 10);
+  const seconds = parseInt(segments[2], 10);
+  const frames = parseInt(segments[3], 10);
   const totalSeconds =
     hours * 3600 + minutes * 60 + seconds + frames / frameRate;
   const ticks = totalSeconds * 10000000; // 1 second = 10,000,000 ticks
@@ -267,7 +267,7 @@ export const timecodeToTicks = (timecode: string, frameRate: number) => {
 };
 
 export const secondsToTime = (seconds: number) => {
-  let time = new Time();
+  const time = new Time();
   time.seconds = seconds;
   return time;
 };
@@ -275,7 +275,7 @@ export const secondsToTime = (seconds: number) => {
 export const getTimecode = (
   t: Time,
   frameRateTime: Time,
-  videoDisplayFormat: number
+  videoDisplayFormat: number,
 ) => {
   const timecode = t.getFormatted(frameRateTime, videoDisplayFormat) as string;
   return timecode;
@@ -285,7 +285,7 @@ export const getTimecodeFromSequence = (t: Time, sequence: Sequence) => {
   return getTimecode(
     t,
     sequence.getSettings().videoFrameRate,
-    sequence.getSettings().videoDisplayFormat
+    sequence.getSettings().videoDisplayFormat,
   );
 };
 
@@ -295,7 +295,7 @@ export const qeGetClipAt = (track: Track, index: number) => {
   let curClipIndex = -1;
   for (let i = 0; i < track.numItems; i++) {
     const item = track.getItemAt(i);
-    //@ts-ignore
+    //@ts-expect-error
     const type = item.type as "Empty" | "Clip";
     if (type === "Clip") {
       curClipIndex++;
@@ -320,15 +320,15 @@ export const qeSafeTimeDisplayFormat = (timeDisplayFormat: number) => {
 // Metadata Helpers
 
 export const getPrMetadata = (projectItem: ProjectItem, fields: string[]) => {
-  let PProMetaURI = "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
+  const PProMetaURI = "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
   if (ExternalObject.AdobeXMPScript === undefined) {
     ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
   }
   if (!app.isDocumentOpen() || !ExternalObject.AdobeXMPScript || !XMPMeta) {
     return {};
   }
-  let xmp = new XMPMeta(projectItem.getProjectMetadata());
-  let result: {
+  const xmp = new XMPMeta(projectItem.getProjectMetadata());
+  const result: {
     [key: string]: string;
   } = {};
   for (let i = 0; i < fields.length; i++) {
@@ -345,27 +345,27 @@ export const setPrMetadata = (
     fieldName: string;
     fieldId: string;
     value: string;
-  }[]
+  }[],
 ) => {
-  let PProMetaURI = "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
+  const PProMetaURI = "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
   if (ExternalObject.AdobeXMPScript === undefined) {
     ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
   }
   if (!app.isDocumentOpen() || !ExternalObject.AdobeXMPScript || !XMPMeta) {
     return {};
   }
-  let xmp = new XMPMeta(projectItem.getProjectMetadata());
+  const xmp = new XMPMeta(projectItem.getProjectMetadata());
   for (var i = 0; i < data.length; i++) {
-    let item = data[i];
-    var successfullyAdded = app.project.addPropertyToProjectMetadataSchema(
+    const item = data[i];
+    var _successfullyAdded = app.project.addPropertyToProjectMetadataSchema(
       item.fieldName,
       item.fieldId,
-      2
+      2,
     );
   }
   var array = [];
   for (var i = 0; i < data.length; i++) {
-    let item = data[i];
+    const item = data[i];
     xmp.setProperty(PProMetaURI, item.fieldName, item.value);
     array.push(item.fieldName);
   }
@@ -375,16 +375,16 @@ export const setPrMetadata = (
 
 export const removePrMetadata = (
   projectItem: ProjectItem,
-  fields: string[]
+  fields: string[],
 ) => {
-  let PProMetaURI = "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
+  const PProMetaURI = "http://ns.adobe.com/premierePrivateProjectMetaData/1.0/";
   if (ExternalObject.AdobeXMPScript === undefined) {
     ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
   }
   if (!app.isDocumentOpen() || !ExternalObject.AdobeXMPScript || !XMPMeta) {
     return {};
   }
-  let xmp = new XMPMeta(projectItem.getProjectMetadata());
+  const xmp = new XMPMeta(projectItem.getProjectMetadata());
   var array = [];
   for (var i = 0; i < fields.length; i++) {
     xmp.deleteProperty(PProMetaURI, fields[i]);
@@ -399,13 +399,13 @@ export const removePrMetadata = (
 export const fillMogrtText = (
   clip: TrackItem,
   propName: string,
-  text: string
+  text: string,
 ) => {
   const mgt = clip.getMGTComponent();
   const prop = mgt.properties.getParamForDisplayName(propName);
   if (prop) {
     const valueStr = prop.getValue();
-    let value = JSON.parse(valueStr) as any;
+    const value = JSON.parse(valueStr) as any;
     value.textEditValue = text;
     prop.setValue(JSON.stringify(value), true);
   }
@@ -413,6 +413,6 @@ export const fillMogrtText = (
 
 // Audio Conversions
 
-export const dbToDec = (x: number) => Math.pow(10, (x - 15) / 20);
+export const dbToDec = (x: number) => 10 ** ((x - 15) / 20);
 
 export const decToDb = (x: number) => 20 * Math.log(x) * Math.LOG10E + 15;

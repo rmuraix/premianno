@@ -98,7 +98,7 @@ declare class Extension {
     specialExtensionDataXml: any,
     requiredRuntimeList: any,
     isAutoVisible: any,
-    isPluginExtension: any
+    isPluginExtension: any,
   );
 }
 
@@ -251,7 +251,7 @@ declare class AppSkinInfo {
     panelBackgroundColor: any,
     appBarBackgroundColorSRGB: any,
     panelBackgroundColorSRGB: any,
-    systemHighlightColor: any
+    systemHighlightColor: any,
   );
 }
 
@@ -274,7 +274,7 @@ declare class HostEnvironment {
     appUILocale: any,
     appId: any,
     isAppOnline: any,
-    appSkinInfo: any
+    appSkinInfo: any,
   );
 }
 
@@ -293,7 +293,7 @@ declare class HostCapabilities {
     EXTENDED_PANEL_ICONS: any,
     DELEGATE_APE_ENGINE: any,
     SUPPORT_HTML_EXTENSIONS: any,
-    DISABLE_FLASH_EXTENSIONS: any
+    DISABLE_FLASH_EXTENSIONS: any,
   );
 }
 

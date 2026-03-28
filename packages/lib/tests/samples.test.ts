@@ -1,13 +1,12 @@
-import { vi, describe, it, expect, afterEach } from "vitest";
-
 import {
-  helloVoid,
-  helloError,
-  helloStr,
-  helloNum,
   helloArrayStr,
+  helloError,
+  helloNum,
   helloObj,
+  helloStr,
+  helloVoid,
 } from "@esTypes/jsx/utils/samples";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -43,7 +42,7 @@ describe("helloStr", () => {
     vi.stubGlobal("alert", mockAlert);
     helloStr("world");
     expect(mockAlert).toHaveBeenCalledWith(
-      "ExtendScript received a string: world"
+      "ExtendScript received a string: world",
     );
   });
 });
@@ -74,7 +73,7 @@ describe("helloArrayStr", () => {
     vi.stubGlobal("alert", mockAlert);
     helloArrayStr(["x", "y"]);
     expect(mockAlert).toHaveBeenCalledWith(
-      "ExtendScript received an array of 2 strings: x,y"
+      "ExtendScript received an array of 2 strings: x,y",
     );
   });
 });
@@ -90,7 +89,7 @@ describe("helloObj", () => {
     vi.stubGlobal("alert", mockAlert);
     helloObj({ height: 5, width: 10 });
     expect(mockAlert).toHaveBeenCalledWith(
-      `ExtendScript received an object: ${JSON.stringify({ height: 5, width: 10 })}`
+      `ExtendScript received an object: ${JSON.stringify({ height: 5, width: 10 })}`,
     );
   });
 });

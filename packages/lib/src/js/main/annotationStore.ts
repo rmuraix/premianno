@@ -2,7 +2,7 @@ import type { Interval } from "../../shared/annotations";
 
 export const mergeStoredLabels = (
   current: Interval[],
-  stored: Interval[]
+  stored: Interval[],
 ): Interval[] => {
   const map = new Map<string, Interval>();
   stored.forEach((interval) => {
@@ -15,14 +15,16 @@ export const mergeStoredLabels = (
     const storedInterval = map.get(key);
     return {
       ...interval,
-      label: storedInterval ? storedInterval.label ?? null : interval.label ?? null,
+      label: storedInterval
+        ? (storedInterval.label ?? null)
+        : (interval.label ?? null),
     };
   });
 };
 
 export const intervalsAligned = (
   current: Interval[],
-  stored: Interval[]
+  stored: Interval[],
 ): boolean => {
   if (current.length !== stored.length) return false;
   for (let i = 0; i < current.length; i += 1) {
@@ -39,7 +41,7 @@ export const intervalsAligned = (
 export const updateIntervalLabel = (
   intervals: Interval[],
   intervalId: string,
-  label: string | null
+  label: string | null,
 ) => {
   return intervals.map((interval) =>
     interval.id === intervalId
@@ -47,6 +49,6 @@ export const updateIntervalLabel = (
           ...interval,
           label: label && label.trim().length > 0 ? label : null,
         }
-      : interval
+      : interval,
   );
 };

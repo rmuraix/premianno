@@ -7,7 +7,13 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!packages/lib"]
+    "includes": [
+      "**",
+      "!packages/lib/src/js/lib/cep/csinterface.js",
+      "!packages/lib/src/js/lib/cep/vulcan.js",
+      "!packages/lib/src/js/lib/cep/cep_engine_extensions.js",
+      "!packages/lib/src/jsx/lib/json2.js"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -41,7 +47,19 @@
   },
   "overrides": [
     {
-      "includes": ["packages/lib/src/types/ppro.d.ts"],
+      "includes": [
+        "packages/lib/src/js/lib/utils/bolt.ts",
+        "packages/lib/src/js/lib/annotations.ts",
+        "packages/lib/src/jsx/ppro/ppro.ts",
+        "packages/lib/src/jsx/ppro/ppro-utils.ts",
+        "packages/lib/src/jsx/utils/utils.ts",
+        "packages/lib/src/js/lib/cep/csinterface.d.ts",
+        "packages/lib/src/js/lib/cep/vulcan.d.ts",
+        "packages/lib/src/js/lib/cep/cep-types.d.ts",
+        "packages/lib/src/js/lib/cep/es-types/index.ts",
+        "packages/lib/vite.es.config.ts",
+        "packages/lib/tests/ppro.test.ts"
+      ],
       "linter": {
         "rules": {
           "suspicious": {
@@ -49,6 +67,50 @@
           },
           "complexity": {
             "noBannedTypes": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "packages/lib/src/jsx/ppro/ppro.ts",
+        "packages/lib/src/jsx/ppro/ppro-utils.ts",
+        "packages/lib/src/jsx/utils/utils.ts",
+        "packages/lib/src/jsx/global.d.ts"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noInnerDeclarations": "off",
+            "noConstantCondition": "off"
+          },
+          "suspicious": {
+            "noRedeclare": "off",
+            "noShadowRestrictedNames": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/lib/src/js/lib/utils/init-cep.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noImplicitAnyLet": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "packages/lib/vite.config.ts",
+        "packages/lib/vite.es.config.ts",
+        "packages/lib/src/js/lib/utils/aeft.ts"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "useIterableCallbackReturn": "off"
           }
         }
       }

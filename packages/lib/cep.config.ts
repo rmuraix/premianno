@@ -1,7 +1,7 @@
-import { CEP_Config } from "vite-cep-plugin";
+import fs from "node:fs";
+import path from "node:path";
+import type { CEP_Config } from "vite-cep-plugin";
 import { version } from "./package.json";
-import fs from "fs";
-import path from "path";
 import {
   extensionCompany,
   extensionDisplayName,
@@ -29,7 +29,7 @@ const zxpPassword = process.env.ZXP_PASSWORD || getDotEnvPassword();
 
 if (isZxpPackaging && (!zxpPassword || zxpPassword.trim().length === 0)) {
   throw new Error(
-    "ZXP_PASSWORD is required when ZXP_PACKAGE=true. Set it in your environment before packaging."
+    "ZXP_PASSWORD is required when ZXP_PACKAGE=true. Set it in your environment before packaging.",
   );
 }
 
@@ -43,9 +43,7 @@ const config: CEP_Config = {
   startingDebugPort: 8860,
   extensionManifestVersion: 6.0,
   requiredRuntimeVersion: 9.0,
-  hosts: [
-    { name: "PPRO", version: "[0.0,99.9]" }, 
-  ],
+  hosts: [{ name: "PPRO", version: "[0.0,99.9]" }],
 
   type: "Panel",
   iconDarkNormal: "./src/assets/light-icon.png",

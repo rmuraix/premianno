@@ -1,10 +1,10 @@
-import { describe, it, expect } from "vitest";
 import {
-  mergeStoredLabels,
   intervalsAligned,
+  mergeStoredLabels,
   updateIntervalLabel,
 } from "@esTypes/js/main/annotationStore";
 import type { Interval } from "@esTypes/shared/annotations";
+import { describe, expect, it } from "vitest";
 
 const makeInterval = (overrides?: Partial<Interval>): Interval => ({
   id: "0.000000-5.000000",
@@ -25,15 +25,22 @@ describe("mergeStoredLabels", () => {
   });
 
   it("keeps current label when no matching stored interval", () => {
-    const current = [makeInterval({ startSeconds: 10, endSeconds: 20, label: "dog" })];
-    const stored = [makeInterval({ startSeconds: 0, endSeconds: 5, label: "cat" })];
+    const current = [
+      makeInterval({ startSeconds: 10, endSeconds: 20, label: "dog" }),
+    ];
+    const stored = [
+      makeInterval({ startSeconds: 0, endSeconds: 5, label: "cat" }),
+    ];
     const result = mergeStoredLabels(current, stored);
     expect(result[0].label).toBe("dog");
   });
 
   it("sets label to null when stored label is undefined", () => {
     const current = [makeInterval({ label: "original" })];
-    const storedInterval = { ...makeInterval(), label: undefined as unknown as null };
+    const storedInterval = {
+      ...makeInterval(),
+      label: undefined as unknown as null,
+    };
     const result = mergeStoredLabels(current, [storedInterval]);
     expect(result[0].label).toBeNull();
   });
@@ -48,7 +55,9 @@ describe("mergeStoredLabels", () => {
       makeInterval({ startSeconds: 0, endSeconds: 5 }),
       makeInterval({ id: "5-10", startSeconds: 5, endSeconds: 10 }),
     ];
-    const stored = [makeInterval({ startSeconds: 0, endSeconds: 5, label: "intro" })];
+    const stored = [
+      makeInterval({ startSeconds: 0, endSeconds: 5, label: "intro" }),
+    ];
     const result = mergeStoredLabels(current, stored);
     expect(result[0].label).toBe("intro");
     expect(result[1].label).toBeNull();
@@ -75,7 +84,10 @@ describe("intervalsAligned", () => {
 
   it("returns false when lengths differ", () => {
     const a = [makeInterval()];
-    const b = [makeInterval(), makeInterval({ id: "5-10", startSeconds: 5, endSeconds: 10 })];
+    const b = [
+      makeInterval(),
+      makeInterval({ id: "5-10", startSeconds: 5, endSeconds: 10 }),
+    ];
     expect(intervalsAligned(a, b)).toBe(false);
   });
 

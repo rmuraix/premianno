@@ -1,11 +1,22 @@
 // @vitest-environment jsdom
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 
-const { mockScanCutIntervals, mockLoadAnnotationSet, mockSaveAnnotationSet,
-  mockBuildAnnotationSet, mockLoadClassList, mockSaveClassList,
-  mockParseClassCsv, mockPromptCsvPath, mockPromptSavePath,
-  mockReadCsvFile, mockSerializeToToml, mockWriteTomlFile } = vi.hoisted(() => {
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const {
+  mockScanCutIntervals,
+  mockLoadAnnotationSet,
+  mockSaveAnnotationSet,
+  mockBuildAnnotationSet,
+  mockLoadClassList,
+  mockSaveClassList,
+  mockParseClassCsv,
+  mockPromptCsvPath,
+  mockPromptSavePath,
+  mockReadCsvFile,
+  mockSerializeToToml,
+  mockWriteTomlFile,
+} = vi.hoisted(() => {
   return {
     mockScanCutIntervals: vi.fn(),
     mockLoadAnnotationSet: vi.fn(),
@@ -17,7 +28,7 @@ const { mockScanCutIntervals, mockLoadAnnotationSet, mockSaveAnnotationSet,
     mockPromptCsvPath: vi.fn(),
     mockPromptSavePath: vi.fn(),
     mockReadCsvFile: vi.fn(),
-    mockSerializeToToml: vi.fn().mockReturnValue("[sequence]\nid = \"abc\""),
+    mockSerializeToToml: vi.fn().mockReturnValue('[sequence]\nid = "abc"'),
     mockWriteTomlFile: vi.fn(),
   };
 });
@@ -37,11 +48,12 @@ vi.mock("@esTypes/js/lib/annotations", () => ({
   writeTomlFile: mockWriteTomlFile,
 }));
 
-const { mockIntervalsAligned, mockMergeStoredLabels, mockUpdateIntervalLabel } = vi.hoisted(() => ({
-  mockIntervalsAligned: vi.fn().mockReturnValue(true),
-  mockMergeStoredLabels: vi.fn((current) => current),
-  mockUpdateIntervalLabel: vi.fn((intervals) => intervals),
-}));
+const { mockIntervalsAligned, mockMergeStoredLabels, mockUpdateIntervalLabel } =
+  vi.hoisted(() => ({
+    mockIntervalsAligned: vi.fn().mockReturnValue(true),
+    mockMergeStoredLabels: vi.fn((current) => current),
+    mockUpdateIntervalLabel: vi.fn((intervals) => intervals),
+  }));
 
 vi.mock("@esTypes/js/main/annotationStore", () => ({
   intervalsAligned: mockIntervalsAligned,
@@ -50,7 +62,11 @@ vi.mock("@esTypes/js/main/annotationStore", () => ({
 }));
 
 import { App } from "@esTypes/js/main/main";
-import type { AnnotationSet, Interval, Sequence } from "@esTypes/shared/annotations";
+import type {
+  AnnotationSet,
+  Interval,
+  Sequence,
+} from "@esTypes/shared/annotations";
 
 const makeSequence = (overrides?: Partial<Sequence>): Sequence => ({
   id: "seq-001",
@@ -71,7 +87,9 @@ const makeInterval = (overrides?: Partial<Interval>): Interval => ({
   ...overrides,
 });
 
-const makeAnnotationSet = (overrides?: Partial<AnnotationSet>): AnnotationSet => ({
+const makeAnnotationSet = (
+  overrides?: Partial<AnnotationSet>,
+): AnnotationSet => ({
   sequence: makeSequence(),
   intervals: [],
   sourceVersion: "1",
@@ -84,10 +102,12 @@ beforeEach(() => {
   mockLoadClassList.mockReturnValue([]);
   mockLoadAnnotationSet.mockReturnValue(null);
   mockScanCutIntervals.mockResolvedValue(null);
-  mockSerializeToToml.mockReturnValue("[sequence]\nid = \"abc\"");
+  mockSerializeToToml.mockReturnValue('[sequence]\nid = "abc"');
   mockIntervalsAligned.mockReturnValue(true);
   mockMergeStoredLabels.mockImplementation((current: Interval[]) => current);
-  mockUpdateIntervalLabel.mockImplementation((intervals: Interval[]) => intervals);
+  mockUpdateIntervalLabel.mockImplementation(
+    (intervals: Interval[]) => intervals,
+  );
   vi.stubGlobal("window", { cep: undefined });
 });
 
@@ -125,7 +145,9 @@ describe("App initial render", () => {
   it("shows no-class-list warning when classOptions is empty", () => {
     render(<App />);
     expect(
-      screen.getByText("No class list loaded. Import a CSV to enable labeling.")
+      screen.getByText(
+        "No class list loaded. Import a CSV to enable labeling.",
+      ),
     ).toBeTruthy();
   });
 
@@ -169,7 +191,9 @@ describe("App handleScan – via button click", () => {
     const seq = makeSequence();
     mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [] });
     mockLoadAnnotationSet.mockReturnValue(null);
-    mockBuildAnnotationSet.mockReturnValue(makeAnnotationSet({ sequence: seq }));
+    mockBuildAnnotationSet.mockReturnValue(
+      makeAnnotationSet({ sequence: seq }),
+    );
     render(<App />);
     await act(async () => {
       fireEvent.click(screen.getByText("Scan Cuts"));
@@ -181,11 +205,16 @@ describe("App handleScan – via button click", () => {
   it("shows success and no warning when stored intervals are aligned", async () => {
     const seq = makeSequence();
     const stored = makeAnnotationSet({ intervals: [makeInterval()] });
-    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [makeInterval()] });
+    mockScanCutIntervals.mockResolvedValue({
+      sequence: seq,
+      intervals: [makeInterval()],
+    });
     mockLoadAnnotationSet.mockReturnValue(stored);
     mockIntervalsAligned.mockReturnValue(true);
     mockMergeStoredLabels.mockReturnValue([makeInterval()]);
-    mockBuildAnnotationSet.mockReturnValue(makeAnnotationSet({ sequence: seq }));
+    mockBuildAnnotationSet.mockReturnValue(
+      makeAnnotationSet({ sequence: seq }),
+    );
     render(<App />);
     await act(async () => {
       fireEvent.click(screen.getByText("Scan Cuts"));
@@ -197,17 +226,24 @@ describe("App handleScan – via button click", () => {
   it("shows scan warning when stored intervals are not aligned", async () => {
     const seq = makeSequence();
     const stored = makeAnnotationSet({ intervals: [makeInterval()] });
-    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [makeInterval()] });
+    mockScanCutIntervals.mockResolvedValue({
+      sequence: seq,
+      intervals: [makeInterval()],
+    });
     mockLoadAnnotationSet.mockReturnValue(stored);
     mockIntervalsAligned.mockReturnValue(false);
     mockMergeStoredLabels.mockReturnValue([makeInterval()]);
-    mockBuildAnnotationSet.mockReturnValue(makeAnnotationSet({ sequence: seq }));
+    mockBuildAnnotationSet.mockReturnValue(
+      makeAnnotationSet({ sequence: seq }),
+    );
     render(<App />);
     await act(async () => {
       fireEvent.click(screen.getByText("Scan Cuts"));
     });
     expect(
-      screen.getByText("Cuts changed since last scan. Labels may be misaligned.")
+      screen.getByText(
+        "Cuts changed since last scan. Labels may be misaligned.",
+      ),
     ).toBeTruthy();
   });
 
@@ -218,19 +254,27 @@ describe("App handleScan – via button click", () => {
       fireEvent.click(screen.getByText("Scan Cuts"));
     });
     expect(
-      screen.getByText("Scan failed. Check the console for details.")
+      screen.getByText("Scan failed. Check the console for details."),
     ).toBeTruthy();
   });
 
   it("disables scan button while scanning", async () => {
     let resolve!: (value: unknown) => void;
-    mockScanCutIntervals.mockReturnValue(new Promise((r) => { resolve = r; }));
+    mockScanCutIntervals.mockReturnValue(
+      new Promise((r) => {
+        resolve = r;
+      }),
+    );
     render(<App />);
     act(() => {
       fireEvent.click(screen.getByText("Scan Cuts"));
     });
-    expect(screen.getByText("Scanning...").closest("button")?.disabled).toBe(true);
-    await act(async () => { resolve(null); });
+    expect(screen.getByText("Scanning...").closest("button")?.disabled).toBe(
+      true,
+    );
+    await act(async () => {
+      resolve(null);
+    });
   });
 });
 
@@ -244,10 +288,14 @@ describe("App handleExport", () => {
     mockBuildAnnotationSet.mockReturnValue(annSet);
     mockPromptSavePath.mockReturnValue(null);
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
 
     // Now export with no file path
-    await act(async () => { fireEvent.click(screen.getByText("Export TOML")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Export TOML"));
+    });
     expect(screen.getByText("Export canceled.")).toBeTruthy();
   });
 
@@ -259,8 +307,12 @@ describe("App handleExport", () => {
     mockBuildAnnotationSet.mockReturnValue(annSet);
     mockPromptSavePath.mockReturnValue("/path/to/output.toml");
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
-    await act(async () => { fireEvent.click(screen.getByText("Export TOML")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Export TOML"));
+    });
     expect(screen.getByText("Exported to /path/to/output.toml.")).toBeTruthy();
   });
 
@@ -271,10 +323,16 @@ describe("App handleExport", () => {
     mockLoadAnnotationSet.mockReturnValue(null);
     mockBuildAnnotationSet.mockReturnValue(annSet);
     mockPromptSavePath.mockReturnValue("/path/to/output.toml");
-    mockWriteTomlFile.mockImplementation(() => { throw new Error("write error"); });
+    mockWriteTomlFile.mockImplementation(() => {
+      throw new Error("write error");
+    });
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
-    await act(async () => { fireEvent.click(screen.getByText("Export TOML")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Export TOML"));
+    });
     expect(screen.getByText("Export failed.")).toBeTruthy();
   });
 
@@ -286,8 +344,12 @@ describe("App handleExport", () => {
     mockBuildAnnotationSet.mockReturnValue(annSet);
     mockPromptSavePath.mockReturnValue("/path/to/output.toml");
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
-    await act(async () => { fireEvent.click(screen.getByText("Export TOML")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Export TOML"));
+    });
     expect(mockPromptSavePath).toHaveBeenCalledWith("My Sequence.toml");
   });
 
@@ -299,8 +361,12 @@ describe("App handleExport", () => {
     mockBuildAnnotationSet.mockReturnValue(annSet);
     mockPromptSavePath.mockReturnValue("/path/to/output.toml");
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
-    await act(async () => { fireEvent.click(screen.getByText("Export TOML")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Export TOML"));
+    });
     expect(mockPromptSavePath).toHaveBeenCalledWith("annotations.toml");
   });
 });
@@ -309,7 +375,9 @@ describe("App handleImportClasses", () => {
   it("shows 'Class import canceled' when promptCsvPath returns null", async () => {
     mockPromptCsvPath.mockReturnValue(null);
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Import Classes")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Import Classes"));
+    });
     expect(screen.getByText("Class import canceled.")).toBeTruthy();
   });
 
@@ -318,9 +386,11 @@ describe("App handleImportClasses", () => {
     mockReadCsvFile.mockReturnValue("index,class\n");
     mockParseClassCsv.mockReturnValue([]);
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Import Classes")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Import Classes"));
+    });
     expect(
-      screen.getByText("No classes found in CSV. Expect index,class columns.")
+      screen.getByText("No classes found in CSV. Expect index,class columns."),
     ).toBeTruthy();
   });
 
@@ -329,7 +399,9 @@ describe("App handleImportClasses", () => {
     mockReadCsvFile.mockReturnValue("index,class\n0,cat\n1,dog");
     mockParseClassCsv.mockReturnValue(["cat", "dog"]);
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Import Classes")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Import Classes"));
+    });
     expect(screen.getByText("Imported 2 classes.")).toBeTruthy();
     expect(mockSaveClassList).toHaveBeenCalledWith(["cat", "dog"]);
   });
@@ -340,19 +412,29 @@ describe("App handleImportClasses", () => {
     mockParseClassCsv.mockReturnValue(["cat"]);
     render(<App />);
     expect(
-      screen.getByText("No class list loaded. Import a CSV to enable labeling.")
+      screen.getByText(
+        "No class list loaded. Import a CSV to enable labeling.",
+      ),
     ).toBeTruthy();
-    await act(async () => { fireEvent.click(screen.getByText("Import Classes")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Import Classes"));
+    });
     expect(
-      screen.queryByText("No class list loaded. Import a CSV to enable labeling.")
+      screen.queryByText(
+        "No class list loaded. Import a CSV to enable labeling.",
+      ),
     ).toBeNull();
   });
 
   it("shows error when readCsvFile throws", async () => {
     mockPromptCsvPath.mockReturnValue("/path/to/classes.csv");
-    mockReadCsvFile.mockImplementation(() => { throw new Error("read error"); });
+    mockReadCsvFile.mockImplementation(() => {
+      throw new Error("read error");
+    });
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Import Classes")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Import Classes"));
+    });
     expect(screen.getByText("Failed to import class list.")).toBeTruthy();
   });
 });
@@ -362,20 +444,27 @@ describe("App label change and clear", () => {
     const seq = makeSequence();
     const interval = makeInterval({ id: "0-5", label: "cat" });
     const annSet = makeAnnotationSet({ sequence: seq, intervals: [interval] });
-    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [interval] });
+    mockScanCutIntervals.mockResolvedValue({
+      sequence: seq,
+      intervals: [interval],
+    });
     mockLoadAnnotationSet.mockReturnValue(null);
     mockBuildAnnotationSet.mockReturnValue(annSet);
     mockUpdateIntervalLabel.mockImplementation(
       (intervals: Interval[], id: string, label: string | null) =>
-        intervals.map((iv) => (iv.id === id ? { ...iv, label } : iv))
+        intervals.map((iv) => (iv.id === id ? { ...iv, label } : iv)),
     );
     // Import classes first so "dog" is an available option in the select
     mockPromptCsvPath.mockReturnValue("/path/to/classes.csv");
     mockReadCsvFile.mockReturnValue("index,class\n0,cat\n1,dog");
     mockParseClassCsv.mockReturnValue(["cat", "dog"]);
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Import Classes")); });
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Import Classes"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
     return { seq, interval, annSet };
   };
 
@@ -388,7 +477,7 @@ describe("App label change and clear", () => {
     expect(mockUpdateIntervalLabel).toHaveBeenCalledWith(
       expect.any(Array),
       "0-5",
-      "dog"
+      "dog",
     );
   });
 
@@ -400,7 +489,7 @@ describe("App label change and clear", () => {
     expect(mockUpdateIntervalLabel).toHaveBeenCalledWith(
       expect.any(Array),
       "0-5",
-      ""
+      "",
     );
   });
 });
@@ -408,13 +497,18 @@ describe("App label change and clear", () => {
 describe("App summary", () => {
   it("shows sequence name and interval count when annotation set is loaded", async () => {
     const seq = makeSequence({ name: "Test Sequence" });
-    const intervals = [makeInterval(), makeInterval({ id: "1", startSeconds: 5, endSeconds: 10 })];
+    const intervals = [
+      makeInterval(),
+      makeInterval({ id: "1", startSeconds: 5, endSeconds: 10 }),
+    ];
     const annSet = makeAnnotationSet({ sequence: seq, intervals });
     mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals });
     mockLoadAnnotationSet.mockReturnValue(null);
     mockBuildAnnotationSet.mockReturnValue(annSet);
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
     expect(screen.getByText("Test Sequence • 2 intervals")).toBeTruthy();
   });
 });
@@ -423,7 +517,9 @@ describe("App useEffect with window.cep", () => {
   it("triggers scan on mount when window.cep is set", async () => {
     vi.stubGlobal("window", { cep: { fs: {} } });
     mockScanCutIntervals.mockResolvedValue(null);
-    await act(async () => { render(<App />); });
+    await act(async () => {
+      render(<App />);
+    });
     expect(mockScanCutIntervals).toHaveBeenCalled();
   });
 
@@ -431,9 +527,13 @@ describe("App useEffect with window.cep", () => {
     vi.stubGlobal("window", { cep: { fs: {} } });
     mockLoadClassList.mockReturnValue(["cat", "dog"]);
     mockScanCutIntervals.mockResolvedValue(null);
-    await act(async () => { render(<App />); });
+    await act(async () => {
+      render(<App />);
+    });
     expect(
-      screen.queryByText("No class list loaded. Import a CSV to enable labeling.")
+      screen.queryByText(
+        "No class list loaded. Import a CSV to enable labeling.",
+      ),
     ).toBeNull();
   });
 
@@ -441,9 +541,13 @@ describe("App useEffect with window.cep", () => {
     vi.stubGlobal("window", { cep: { fs: {} } });
     mockLoadClassList.mockReturnValue([]);
     mockScanCutIntervals.mockResolvedValue(null);
-    await act(async () => { render(<App />); });
+    await act(async () => {
+      render(<App />);
+    });
     expect(
-      screen.getByText("No class list loaded. Import a CSV to enable labeling.")
+      screen.getByText(
+        "No class list loaded. Import a CSV to enable labeling.",
+      ),
     ).toBeTruthy();
   });
 });
@@ -451,13 +555,25 @@ describe("App useEffect with window.cep", () => {
 describe("IntervalRow rendering (via App)", () => {
   const setupWithLabeled = async (label: string | null) => {
     const seq = makeSequence();
-    const interval = makeInterval({ id: "0-5", label, startSeconds: 0, endSeconds: 5 });
+    const interval = makeInterval({
+      id: "0-5",
+      label,
+      startSeconds: 0,
+      endSeconds: 5,
+    });
     const annSet = makeAnnotationSet({ sequence: seq, intervals: [interval] });
-    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [interval] });
+    mockScanCutIntervals.mockResolvedValue({
+      sequence: seq,
+      intervals: [interval],
+    });
     mockLoadAnnotationSet.mockReturnValue(null);
     mockBuildAnnotationSet.mockReturnValue(annSet);
-    await act(async () => { render(<App />); });
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    await act(async () => {
+      render(<App />);
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
     return interval;
   };
 
@@ -491,30 +607,47 @@ describe("IntervalRow rendering (via App)", () => {
     const seq = makeSequence();
     const interval = makeInterval({ id: "0-5", label: null });
     const annSet = makeAnnotationSet({ sequence: seq, intervals: [interval] });
-    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [interval] });
+    mockScanCutIntervals.mockResolvedValue({
+      sequence: seq,
+      intervals: [interval],
+    });
     mockLoadAnnotationSet.mockReturnValue(null);
     mockBuildAnnotationSet.mockReturnValue(annSet);
     mockPromptCsvPath.mockReturnValue("/path/to/classes.csv");
     mockReadCsvFile.mockReturnValue("index,class\n0,cat\n1,dog");
     mockParseClassCsv.mockReturnValue(["cat", "dog"]);
-    await act(async () => { render(<App />); });
-    await act(async () => { fireEvent.click(screen.getByText("Import Classes")); });
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    await act(async () => {
+      render(<App />);
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Import Classes"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
     expect(screen.getByText("cat")).toBeTruthy();
     expect(screen.getByText("dog")).toBeTruthy();
   });
 });
 
 describe("formatTimecode (via rendered timecodes)", () => {
-  const renderWithInterval = async (startSeconds: number, endSeconds: number) => {
+  const renderWithInterval = async (
+    startSeconds: number,
+    endSeconds: number,
+  ) => {
     const seq = makeSequence();
     const interval = makeInterval({ id: "i", startSeconds, endSeconds });
     const annSet = makeAnnotationSet({ sequence: seq, intervals: [interval] });
-    mockScanCutIntervals.mockResolvedValue({ sequence: seq, intervals: [interval] });
+    mockScanCutIntervals.mockResolvedValue({
+      sequence: seq,
+      intervals: [interval],
+    });
     mockLoadAnnotationSet.mockReturnValue(null);
     mockBuildAnnotationSet.mockReturnValue(annSet);
     render(<App />);
-    await act(async () => { fireEvent.click(screen.getByText("Scan Cuts")); });
+    await act(async () => {
+      fireEvent.click(screen.getByText("Scan Cuts"));
+    });
   };
 
   it("returns '--:--:--.---' for Infinity", async () => {

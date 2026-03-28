@@ -1,9 +1,9 @@
 export const helloVoid = (): void => {
   alert("test");
 };
-export const helloError = (str: string) => {
+export const helloError = (_str: string) => {
   // Intentional Error for Error Handling Demonstration
-  //@ts-ignore
+  //@ts-expect-error
   throw new Error(`We're throwing an error`);
 };
 
@@ -17,7 +17,7 @@ export const helloNum = (n: number) => {
 };
 export const helloArrayStr = (arr: string[]) => {
   alert(
-    `ExtendScript received an array of ${arr.length} strings: ${arr.toString()}`
+    `ExtendScript received an array of ${arr.length} strings: ${arr.toString()}`,
   );
   return arr;
 };

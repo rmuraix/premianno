@@ -1,11 +1,11 @@
-import { fs, path } from "./cep/node";
-import { csi, evalTS } from "./utils/bolt";
 import type {
   AnnotationSet,
   ExportFile,
   Interval,
   Sequence,
 } from "../../shared/annotations";
+import { fs, path } from "./cep/node";
+import { csi, evalTS } from "./utils/bolt";
 
 const STORAGE_DIR = "premianno-annotations";
 const SOURCE_VERSION = "1";
@@ -43,7 +43,7 @@ export const loadAnnotationSet = (sequence: Sequence): AnnotationSet | null => {
   try {
     const raw = fs.readFileSync(filePath, "utf8");
     return JSON.parse(raw) as AnnotationSet;
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 };
@@ -55,7 +55,7 @@ export const saveAnnotationSet = (annotationSet: AnnotationSet) => {
 
 export const buildAnnotationSet = (
   sequence: Sequence,
-  intervals: Interval[]
+  intervals: Interval[],
 ): AnnotationSet => {
   return {
     sequence,
@@ -87,7 +87,7 @@ export const serializeToToml = (exportFile: ExportFile) => {
     lines.push(`duration_frames = ${interval.durationFrames}`);
     lines.push(`order_index = ${interval.orderIndex}`);
     if (interval.label && interval.label.trim().length > 0) {
-      lines.push(`label = "${interval.label.replace(/"/g, "\\\"")}"`);
+      lines.push(`label = "${interval.label.replace(/"/g, '\\"')}"`);
     }
     lines.push("");
   });
@@ -105,7 +105,7 @@ export const promptSavePath = (defaultName: string) => {
     defaultName,
     "TOML",
     "Save",
-    "File name"
+    "File name",
   );
   if (!result || result.err !== 0 || !result.data) return null;
   return result.data as string;
@@ -122,7 +122,7 @@ export const loadClassList = (): string[] => {
     const raw = fs.readFileSync(filePath, "utf8");
     const parsed = JSON.parse(raw) as string[];
     return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
+  } catch (_error) {
     return [];
   }
 };
@@ -156,7 +156,7 @@ export const parseClassCsv = (csvText: string): string[] => {
     const parsedIndex = parseInt(parts[idx], 10);
     const label = parts[cls];
     if (!label) continue;
-    rows.push({ index: isNaN(parsedIndex) ? i : parsedIndex, label });
+    rows.push({ index: Number.isNaN(parsedIndex) ? i : parsedIndex, label });
   }
 
   rows.sort((a, b) => a.index - b.index);
@@ -171,7 +171,7 @@ export const promptCsvPath = () => {
     false,
     "Import class list CSV",
     "",
-    ["csv"]
+    ["csv"],
   );
   if (!result || result.err !== 0 || !result.data || !result.data[0]) {
     return null;

@@ -1,5 +1,5 @@
-import type { EventTS } from "../../shared/universals";
 import { ns } from "../../shared/shared";
+import type { EventTS } from "../../shared/universals";
 
 /**
  * @function dispatchTS Displatches an event to the CEP panel with Type-Safety
@@ -9,7 +9,7 @@ import { ns } from "../../shared/shared";
  */
 export const dispatchTS = <Key extends string & keyof EventTS>(
   event: Key,
-  data: EventTS[Key]
+  data: EventTS[Key],
 ) => {
   if (new ExternalObject("lib:PlugPlugExternalObject")) {
     var eventObj = new CSXSEvent();
@@ -21,7 +21,7 @@ export const dispatchTS = <Key extends string & keyof EventTS>(
 
 export const forEach = <T>(
   arr: T[],
-  callback: (item: T, i: number) => void
+  callback: (item: T, i: number) => void,
 ): void => {
   for (let i = 0; i < arr.length; i++) {
     callback(arr[i], i);
@@ -30,9 +30,9 @@ export const forEach = <T>(
 
 export const map = <T>(
   arr: T[],
-  callback: (item: T, i: number) => any
+  callback: (item: T, i: number) => any,
 ): T[] => {
-  let res = [];
+  const res = [];
   for (let i = 0; i < arr.length; i++) {
     res.push(callback(arr[i], i));
   }
@@ -41,9 +41,9 @@ export const map = <T>(
 
 export const filter = <T>(
   arr: T[],
-  func: (item: T, i: number) => boolean
+  func: (item: T, i: number) => boolean,
 ): T[] => {
-  let res = [];
+  const res = [];
   for (let i = 0; i < arr.length; i++) {
     if (func(arr[i], i)) {
       res.push(arr[i]);

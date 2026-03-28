@@ -7,7 +7,7 @@ const getLatestFile = (dir: string, suffix: string): string | null => {
   let latestFile: string | null = null;
   fs.readdirSync(dir)
     .filter((file) => file.includes(suffix))
-    .map((file) => {
+    .forEach((file) => {
       if (
         latestFile === null ||
         getModified(path.join(dir, file)) >
@@ -23,14 +23,14 @@ export const getPrefsDir = (): string => {
   const appVersion = csi.getHostEnvironment().appVersion;
   const { platform, env } = window.cep_node.process;
   const mainDir =
-    platform == "darwin"
+    platform === "darwin"
       ? `${env.HOME}/Library/Preferences`
       : env.APPDATA || "";
   const prefsDir = path.join(
     mainDir,
     "Adobe",
     "After Effects",
-    parseFloat(appVersion).toFixed(1).toString()
+    parseFloat(appVersion).toFixed(1).toString(),
   );
   return prefsDir;
 };
@@ -43,12 +43,10 @@ export const getOutputModules = (): string[] => {
     const txt = fs.readFileSync(path.join(prefsDir, outputPref), {
       encoding: "utf-8",
     });
-    const matches = txt.match(
-      /\"Output Module Spec Strings Name .* = \".*.\"/g
-    );
+    const matches = txt.match(/"Output Module Spec Strings Name .* = ".*."/g);
     if (matches) {
-      let outputModules: string[] = [];
-      matches.map((line) => {
+      const outputModules: string[] = [];
+      matches.forEach((line) => {
         const str = line.split("=").pop()?.trim().replace(/"/g, "");
         if (str && !str.includes("_HIDDEN X-Factor")) {
           outputModules.push(str);
@@ -71,23 +69,23 @@ export const getRenderSettingsList = (): string[] => {
     const lines = txt.match(/[^\r\n]+/g);
     if (lines) {
       const firstLine = lines.findIndex((line) =>
-        line.includes("Render Settings List")
+        line.includes("Render Settings List"),
       );
       const lastLine = lines.findIndex((line) =>
-        line.includes("Still Frame RS Index")
+        line.includes("Still Frame RS Index"),
       );
       const settingBlock = lines
         .slice(firstLine, lastLine)
         .join("")
         .trim()
-        .replace(/^.*\=/g, "")
+        .replace(/^.*=/g, "")
         .replace(/\t/g, "")
         .replace(/\\/g, "")
-        .replace(/\"\"/g, "");
-      let renderSettings: string[] = [];
-      settingBlock.match(/\".*?\"/g)?.map((str) => {
+        .replace(/""/g, "");
+      const renderSettings: string[] = [];
+      settingBlock.match(/".*?"/g)?.forEach((str) => {
         if (str && !str.includes("_HIDDEN X-Factor")) {
-          renderSettings.push(str.replace(/\"/g, ""));
+          renderSettings.push(str.replace(/"/g, ""));
         }
       });
       return renderSettings;

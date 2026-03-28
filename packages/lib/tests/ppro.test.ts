@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, afterEach } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 // Mock shared (imports cep.config via shared.ts)
 vi.mock("@esTypes/shared/shared", () => ({
@@ -7,9 +7,9 @@ vi.mock("@esTypes/shared/shared", () => ({
 
 import {
   getActiveSequenceInfo,
-  scanCutIntervals,
   helloWorld,
   qeDomFunction,
+  scanCutIntervals,
 } from "@esTypes/jsx/ppro/ppro";
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -26,16 +26,18 @@ const makeTrack = (clips: ReturnType<typeof makeClip>[]) => ({
   },
 });
 
-const makeSequenceMock = (overrides: {
-  id?: string;
-  name?: string;
-  timebase?: string | null;
-  path?: string;
-  frameRate?: number | null;
-  tracks?: ReturnType<typeof makeTrack>[];
-  endSeconds?: number;
-  sequenceID?: string;
-} = {}) => {
+const makeSequenceMock = (
+  overrides: {
+    id?: string;
+    name?: string;
+    timebase?: string | null;
+    path?: string;
+    frameRate?: number | null;
+    tracks?: ReturnType<typeof makeTrack>[];
+    endSeconds?: number;
+    sequenceID?: string;
+  } = {},
+) => {
   // Use "in" check so that frameRate: null means "no getSettings"
   // while not specifying frameRate (undefined) means default 24
   const fps = "frameRate" in overrides ? overrides.frameRate : 24;
@@ -49,9 +51,11 @@ const makeSequenceMock = (overrides: {
       : null;
 
   return {
-    sequenceID: overrides.sequenceID !== undefined ? overrides.sequenceID : "seq-id",
+    sequenceID:
+      overrides.sequenceID !== undefined ? overrides.sequenceID : "seq-id",
     name: overrides.name ?? "Test Sequence",
-    timebase: overrides.timebase !== undefined ? overrides.timebase : "254016000000",
+    timebase:
+      overrides.timebase !== undefined ? overrides.timebase : "254016000000",
     getSettings: fps !== null ? () => settings : undefined,
     videoTracks: {
       numTracks: tracks.length,
@@ -97,49 +101,49 @@ describe("getActiveSequenceInfo", () => {
     stubApp(seq);
     const result = getActiveSequenceInfo();
     expect(result).not.toBeNull();
-    expect(result!.id).toBe("abc-123");
+    expect(result?.id).toBe("abc-123");
   });
 
   it("falls back to sequence.name when sequenceID is empty string", () => {
     const seq = makeSequenceMock({ sequenceID: "", name: "MySeq" });
     stubApp(seq);
     const result = getActiveSequenceInfo();
-    expect(result!.id).toBe("MySeq");
+    expect(result?.id).toBe("MySeq");
   });
 
   it("returns empty projectPath when app.project.path is falsy", () => {
     const seq = makeSequenceMock();
     stubApp(seq, "");
     const result = getActiveSequenceInfo();
-    expect(result!.projectPath).toBe("");
+    expect(result?.projectPath).toBe("");
   });
 
   it("returns projectPath when available", () => {
     const seq = makeSequenceMock();
     stubApp(seq, "/projects/my.prproj");
     const result = getActiveSequenceInfo();
-    expect(result!.projectPath).toBe("/projects/my.prproj");
+    expect(result?.projectPath).toBe("/projects/my.prproj");
   });
 
   it("returns calculated frameRate when videoFrameRate.seconds > 0", () => {
     const seq = makeSequenceMock({ frameRate: 24 });
     stubApp(seq);
     const result = getActiveSequenceInfo();
-    expect(result!.frameRate).toBeCloseTo(24, 1);
+    expect(result?.frameRate).toBeCloseTo(24, 1);
   });
 
   it("returns undefined frameRate when videoFrameRate.seconds is 0", () => {
     const seq = makeSequenceMock({ frameRate: 0 });
     stubApp(seq);
     const result = getActiveSequenceInfo();
-    expect(result!.frameRate).toBeUndefined();
+    expect(result?.frameRate).toBeUndefined();
   });
 
   it("returns undefined frameRate when getSettings is not available", () => {
     const seq = makeSequenceMock({ frameRate: null });
     stubApp(seq);
     const result = getActiveSequenceInfo();
-    expect(result!.frameRate).toBeUndefined();
+    expect(result?.frameRate).toBeUndefined();
   });
 
   it("returns undefined frameRate when videoFrameRate is not in settings", () => {
@@ -149,21 +153,21 @@ describe("getActiveSequenceInfo", () => {
     };
     stubApp(seq);
     const result = getActiveSequenceInfo();
-    expect(result!.frameRate).toBeUndefined();
+    expect(result?.frameRate).toBeUndefined();
   });
 
   it("returns timebase as string when timebase is set", () => {
     const seq = makeSequenceMock({ timebase: "254016000000" });
     stubApp(seq);
     const result = getActiveSequenceInfo();
-    expect(result!.timebase).toBe("254016000000");
+    expect(result?.timebase).toBe("254016000000");
   });
 
   it("returns empty timebase when sequence.timebase is falsy", () => {
     const seq = makeSequenceMock({ timebase: null });
     stubApp(seq);
     const result = getActiveSequenceInfo();
-    expect(result!.timebase).toBe("");
+    expect(result?.timebase).toBe("");
   });
 });
 
@@ -195,7 +199,11 @@ describe("scanCutIntervals", () => {
 
   it("returns correct intervals for a single clip", () => {
     const track = makeTrack([makeClip(0, 5)]);
-    const seq = makeSequenceMock({ tracks: [track], endSeconds: 5, frameRate: 24 });
+    const seq = makeSequenceMock({
+      tracks: [track],
+      endSeconds: 5,
+      frameRate: 24,
+    });
     stubApp(seq);
     const result = scanCutIntervals();
     expect(result.sequence).not.toBeNull();
@@ -207,7 +215,11 @@ describe("scanCutIntervals", () => {
 
   it("returns multiple intervals for multiple clips with gap", () => {
     const track = makeTrack([makeClip(0, 3), makeClip(5, 8)]);
-    const seq = makeSequenceMock({ tracks: [track], endSeconds: 8, frameRate: 24 });
+    const seq = makeSequenceMock({
+      tracks: [track],
+      endSeconds: 8,
+      frameRate: 24,
+    });
     stubApp(seq);
     const result = scanCutIntervals();
     expect(result.intervals.length).toBeGreaterThanOrEqual(2);
@@ -218,7 +230,11 @@ describe("scanCutIntervals", () => {
 
   it("sets durationFrames to 0 when fps is 0", () => {
     const track = makeTrack([makeClip(0, 5)]);
-    const seq = makeSequenceMock({ tracks: [track], endSeconds: 5, frameRate: 0 });
+    const seq = makeSequenceMock({
+      tracks: [track],
+      endSeconds: 5,
+      frameRate: 0,
+    });
     stubApp(seq);
     const result = scanCutIntervals();
     expect(result.intervals[0].durationFrames).toBe(0);
@@ -226,7 +242,11 @@ describe("scanCutIntervals", () => {
 
   it("uses at least 1 frame for very short intervals when fps > 0", () => {
     const track = makeTrack([makeClip(0, 0.001)]);
-    const seq = makeSequenceMock({ tracks: [track], endSeconds: 0.001, frameRate: 24 });
+    const seq = makeSequenceMock({
+      tracks: [track],
+      endSeconds: 0.001,
+      frameRate: 24,
+    });
     stubApp(seq);
     const result = scanCutIntervals();
     expect(result.intervals[0].durationFrames).toBeGreaterThanOrEqual(1);
@@ -269,20 +289,30 @@ describe("scanCutIntervals", () => {
   it("deduplicates boundaries and sorts intervals", () => {
     // Two clips sharing the same boundary at 5s
     const track = makeTrack([makeClip(0, 5), makeClip(5, 10)]);
-    const seq = makeSequenceMock({ tracks: [track], endSeconds: 10, frameRate: 24 });
+    const seq = makeSequenceMock({
+      tracks: [track],
+      endSeconds: 10,
+      frameRate: 24,
+    });
     stubApp(seq);
     const result = scanCutIntervals();
     const starts = result.intervals.map((iv) => iv.startSeconds);
     const uniqueStarts = [...new Set(starts)];
     expect(starts).toEqual(uniqueStarts); // no duplicate start times
     for (let i = 0; i < result.intervals.length - 1; i++) {
-      expect(result.intervals[i].endSeconds).toBe(result.intervals[i + 1].startSeconds);
+      expect(result.intervals[i].endSeconds).toBe(
+        result.intervals[i + 1].startSeconds,
+      );
     }
   });
 
   it("sets orderIndex sequentially", () => {
     const track = makeTrack([makeClip(0, 3), makeClip(3, 6)]);
-    const seq = makeSequenceMock({ tracks: [track], endSeconds: 6, frameRate: 24 });
+    const seq = makeSequenceMock({
+      tracks: [track],
+      endSeconds: 6,
+      frameRate: 24,
+    });
     stubApp(seq);
     const result = scanCutIntervals();
     result.intervals.forEach((iv, i) => {
@@ -322,7 +352,10 @@ describe("qeDomFunction", () => {
   });
 
   it("accesses qe properties when qe is defined", () => {
-    vi.stubGlobal("app", { project: { activeSequence: null }, enableQE: vi.fn() });
+    vi.stubGlobal("app", {
+      project: { activeSequence: null },
+      enableQE: vi.fn(),
+    });
     const getVideoEffectByName = vi.fn();
     vi.stubGlobal("qe", {
       name: "qedom",
