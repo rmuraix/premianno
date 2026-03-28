@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Use vi.hoisted to define mocks so they are available in the hoisted vi.mock factories
 const { mockFs, mockPath, mockCsi, mockEvalTS } = vi.hoisted(() => {
@@ -32,21 +32,26 @@ vi.mock("@esTypes/js/lib/utils/bolt", () => ({
 
 import {
   buildAnnotationSet,
-  serializeToToml,
-  parseClassCsv,
-  loadAnnotationSet,
-  saveAnnotationSet,
-  loadClassList,
-  saveClassList,
-  promptSavePath,
-  promptCsvPath,
-  writeTomlFile,
-  readCsvFile,
   getActiveSequenceInfo,
+  loadAnnotationSet,
+  loadClassList,
+  parseClassCsv,
+  promptCsvPath,
+  promptSavePath,
+  readCsvFile,
+  saveAnnotationSet,
+  saveClassList,
   scanCutIntervals,
+  serializeToToml,
+  writeTomlFile,
 } from "@esTypes/js/lib/annotations";
 
-import type { Sequence, Interval, AnnotationSet, ExportFile } from "@esTypes/shared/annotations";
+import type {
+  AnnotationSet,
+  ExportFile,
+  Interval,
+  Sequence,
+} from "@esTypes/shared/annotations";
 
 const makeSequence = (overrides?: Partial<Sequence>): Sequence => ({
   id: "seq-001",
@@ -77,7 +82,9 @@ describe("buildAnnotationSet", () => {
     expect(result.intervals).toBe(intervals);
     expect(result.sourceVersion).toBe("1");
     expect(typeof result.lastUpdatedAt).toBe("string");
-    expect(new Date(result.lastUpdatedAt).toISOString()).toBe(result.lastUpdatedAt);
+    expect(new Date(result.lastUpdatedAt).toISOString()).toBe(
+      result.lastUpdatedAt,
+    );
   });
 
   it("builds an annotation set with empty intervals", () => {
@@ -161,7 +168,15 @@ describe("serializeToToml", () => {
 
   it("handles multiple intervals", () => {
     const file = baseExport();
-    file.intervals = [makeInterval(), makeInterval({ id: "5-10", startSeconds: 5, endSeconds: 10, orderIndex: 1 })];
+    file.intervals = [
+      makeInterval(),
+      makeInterval({
+        id: "5-10",
+        startSeconds: 5,
+        endSeconds: 10,
+        orderIndex: 1,
+      }),
+    ];
     const toml = serializeToToml(file);
     const count = (toml.match(/\[\[intervals\]\]/g) || []).length;
     expect(count).toBe(2);
@@ -287,14 +302,14 @@ describe("loadAnnotationSet", () => {
   });
 
   it("creates storage dir when it does not exist", () => {
-    mockFs.existsSync.mockImplementation((p: string) => {
+    mockFs.existsSync.mockImplementation((_p: string) => {
       // dir does not exist, file does not exist
       return false;
     });
     loadAnnotationSet(makeSequence());
     expect(mockFs.mkdirSync).toHaveBeenCalledWith(
       expect.stringContaining("premianno-annotations"),
-      { recursive: true }
+      { recursive: true },
     );
   });
 
@@ -308,7 +323,7 @@ describe("loadAnnotationSet", () => {
     expect(result).toEqual(ann);
     expect(mockFs.readFileSync).toHaveBeenCalledWith(
       expect.stringContaining("unknown_project"),
-      "utf8"
+      "utf8",
     );
   });
 
@@ -321,7 +336,7 @@ describe("loadAnnotationSet", () => {
     loadAnnotationSet(seq);
     expect(mockFs.readFileSync).toHaveBeenCalledWith(
       expect.stringContaining("NameSeq"),
-      "utf8"
+      "utf8",
     );
   });
 
@@ -334,7 +349,7 @@ describe("loadAnnotationSet", () => {
     loadAnnotationSet(seq);
     expect(mockFs.readFileSync).toHaveBeenCalledWith(
       expect.stringContaining("sequence"),
-      "utf8"
+      "utf8",
     );
   });
 });
@@ -353,7 +368,7 @@ describe("saveAnnotationSet", () => {
     expect(mockFs.writeFileSync).toHaveBeenCalledWith(
       expect.stringContaining(".json"),
       expect.stringContaining('"seq-001"'),
-      "utf8"
+      "utf8",
     );
   });
 });
@@ -364,11 +379,11 @@ describe("writeTomlFile", () => {
   });
 
   it("writes the TOML content to the given path", () => {
-    writeTomlFile("/some/path/output.toml", "[sequence]\nid = \"abc\"");
+    writeTomlFile("/some/path/output.toml", '[sequence]\nid = "abc"');
     expect(mockFs.writeFileSync).toHaveBeenCalledWith(
       "/some/path/output.toml",
-      "[sequence]\nid = \"abc\"",
-      "utf8"
+      '[sequence]\nid = "abc"',
+      "utf8",
     );
   });
 });
@@ -432,7 +447,7 @@ describe("saveClassList", () => {
     expect(mockFs.writeFileSync).toHaveBeenCalledWith(
       expect.stringContaining("class-list.json"),
       JSON.stringify(["cat", "dog", "bird"], null, 2),
-      "utf8"
+      "utf8",
     );
   });
 });
@@ -494,7 +509,9 @@ describe("promptSavePath", () => {
     vi.stubGlobal("window", {
       cep: {
         fs: {
-          showSaveDialogEx: vi.fn().mockReturnValue({ err: 0, data: "/path/to/output.toml" }),
+          showSaveDialogEx: vi
+            .fn()
+            .mockReturnValue({ err: 0, data: "/path/to/output.toml" }),
         },
       },
     });
@@ -560,7 +577,9 @@ describe("promptCsvPath", () => {
     vi.stubGlobal("window", {
       cep: {
         fs: {
-          showOpenDialogEx: vi.fn().mockReturnValue({ err: 0, data: ["/path/to/classes.csv"] }),
+          showOpenDialogEx: vi
+            .fn()
+            .mockReturnValue({ err: 0, data: ["/path/to/classes.csv"] }),
         },
       },
     });

@@ -1,10 +1,8 @@
+import path from "node:path";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-
-import react from "@vitejs/plugin-react"; 
-
-import { cep, CepOptions, runAction } from "vite-cep-plugin";
+import { type CepOptions, cep, runAction } from "vite-cep-plugin";
 import cepConfig from "./cep.config";
-import path from "path";
 import { extendscriptConfig } from "./vite.es.config";
 
 const extensions = [".js", ".ts", ".tsx"];
@@ -23,8 +21,8 @@ const isPackage = process.env.ZXP_PACKAGE === "true" || isMetaPackage;
 const isServe = process.env.SERVE_PANEL === "true";
 const action = process.env.BOLT_ACTION;
 
-let input: { [key: string]: string } = {};
-cepConfig.panels.map((panel) => {
+const input: { [key: string]: string } = {};
+cepConfig.panels.forEach((panel) => {
   input[panel.name] = path.resolve(root, panel.mainPath);
 });
 
@@ -46,10 +44,7 @@ if (action) runAction(config, action);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(), 
-    cep(config),
-  ],
+  plugins: [react(), cep(config)],
   resolve: {
     alias: [{ find: "@esTypes", replacement: path.resolve(__dirname, "src") }],
   },

@@ -1,7 +1,7 @@
-import CSInterface, { CSEvent } from "../cep/csinterface";
-import Vulcan, { VulcanMessage } from "../cep/vulcan";
 import { ns } from "../../../shared/shared";
+import CSInterface, { CSEvent } from "../cep/csinterface";
 import { fs } from "../cep/node";
+import Vulcan, { VulcanMessage } from "../cep/vulcan";
 
 export const csi = new CSInterface();
 export const vulcan = new Vulcan();
@@ -20,17 +20,14 @@ export const vulcan = new Vulcan();
  */
 
 export const evalES = (script: string, isGlobal = false): Promise<string> => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, _reject) => {
     const pre = isGlobal
       ? ""
       : `var host = typeof $ !== 'undefined' ? $ : window; host["${ns}"].`;
     const fullString = pre + script;
-    csi.evalScript(
-      "try{" + fullString + "}catch(e){alert(e);}",
-      (res: string) => {
-        resolve(res);
-      }
-    );
+    csi.evalScript(`try{${fullString}}catch(e){alert(e);}`, (res: string) => {
+      resolve(res);
+    });
   });
 };
 
@@ -41,7 +38,7 @@ import { initializeCEP } from "./init-cep";
 type ArgTypes<F extends Function> = F extends (...args: infer A) => any
   ? A
   : never;
-type ReturnType<F extends Function> = F extends (...args: infer A) => infer B
+type ReturnType<F extends Function> = F extends (...args: never) => infer B
   ? B
   : never;
 
@@ -70,12 +67,12 @@ type ReturnType<F extends Function> = F extends (...args: infer A) => infer B
 
 export const evalTS = <
   Key extends string & keyof Scripts,
-  Func extends Function & Scripts[Key]
+  Func extends Function & Scripts[Key],
 >(
   functionName: Key,
   ...args: ArgTypes<Func>
 ): Promise<ReturnType<Func>> => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     const formattedArgs = args
       .map((arg) => {
         console.log(JSON.stringify(arg));
@@ -93,7 +90,7 @@ export const evalTS = <
         }`,
       (res: string) => {
         try {
-          //@ts-ignore
+          //@ts-expect-error
           if (res === "undefined") return resolve();
           const parsed = JSON.parse(res);
           if (
@@ -105,10 +102,10 @@ export const evalTS = <
           } else {
             resolve(parsed);
           }
-        } catch (error) {
+        } catch (_error) {
           reject(res);
         }
-      }
+      },
     );
   });
 };
@@ -120,7 +117,7 @@ export const evalFile = (file: string) => {
       '") : fl.runScript(FLfile.platformPathToURI("' +
       file +
       '"));',
-    true
+    true,
   );
 };
 
@@ -159,7 +156,7 @@ export const evalFile = (file: string) => {
 export const listenTS = <Key extends string & keyof EventTS>(
   event: Key,
   callback: (data: EventTS[Key]) => void,
-  isLocal = true
+  isLocal = true,
 ) => {
   const fullEvent = isLocal ? `${ns}.${event}` : event;
   const csi = new CSInterface();
@@ -190,7 +187,7 @@ export const dispatchTS = <Key extends string & keyof EventTS>(
   scope = "APPLICATION",
   appId = csi.getApplicationID() as string,
   id = csi.getExtensionID() as string,
-  isLocal = true
+  isLocal = true,
 ) => {
   const fullEvent = isLocal ? `${ns}.${event}` : event;
   // console.log(`dispatching ${fullEvent}`);
@@ -229,7 +226,7 @@ export const openLinkInBrowser = (url: string) => {
 
 export const getAppBackgroundColor = () => {
   const { green, blue, red } = JSON.parse(
-    window.__adobe_cep__.getHostEnvironment() as string
+    window.__adobe_cep__.getHostEnvironment() as string,
   ).appSkinInfo.panelBackgroundColor.color;
   return {
     rgb: {
@@ -254,7 +251,7 @@ export const subscribeBackgroundColor = (callback: (color: string) => void) => {
   csi.addEventListener(
     "com.adobe.csxs.events.ThemeColorChanged",
     () => callback(getColor()),
-    {}
+    {},
   );
 };
 
@@ -282,12 +279,12 @@ export const vulcanListen = (id: string, callback: Function) => {
       const msgObj = JSON.parse(msgStr);
       callback(msgObj);
     },
-    null
+    null,
   );
 };
 
 export const isAppRunning = (targetSpecifier: string) => {
-  const { major, minor, micro } = csi.getCurrentApiVersion();
+  const { major, minor } = csi.getCurrentApiVersion();
   const version = parseFloat(`${major}.${minor}`);
   if (version >= 11.2) {
     return vulcan.isAppRunningEx(targetSpecifier.toUpperCase());
@@ -302,7 +299,7 @@ interface IOpenDialogResult {
 export const selectFolder = (
   dir: string,
   msg: string,
-  callback: (res: string) => void
+  callback: (res: string) => void,
 ) => {
   const result = (
     window.cep.fs.showOpenDialogEx || window.cep.fs.showOpenDialog
@@ -316,7 +313,7 @@ export const selectFolder = (
 export const selectFile = (
   dir: string,
   msg: string,
-  callback: (res: string) => void
+  callback: (res: string) => void,
 ) => {
   const result = (
     window.cep.fs.showOpenDialogEx || window.cep.fs.showOpenDialog
@@ -334,7 +331,7 @@ export const selectFile = (
 
 export const enableSpectrum = () => {
   if (window.PointerEvent) {
-    //@ts-ignore
+    //@ts-expect-error
     delete window.PointerEvent;
   }
 };

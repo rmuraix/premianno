@@ -1,12 +1,13 @@
 import {
-  helloVoid,
-  helloError,
-  helloStr,
-  helloNum,
   helloArrayStr,
+  helloError,
+  helloNum,
   helloObj,
+  helloStr,
+  helloVoid,
 } from "../utils/samples";
-export { helloError, helloStr, helloNum, helloArrayStr, helloObj, helloVoid };
+
+export { helloArrayStr, helloError, helloNum, helloObj, helloStr, helloVoid };
 
 type SequenceInfo = {
   id: string;
@@ -34,8 +35,9 @@ const getActiveSequence = (): SequenceInfo | null => {
   const projectPath = app.project.path ? app.project.path.toString() : "";
 
   const settings = sequence.getSettings ? sequence.getSettings() : null;
-  const frameSeconds =
-    settings && settings.videoFrameRate ? settings.videoFrameRate.seconds : 0;
+  const frameSeconds = settings?.videoFrameRate
+    ? settings.videoFrameRate.seconds
+    : 0;
   const frameRate =
     frameSeconds && frameSeconds > 0 ? 1 / frameSeconds : undefined;
 
@@ -74,9 +76,7 @@ const uniqueSorted = (values: number[]): number[] => {
   for (var key in map) {
     keys.push(parseFloat(key));
   }
-  keys.sort(function (a, b) {
-    return a - b;
-  });
+  keys.sort((a, b) => a - b);
   return keys;
 };
 
@@ -104,10 +104,7 @@ export const scanCutIntervals = (): {
   const sequence = app.project.activeSequence;
   const boundaries = getTrackBoundaries(sequence);
   const fps = getFps(sequence);
-  const endSeconds =
-    sequence && sequence.end && sequence.end.seconds
-      ? sequence.end.seconds
-      : 0;
+  const endSeconds = sequence?.end?.seconds ? sequence.end.seconds : 0;
   boundaries.push(0);
   if (endSeconds > 0) {
     boundaries.push(endSeconds);
@@ -120,9 +117,10 @@ export const scanCutIntervals = (): {
     const start = sorted[i];
     const end = sorted[i + 1];
     if (end <= start) continue;
-    const durationFrames = fps > 0 ? Math.max(1, Math.round((end - start) * fps)) : 0;
+    const durationFrames =
+      fps > 0 ? Math.max(1, Math.round((end - start) * fps)) : 0;
     intervals.push({
-      id: start.toFixed(6) + "-" + end.toFixed(6),
+      id: `${start.toFixed(6)}-${end.toFixed(6)}`,
       startSeconds: start,
       endSeconds: end,
       durationFrames: durationFrames,
@@ -132,7 +130,7 @@ export const scanCutIntervals = (): {
 
   if (!intervals.length && endSeconds > 0) {
     intervals.push({
-      id: "0.000000-" + endSeconds.toFixed(6),
+      id: `0.000000-${endSeconds.toFixed(6)}`,
       startSeconds: 0,
       endSeconds: endSeconds,
       durationFrames: fps > 0 ? Math.max(1, Math.round(endSeconds * fps)) : 0,

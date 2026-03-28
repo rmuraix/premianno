@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import type { AnnotationSet, Interval } from "../../shared/annotations";
 import {
   buildAnnotationSet,
   loadAnnotationSet,
@@ -18,11 +19,9 @@ import {
   mergeStoredLabels,
   updateIntervalLabel,
 } from "./annotationStore";
-import type { AnnotationSet, Interval } from "../../shared/annotations";
 import "./main.scss";
 
-const pad = (value: number, size = 2) =>
-  value.toString().padStart(size, "0");
+const pad = (value: number, size = 2) => value.toString().padStart(size, "0");
 
 const formatTimecode = (seconds: number) => {
   if (!Number.isFinite(seconds)) return "--:--:--.---";
@@ -91,7 +90,9 @@ const IntervalRow = ({
 const MemoIntervalRow = memo(IntervalRow);
 
 export const App = () => {
-  const [annotationSet, setAnnotationSet] = useState<AnnotationSet | null>(null);
+  const [annotationSet, setAnnotationSet] = useState<AnnotationSet | null>(
+    null,
+  );
   const [status, setStatus] = useState<Status | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanWarning, setScanWarning] = useState<string | null>(null);
@@ -123,7 +124,7 @@ export const App = () => {
         const aligned = intervalsAligned(intervalsNext, stored.intervals);
         if (!aligned) {
           setScanWarning(
-            "Cuts changed since last scan. Labels may be misaligned."
+            "Cuts changed since last scan. Labels may be misaligned.",
           );
         }
         intervalsNext = mergeStoredLabels(intervalsNext, stored.intervals);
@@ -182,9 +183,12 @@ export const App = () => {
     });
   }, []);
 
-  const handleClearLabel = useCallback((id: string) => {
-    handleLabelChange(id, "");
-  }, [handleLabelChange]);
+  const handleClearLabel = useCallback(
+    (id: string) => {
+      handleLabelChange(id, "");
+    },
+    [handleLabelChange],
+  );
 
   const handleExport = useCallback(() => {
     if (!annotationSet) {
@@ -210,7 +214,7 @@ export const App = () => {
     try {
       writeTomlFile(filePath, toml);
       setStatus({ kind: "success", message: `Exported to ${filePath}.` });
-    } catch (error) {
+    } catch (_error) {
       setStatus({ kind: "error", message: "Export failed." });
     }
   }, [annotationSet]);
@@ -237,7 +241,7 @@ export const App = () => {
         kind: "success",
         message: `Imported ${classes.length} classes.`,
       });
-    } catch (error) {
+    } catch (_error) {
       setStatus({ kind: "error", message: "Failed to import class list." });
     }
   }, []);
@@ -275,9 +279,7 @@ export const App = () => {
         <div className={`status ${status.kind}`}>{status.message}</div>
       ) : null}
 
-      {scanWarning ? (
-        <div className="status warning">{scanWarning}</div>
-      ) : null}
+      {scanWarning ? <div className="status warning">{scanWarning}</div> : null}
       {scanErrorDetail ? (
         <div className="status error">{scanErrorDetail}</div>
       ) : null}

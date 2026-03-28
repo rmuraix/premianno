@@ -1,11 +1,19 @@
-import { vi, describe, it, expect } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 // Mock shared (which imports cep.config)
 vi.mock("@esTypes/shared/shared", () => ({
   ns: "com.rmurai.premianno",
 }));
 
-import { forEach, map, filter, includes, indexOf, join, dispatchTS } from "@esTypes/jsx/utils/utils";
+import {
+  dispatchTS,
+  filter,
+  forEach,
+  includes,
+  indexOf,
+  join,
+  map,
+} from "@esTypes/jsx/utils/utils";
 
 describe("forEach", () => {
   it("calls callback for each element", () => {
@@ -158,8 +166,12 @@ describe("dispatchTS", () => {
     const mockDispatch = vi.fn();
     const mockEventObj = { type: "", data: "", dispatch: mockDispatch };
     // Must use function constructors (not arrow functions) since code calls `new`
-    function MockCSXSEvent() { return mockEventObj; }
-    function MockExternalObject() { return {}; }
+    function MockCSXSEvent() {
+      return mockEventObj;
+    }
+    function MockExternalObject() {
+      return {};
+    }
 
     vi.stubGlobal("ExternalObject", MockExternalObject);
     vi.stubGlobal("CSXSEvent", MockCSXSEvent);
@@ -167,7 +179,9 @@ describe("dispatchTS", () => {
     dispatchTS("myCustomEvent", { oneValue: "test", anotherValue: 42 });
 
     expect(mockEventObj.type).toBe("com.rmurai.premianno.myCustomEvent");
-    expect(mockEventObj.data).toBe(JSON.stringify({ oneValue: "test", anotherValue: 42 }));
+    expect(mockEventObj.data).toBe(
+      JSON.stringify({ oneValue: "test", anotherValue: 42 }),
+    );
     expect(mockDispatch).toHaveBeenCalled();
 
     vi.unstubAllGlobals();
