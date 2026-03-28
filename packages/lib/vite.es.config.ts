@@ -38,10 +38,7 @@ export const extendscriptConfig = (
         babelrc: false,
         babelHelpers: "inline",
         presets: ["@babel/preset-env", "@babel/preset-typescript"],
-        plugins: [
-          "@babel/plugin-syntax-dynamic-import",
-          "@babel/plugin-transform-class-properties",
-        ],
+        plugins: ["@babel/plugin-syntax-dynamic-import"],
       }),
       jsxPonyfill(),
       jsxInclude({
