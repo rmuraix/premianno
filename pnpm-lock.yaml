@@ -124,8 +124,8 @@ importers:
         specifier: ^4.59.0
         version: 4.59.0
       rollup-plugin-multi-input:
-        specifier: ^1.7.0
-        version: 1.7.0
+        specifier: ^1.8.0
+        version: 1.8.0
       rollup-plugin-node-copy:
         specifier: ^1.0.4
         version: 1.0.4
@@ -3347,8 +3347,8 @@ packages:
     engines: {node: 20 || >=22}
     hasBin: true
 
-  rollup-plugin-multi-input@1.7.0:
-    resolution: {integrity: sha512-TKdwsa4mA4K4q3YbcZyqnqgccLsv45ujGgqdLfQU1ggnT7gmxCq9I6x1NZxfrexZg79gPWQGDiEb2W7s+6D99Q==}
+  rollup-plugin-multi-input@1.8.0:
+    resolution: {integrity: sha512-X8nSq29ZzFrc1LJSZ3d3nS7jE54g3oVLVwqkzJacwABvk5FikKmq275xrmz0mSoJxHUsLsN7taJbwhrv9qoW7A==}
     engines: {node: '>=16'}
 
   rollup-plugin-node-copy@1.0.4:
@@ -7360,7 +7360,7 @@ snapshots:
       glob: 13.0.6
       package-json-from-dist: 1.0.1
 
-  rollup-plugin-multi-input@1.7.0:
+  rollup-plugin-multi-input@1.8.0:
     dependencies:
       fast-glob: 3.3.3
 
