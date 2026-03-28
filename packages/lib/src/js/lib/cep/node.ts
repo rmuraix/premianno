@@ -1,6 +1,5 @@
 // Abstracted built-in Node.js Modules
 
-//@ts-expect-error
 export const crypto = (
   typeof window.cep !== "undefined" ? require("node:crypto") : {}
 ) as typeof import("crypto");

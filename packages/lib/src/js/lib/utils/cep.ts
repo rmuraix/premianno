@@ -7,7 +7,6 @@ import { csi } from "./bolt";
  */
 
 export const keyRegisterOverride = () => {
-  //@ts-expect-error
   const platform = navigator.platform.substring(0, 3);
   let maxKey = 0;
   if (platform === "Mac")
