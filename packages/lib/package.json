@@ -58,7 +58,7 @@
     "source-map": "^0.7.6",
     "types-for-adobe": "^7.2.5",
     "types-for-adobe-extras": "^0.0.9",
-    "vite": "^7.3.1",
+    "vite": "^7.3.2",
     "vite-cep-plugin": "^2.2.0",
     "vitest": "^4.0.18"
   }
