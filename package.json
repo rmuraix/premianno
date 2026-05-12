@@ -14,6 +14,6 @@
   "packageManager": "pnpm@10.32.1",
   "devDependencies": {
     "@biomejs/biome": "2.4.13",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
