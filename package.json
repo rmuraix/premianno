@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@10.34.2",
   "devDependencies": {
     "@biomejs/biome": "2.4.13",
     "typescript": "^5.9.3"
