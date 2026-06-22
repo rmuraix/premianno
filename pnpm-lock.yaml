@@ -121,7 +121,7 @@ importers:
         specifier: ^6.1.3
         version: 6.1.3
       rollup:
-        specifier: ^4.60.4
+        specifier: ^4.62.0
         version: 4.62.0
       rollup-plugin-multi-input:
         specifier: ^1.8.0
