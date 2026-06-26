@@ -1,4 +1,0 @@
-- Purpose: PremiAnno is a Premiere Pro CEP extension for time-synchronized annotation and metadata export.
-- Tech stack: TypeScript, React 19, Vite, vite-cep-plugin, pnpm workspace monorepo.
-- Repo layout: `packages/lib` extension implementation, `packages/docs` VitePress docs, `.github/workflows` CI/CD.
-- Platform focus: Adobe Premiere Pro CEP extension workflow with ZXP packaging.
