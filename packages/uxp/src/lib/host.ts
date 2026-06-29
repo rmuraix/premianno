@@ -11,25 +11,41 @@ const uniqueSorted = (values: number[]): number[] => {
     .sort((a, b) => a - b);
 };
 
+type UxpSequence = NonNullable<Awaited<ReturnType<Awaited<ReturnType<typeof ppro.Project.getActiveProject>>["getActiveSequence"]>>>;
+
+type ActiveSequenceFetch = {
+  sequence: UxpSequence;
+  dto: DomainSequence;
+};
+
+const _fetchActiveSequence = async (): Promise<ActiveSequenceFetch | null> => {
+  const project = await ppro.Project.getActiveProject();
+  const sequence = await project.getActiveSequence();
+  // UXP may return null at runtime before a project is opened
+  if (!sequence) return null;
+
+  const timebase = await sequence.getTimebase();
+  const settings = await sequence.getSettings();
+  const fpsValue = settings.getVideoFrameRate().value;
+  const frameRate = fpsValue > 0 ? fpsValue : undefined;
+
+  const dto: DomainSequence = {
+    id: sequence.guid.toString(),
+    name: sequence.name,
+    timebase,
+    frameRate,
+    projectPath: project.path,
+  };
+
+  return { sequence, dto };
+};
+
 export const getActiveSequenceInfo = async (): Promise<DomainSequence | null> => {
   try {
-    const project = await ppro.Project.getActiveProject();
-    const sequence = await project.getActiveSequence();
-    if (!sequence) return null;
-
-    const timebase = await sequence.getTimebase();
-    const settings = await sequence.getSettings();
-    const fpsValue = settings.getVideoFrameRate().value;
-    const frameRate = fpsValue > 0 ? fpsValue : undefined;
-
-    return {
-      id: sequence.guid.toString(),
-      name: sequence.name,
-      timebase,
-      frameRate,
-      projectPath: project.path,
-    };
-  } catch {
+    const result = await _fetchActiveSequence();
+    return result ? result.dto : null;
+  } catch (e) {
+    console.error(e);
     return null;
   }
 };
@@ -38,14 +54,16 @@ export const scanCutIntervals = async (): Promise<{
   sequence: DomainSequence | null;
   intervals: Interval[];
 }> => {
-  const sequenceInfo = await getActiveSequenceInfo();
-  if (!sequenceInfo) {
-    return { sequence: null, intervals: [] };
-  }
+  let sequenceInfo: DomainSequence | null = null;
 
   try {
-    const project = await ppro.Project.getActiveProject();
-    const sequence = await project.getActiveSequence();
+    const result = await _fetchActiveSequence();
+    if (!result) {
+      return { sequence: null, intervals: [] };
+    }
+
+    const { sequence, dto } = result;
+    sequenceInfo = dto;
 
     const trackCount = await sequence.getVideoTrackCount();
     const boundaries: number[] = [];
@@ -96,7 +114,8 @@ export const scanCutIntervals = async (): Promise<{
     }
 
     return { sequence: sequenceInfo, intervals };
-  } catch {
+  } catch (e) {
+    console.error(e);
     return { sequence: sequenceInfo, intervals: [] };
   }
 };
