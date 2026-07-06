@@ -148,8 +148,8 @@ importers:
         specifier: ^7.3.6
         version: 7.3.6(@types/node@16.18.126)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3)
       vite-cep-plugin:
-        specifier: ^2.2.0
-        version: 2.2.0(@types/node@16.18.126)
+        specifier: ^2.2.3
+        version: 2.2.3(@types/node@16.18.126)
       vitest:
         specifier: ^4.1.9
         version: 4.1.9(@types/node@16.18.126)(@vitest/coverage-v8@4.0.18)(jsdom@29.1.1)(vite@7.3.6(@types/node@16.18.126)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.3))
@@ -3783,8 +3783,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite-cep-plugin@2.2.0:
-    resolution: {integrity: sha512-02rTza9kaVMrIqtr1zmKCxa7NLyiwCQY4v/E52pyb146eGbkwmozTnN9kDMI/0TbsQCW8uo5ZddB5Ijl2WrG5A==}
+  vite-cep-plugin@2.2.3:
+    resolution: {integrity: sha512-0oyDzECyqJWLjCgg9F6z7cE+YgioHHlkotaL4t8kMSLCZqDyMi6Z9w7LrBrJ922gcoo/U61qs93XFZPLm/y0Vg==}
 
   vite@5.4.21:
     resolution: {integrity: sha512-o5a9xKjbtuhY6Bi5S3+HvbRERmouabWbyUcpXXUA1u+GNUKoROi9byOJ8M0nHbHYHkYICiMlqxkg1KkYmm25Sw==}
@@ -7951,7 +7951,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-cep-plugin@2.2.0(@types/node@16.18.126):
+  vite-cep-plugin@2.2.3(@types/node@16.18.126):
     dependencies:
       '@types/archiver': 5.3.4
       archiver: 5.3.2
