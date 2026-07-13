@@ -60,6 +60,6 @@
     "types-for-adobe-extras": "^0.0.9",
     "vite": "^7.3.6",
     "vite-cep-plugin": "^2.2.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   }
 }
