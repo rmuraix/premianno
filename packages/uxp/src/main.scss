@@ -1,0 +1,139 @@
+@use "./variables.scss" as *;
+
+// UXP renders a subset of CSS: flexbox is supported, CSS grid is not.
+.annotations-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px;
+  color: var(--uxp-host-text-color);
+}
+
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--uxp-host-border-color);
+
+  h1 {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .subtitle {
+    margin: 2px 0 8px;
+    font-size: 11px;
+    color: var(--uxp-host-text-color-secondary);
+  }
+
+  .header-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .header-actions button {
+    margin-right: 6px;
+  }
+}
+
+.status {
+  margin-top: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  background-color: var(--uxp-host-widget-hover-background-color);
+
+  &.success {
+    background-color: $success-bg;
+    color: $success-fg;
+  }
+
+  &.error {
+    background-color: $error-bg;
+    color: $error-fg;
+  }
+
+  &.warning {
+    background-color: $warning-bg;
+    color: $warning-fg;
+  }
+}
+
+.intervals {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 12px;
+  min-height: 0;
+}
+
+.intervals-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+  font-size: 12px;
+
+  .hint {
+    margin-top: 2px;
+    font-size: 10px;
+    color: var(--uxp-host-text-color-secondary);
+  }
+}
+
+.intervals-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.interval-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 6px;
+  border: 1px solid var(--uxp-host-border-color);
+  border-radius: 4px;
+}
+
+.interval-row.unlabeled {
+  border-style: dashed;
+}
+
+.interval-time {
+  display: flex;
+  flex-direction: column;
+  width: 96px;
+  font-size: 11px;
+  color: var(--uxp-host-text-color-secondary);
+}
+
+.interval-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+
+  select {
+    flex: 1;
+    margin-right: 6px;
+    font-size: 11px;
+    color: var(--uxp-host-text-color);
+  }
+
+  .clear-button {
+    background-color: transparent;
+    color: var(--uxp-host-text-color-secondary);
+  }
+}
+
+.empty-state {
+  padding: 16px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--uxp-host-text-color-secondary);
+  border: 1px dashed var(--uxp-host-border-color);
+  border-radius: 4px;
+}

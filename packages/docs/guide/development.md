@@ -7,8 +7,9 @@ This guide covers how to set up a development environment for PremiAnno and cont
 Before you begin, ensure you have:
 
 - **Node.js**: v20 or later
-- **pnpm**: v10.18.3 or later (see `packageManager` in root package.json)
-- **Adobe Premiere Pro**: For testing
+- **pnpm**: see `packageManager` in the root package.json
+- **Adobe Premiere Pro**: 25.6 or later, for testing
+- **UXP Developer Tool (UDT)**: v2.2.1 or later, to load and debug the plugin
 - **Git**: For version control
 
 ## Setup
@@ -26,21 +27,37 @@ cd premianno
 pnpm install
 ```
 
-This will install all dependencies for the monorepo, including both the lib package and docs package.
+This will install all dependencies for the monorepo, including both the uxp package and docs package.
 
 ## Development Commands
 
-### Building the Extension
+### Building the Plugin
 
 ```bash
-# Build the extension
-pnpm lib build
+# Build the plugin
+pnpm uxp build
 
-# Build in watch mode (hot reload)
-pnpm lib dev
+# Build in watch mode
+pnpm uxp dev
 
-# Build and package as ZXP
-pnpm lib zxp
+# Build and package as CCX
+pnpm uxp ccx
+
+# Build and package as ZIP
+pnpm uxp zip
+```
+
+### Testing and Type Checking
+
+```bash
+# Run unit tests
+pnpm uxp test
+
+# Run unit tests with coverage
+pnpm uxp test:coverage
+
+# Type check the package
+pnpm uxp typecheck
 ```
 
 ### Running Documentation
@@ -66,39 +83,39 @@ pnpm biome check .
 pnpm biome check . --fix
 ```
 
-## CEP Development Setup
+## UXP Development Setup
 
-### Loading the Extension for Development
+### Loading the Plugin for Development
 
-CEP extensions can be loaded for development by symlinking to Adobe's extensions folder.
-
-1. Build the extension with `pnpm lib build`
-2. The extension will be symlinked automatically to the CEP extensions folder
-3. Restart Adobe Premiere Pro
-4. Navigate to **Window > Extensions > PremiAnno**
+1. Enable **Developer Mode** in Premiere Pro's Plugins preferences
+2. Run `pnpm uxp dev` to build into `packages/uxp/dist` and keep watching for changes
+3. Open the UXP Developer Tool and click **Add Plugin**, then select `packages/uxp/dist/manifest.json`
+4. Click **Load** (or **Load & Watch** to reload on every rebuild)
+5. Open the panel from **Window > UXP Plugins > PremiAnno**
 
 ### Debugging
 
-CEP extensions use Chromium DevTools for debugging:
+UXP plugins are debugged through the UXP Developer Tool:
 
-1. Enable debug mode by creating a `.debug` file in your extension directory
-2. Set the debug port in `cep.config.ts` (default: 8860)
-3. Open Chrome and navigate to `http://localhost:8860`
-4. Use the Console, Elements, and Sources tabs to debug
-
-**Note**: Use `pnpm lib dev` with the built-in WebSocket reload system for more reliable hot reloading during development.
+1. In UDT, click the **•••** menu of the loaded plugin and choose **Debug**
+2. Chrome DevTools opens against the panel
+3. Use the Console, Elements, and Sources tabs to debug
 
 ## Project Structure
 
 ```
 premianno/
 ├── packages/
-│   ├── lib/              # Main CEP extension
+│   ├── uxp/              # Main UXP plugin
+│   │   ├── public/       # Static assets copied into the build (icons)
 │   │   ├── src/
-│   │   │   ├── js/       # React panel app + CEP bridge
-│   │   │   ├── jsx/      # ExtendScript host functions
-│   │   │   └── shared/   # Shared type definitions
-│   │   ├── dist/         # Build output
+│   │   │   ├── api/      # UXP runtime helpers (theme, error handler)
+│   │   │   ├── lib/      # Host bridge, storage, annotation logic
+│   │   │   ├── shared/   # Shared type definitions
+│   │   │   ├── main.tsx  # React panel UI
+│   │   │   └── index.tsx # Panel entry point
+│   │   ├── tests/        # Vitest unit tests
+│   │   ├── uxp.config.ts # UXP manifest configuration
 │   │   └── package.json
 │   └── docs/             # VitePress documentation
 │       ├── .vitepress/
@@ -114,22 +131,23 @@ premianno/
 
 ## Architecture
 
-### Extension Architecture
+### Plugin Architecture
 
 PremiAnno is built using:
 
 - **React 19**: UI framework
 - **TypeScript**: Type-safe development
-- **Vite**: Build tool and dev server
-- **vite-cep-plugin**: CEP/host integration and packaging
-- **Adobe Premiere Pro CEP/ExtendScript**: Host integration
+- **Vite**: Build tool
+- **vite-uxp-plugin** ([Bolt UXP](https://github.com/hyperbrew/bolt-uxp)): UXP manifest generation, hot reload, and CCX/ZIP packaging
+- **Adobe Premiere Pro UXP API**: Host integration through the `premierepro` module
 
 ### Key Components
 
-- **React Panel UI**: Scan/import/label/export workflow
-- **Host Bridge**: Calls ExtendScript functions from panel code
-- **Annotation Store**: Local JSON persistence per project/sequence
-- **Export Layer**: TOML serialization for downstream processing
+- **React Panel UI** (`src/main.tsx`): Scan/import/label/export workflow
+- **Host Bridge** (`src/lib/host.ts`): Reads sequences and clip boundaries through the async Premiere Pro UXP API
+- **Storage** (`src/lib/storage.ts`): Persists annotations in the UXP plugin data folder and drives the host file pickers
+- **Annotation Logic** (`src/lib/annotations.ts`, `src/lib/annotationStore.ts`): TOML serialization, CSV parsing, and label merging
+- **Theme Polyfill** (`src/api/theme.ts`): Fills in the `--uxp-host-*` CSS variables that Premiere Pro does not provide
 
 ## Contributing
 
@@ -150,8 +168,9 @@ PremiAnno is built using:
 
 ### Testing
 
+- Run `pnpm uxp test` and keep the unit tests green
 - Test changes in Adobe Premiere Pro
-- Verify hot reload functionality
+- Verify the reload workflow in UDT
 - Test export functionality
 - Check for console errors
 
@@ -164,18 +183,19 @@ PremiAnno is built using:
 
 ## Building for Distribution
 
-### Creating a ZXP Package
+### Creating a CCX Package
 
 ```bash
 # Build and package
-pnpm lib zxp
+pnpm uxp ccx
 ```
 
-This generates release artifacts under `packages/lib/dist/zxp/`.
+This generates release artifacts under `packages/uxp/ccx/`. `pnpm uxp zip` additionally produces a ZIP archive under `packages/uxp/zip/`.
 
 ## Resources
 
-- [Bolt CEP](https://github.com/hyperbrew/bolt-cep)
+- [Bolt UXP](https://github.com/hyperbrew/bolt-uxp)
+- [Premiere Pro UXP API](https://developer.adobe.com/premiere-pro/uxp/)
 
 ## Getting Help
 

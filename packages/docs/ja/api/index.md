@@ -48,7 +48,7 @@ export type ExportFile = {
 
 ## 内部JSON（AnnotationSet）
 
-シーケンス単位のアノテーションは、ユーザーデータ配下 `premianno-annotations/` にJSON保存されます。
+シーケンス単位のアノテーションは、UXPのプラグインデータフォルダー（`uxp.storage.localFileSystem.getDataFolder()`）にJSON保存されます。
 
 ```json
 {

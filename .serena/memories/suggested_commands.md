@@ -1,7 +1,10 @@
 - Install deps (repo): `pnpm install`
-- Root convenience commands: `pnpm lib <script>`, `pnpm docs <script>`
-- Plugin dev: `pnpm lib dev`
-- Plugin build: `pnpm lib build`
-- Plugin zxp package: `pnpm lib zxp`
+- Root convenience commands: `pnpm uxp <script>`, `pnpm docs <script>`
+- Plugin dev (watch build): `pnpm uxp dev`
+- Plugin build: `pnpm uxp build`
+- Plugin ccx package: `pnpm uxp ccx`
+- Plugin zip package: `pnpm uxp zip`
+- Plugin tests: `pnpm uxp test`, `pnpm uxp test:coverage`
+- Plugin typecheck: `pnpm uxp typecheck`
 - Docs dev/build/preview: `pnpm docs dev`, `pnpm docs build`, `pnpm docs preview`
 - Lint/format (root): `pnpm biome` or `pnpm biome check .`

@@ -48,7 +48,7 @@ export type ExportFile = {
 
 ## Internal JSON (AnnotationSet)
 
-PremiAnno stores per-sequence annotations in JSON files under user data directory `premianno-annotations/`.
+PremiAnno stores per-sequence annotations in JSON files inside the UXP plugin data folder (`uxp.storage.localFileSystem.getDataFolder()`).
 
 ```json
 {
