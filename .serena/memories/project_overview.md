@@ -1,4 +1,0 @@
-- Purpose: PremiAnno is a Premiere Pro UXP plugin for time-synchronized annotation and metadata export.
-- Tech stack: TypeScript, React 19, Vite, vite-uxp-plugin (Bolt UXP), pnpm workspace monorepo.
-- Repo layout: `packages/uxp` plugin implementation, `packages/docs` VitePress docs, `.github/workflows` CI/CD.
-- Platform focus: Adobe Premiere Pro 25.6+ UXP plugin workflow with CCX/ZIP packaging.

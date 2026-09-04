@@ -1,3 +1,0 @@
-- Formatting/linting uses Biome (`biome.json`): spaces, double quotes in JS formatter, organize imports enabled.
-- On task completion: run targeted checks relevant to edits (docs edits usually need content consistency check; code edits should run lint/build where feasible).
-- Avoid broad destructive git operations; prefer minimal diffs aligned with existing conventions.
