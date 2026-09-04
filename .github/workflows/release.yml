@@ -32,9 +32,6 @@ jobs:
       - name: Build CCX
         run: pnpm uxp ccx
 
-      - name: Build ZIP
-        run: pnpm uxp zip
-
       - name: Create release and upload plugin assets
         shell: bash
         env:
@@ -48,10 +45,10 @@ jobs:
           files=()
           while IFS= read -r -d '' file; do
             files+=("$file")
-          done < <(find packages/uxp/ccx packages/uxp/zip -type f -print0)
+          done < <(find packages/uxp/ccx -type f -print0)
 
           if [ ${#files[@]} -eq 0 ]; then
-            echo "No build artifacts found under packages/uxp/ccx/ or packages/uxp/zip/" >&2
+            echo "No build artifacts found under packages/uxp/ccx/" >&2
             exit 1
           fi
 

@@ -24,8 +24,9 @@ By integrating annotation into Premiere Pro, PremiAnno bridges the gap between c
 ## Install Premianno
 
 1. Download the latest PremiAnno CCX asset from the [Release Page](https://github.com/rmuraix/premianno/releases)
-2. Install [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
-3. Open ZXP/UXP Installer and drag and drop the downloaded CCX file
+2. Double-click the downloaded `.ccx` file to install it
+3. If the file is not accepted, install [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/) and drag and drop the CCX file into it
+4. Open the panel from **Window > UXP Plugins > PremiAnno**
 
 ## Development
 
@@ -38,10 +39,8 @@ pnpm i
 pnpm uxp build
 # Build the plugin in watch mode for development
 pnpm uxp dev
-# Build & package the plugin as CCX
+# Build & package the plugin as CCX (the distributed artifact)
 pnpm uxp ccx
-# Build & package the plugin as ZIP
-pnpm uxp zip
 ```
 
 ## Contributing

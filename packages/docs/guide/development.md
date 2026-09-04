@@ -40,10 +40,10 @@ pnpm uxp build
 # Build in watch mode
 pnpm uxp dev
 
-# Build and package as CCX
+# Build and package as CCX (the distributed artifact)
 pnpm uxp ccx
 
-# Build and package as ZIP
+# Wrap the CCX in a ZIP archive, for hand-off outside a release
 pnpm uxp zip
 ```
 
@@ -190,7 +190,9 @@ PremiAnno is built using:
 pnpm uxp ccx
 ```
 
-This generates release artifacts under `packages/uxp/ccx/`. `pnpm uxp zip` additionally produces a ZIP archive under `packages/uxp/zip/`.
+This writes `packages/uxp/ccx/premianno.ccx`, which is the file attached to a
+GitHub release. `pnpm uxp zip` only wraps that same CCX in an archive under
+`packages/uxp/zip/`, so it is not part of a release.
 
 ## Resources
 

@@ -40,10 +40,10 @@ pnpm uxp build
 # ウォッチモードでビルド
 pnpm uxp dev
 
-# CCXとしてビルド・パッケージ化
+# CCXとしてビルド・パッケージ化（配布物）
 pnpm uxp ccx
 
-# ZIPとしてビルド・パッケージ化
+# CCXをZIPアーカイブで包む（リリース以外での受け渡し用）
 pnpm uxp zip
 ```
 
@@ -190,7 +190,7 @@ PremiAnnoは以下を使用して構築されています：
 pnpm uxp ccx
 ```
 
-これにより、`packages/uxp/ccx/`に配布用アーティファクトが生成されます。`pnpm uxp zip`を実行すると、`packages/uxp/zip/`にZIPアーカイブも生成されます。
+これにより`packages/uxp/ccx/premianno.ccx`が生成されます。これがGitHubリリースに添付される配布物です。`pnpm uxp zip`は同じCCXをZIPで包むだけなので、リリースには含めません。
 
 ## リソース
 
