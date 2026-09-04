@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "PremiAnno"
   text: "Dataset Annotation for Premiere Pro"
-  tagline: A CEP-based extension for Adobe Premiere Pro that enables time-synchronized annotation directly on the timeline
+  tagline: A UXP-based plugin for Adobe Premiere Pro that enables time-synchronized annotation directly on the timeline
   actions:
     - theme: brand
       text: Get Started

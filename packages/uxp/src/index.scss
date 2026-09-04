@@ -1,0 +1,26 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--uxp-host-background-color);
+  color: var(--uxp-host-text-color);
+  font-size: 12px;
+}
+
+button {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--uxp-host-border-color);
+  background-color: var(--uxp-host-widget-hover-background-color);
+  color: var(--uxp-host-text-color);
+}
+
+button:hover {
+  border-color: var(--uxp-host-link-text-color);
+}
+
+button:disabled {
+  opacity: 0.5;
+}

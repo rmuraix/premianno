@@ -6,25 +6,23 @@
 
 始める前に、以下を用意してください：
 
-- Adobe Premiere Pro（最新バージョン推奨）
-- エクステンションインストール用の[ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
+- Adobe Premiere Pro 25.6以降（UXPプラグインが公式にサポートされるバージョン）
 
 ## クイックスタート
 
 ### 1. PremiAnnoをダウンロード
 
-[リリースページ](https://github.com/rmuraix/premianno/releases)から最新のPremiAnno ZXPファイルをダウンロードします。
+[リリースページ](https://github.com/rmuraix/premianno/releases)から最新のPremiAnno CCXファイルをダウンロードします。
 
-### 2. エクステンションをインストール
+### 2. プラグインをインストール
 
-1. ZXP/UXP Installerを開く
-2. ダウンロードしたZXPファイルをインストーラーにドラッグ＆ドロップ
-3. インストール画面の指示に従う
+1. ダウンロードした`.ccx`ファイルをダブルクリック
+2. インストール画面の指示に従う
 
 ### 3. PremiAnnoを起動
 
 1. Adobe Premiere Proを開く
-2. **ウィンドウ > エクステンション > Premianno** に移動
+2. **ウィンドウ > UXPプラグイン > PremiAnno** に移動
 3. PremiAnnoパネルがワークスペースに表示されます
 
 ![PremiAnnoパネルのスクリーンショット](../../images/panel.png)

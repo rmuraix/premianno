@@ -1,0 +1,8 @@
+// Status colors. Everything else follows the host theme through the
+// `--uxp-host-*` custom properties (see src/api/theme.ts).
+$success-bg: #103524;
+$success-fg: #b6f2c2;
+$error-bg: #3b1212;
+$error-fg: #f5b7b7;
+$warning-bg: #3a2e12;
+$warning-fg: #f2d58b;

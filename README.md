@@ -1,15 +1,15 @@
 # Premianno
 
-A Premiere Pro CEP Extension for Dataset Annotation
+A Premiere Pro UXP Plugin for Dataset Annotation
 
 ## Overview
 
-PremiAnno is a CEP-based extension for Adobe Premiere Pro that enables time-synchronized annotation directly on the timeline.
+PremiAnno is a UXP-based plugin for Adobe Premiere Pro that enables time-synchronized annotation directly on the timeline.
 It is designed for AI research projects and media analysis workflows, allowing researchers and creators to label timeline intervals without leaving the editing environment.
 
 By integrating annotation into Premiere Pro, PremiAnno bridges the gap between creative editing and data collection for machine learning, video understanding, and multimodal AI research.
 
-![PremiAnnoのUI](packages/docs/images/overview.png)
+![PremiAnno UI](packages/docs/images/overview.png)
 
 ## Features
 
@@ -17,11 +17,16 @@ By integrating annotation into Premiere Pro, PremiAnno bridges the gap between c
 - 🏷️ CSV class import — import class labels from `index,class` CSV
 - 📦 TOML export — export sequence and interval labels as TOML
 
+## Requirements
+
+- Adobe Premiere Pro 25.6 or later (UXP plugins are officially supported from this version)
+
 ## Install Premianno
 
-1. Download the latest PremiAnno ZXP asset from the [Release Page](https://github.com/rmuraix/premianno/releases)
-2. Install [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)
-3. Open ZXP/UXP Installer and drag and drop the downloaded ZXP file
+1. Download the latest PremiAnno CCX asset from the [Release Page](https://github.com/rmuraix/premianno/releases)
+2. Double-click the downloaded `.ccx` file to install it
+3. If the file is not accepted, install [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/) and drag and drop the CCX file into it
+4. Open the panel from **Window > UXP Plugins > PremiAnno**
 
 ## Development
 
@@ -30,12 +35,12 @@ By integrating annotation into Premiere Pro, PremiAnno bridges the gap between c
 ```bash
 # Install dependencies
 pnpm i
-# Build the extension
-pnpm lib build
-# Run the extension in hot reload mode for development
-pnpm lib dev
-# Build & package the extension as ZXP
-pnpm lib zxp
+# Build the plugin
+pnpm uxp build
+# Build the plugin in watch mode for development
+pnpm uxp dev
+# Build & package the plugin as CCX (the distributed artifact)
+pnpm uxp ccx
 ```
 
 ## Contributing

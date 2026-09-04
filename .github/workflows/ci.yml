@@ -8,35 +8,37 @@ on:
 
 jobs:
   check-and-build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-        
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.34.5
-          
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'pnpm'
-          
+
       - name: Install dependencies
         run: pnpm install
-        
+
+      # The root `biome` script applies fixes; CI must only verify.
       - name: Check with biome
-        run: pnpm biome check .
-        
-      - name: Build lib
-        env:
-          ZXP_PASSWORD: ${{ secrets.ZXP_PASSWORD }}
-        run: pnpm lib zxp
+        run: pnpm exec biome check .
+
+      - name: Typecheck
+        run: pnpm uxp typecheck
+
+      - name: Build plugin package
+        run: pnpm uxp ccx
 
   test:
     runs-on: ubuntu-latest
@@ -62,12 +64,12 @@ jobs:
         run: pnpm install
 
       - name: Run tests with coverage
-        run: pnpm lib test:coverage
+        run: pnpm uxp test:coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v6
         with:
-          files: packages/lib/coverage/lcov.info
+          files: packages/uxp/coverage/lcov.info
           fail_ci_if_error: true
           slug: rmuraix/premianno
         env:

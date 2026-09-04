@@ -7,8 +7,9 @@
 始める前に、以下を確認してください：
 
 - **Node.js**: v20以降
-- **pnpm**: v10.18.3以降（ルートpackage.jsonの`packageManager`を参照）
-- **Adobe Premiere Pro**: テスト用
+- **pnpm**: ルートpackage.jsonの`packageManager`を参照
+- **Adobe Premiere Pro**: 25.6以降（テスト用）
+- **UXP Developer Tool（UDT）**: v2.2.1以降（プラグインの読み込みとデバッグ用）
 - **Git**: バージョン管理用
 
 ## セットアップ
@@ -26,21 +27,37 @@ cd premianno
 pnpm install
 ```
 
-これにより、libパッケージとdocsパッケージの両方を含む、モノレポのすべての依存関係がインストールされます。
+これにより、uxpパッケージとdocsパッケージの両方を含む、モノレポのすべての依存関係がインストールされます。
 
 ## 開発コマンド
 
-### エクステンションをビルド
+### プラグインをビルド
 
 ```bash
-# エクステンションをビルド
-pnpm lib build
+# プラグインをビルド
+pnpm uxp build
 
-# ウォッチモードでビルド（ホットリロード）
-pnpm lib dev
+# ウォッチモードでビルド
+pnpm uxp dev
 
-# ZXPとしてビルド・パッケージ化
-pnpm lib zxp
+# CCXとしてビルド・パッケージ化（配布物）
+pnpm uxp ccx
+
+# CCXをZIPアーカイブで包む（リリース以外での受け渡し用）
+pnpm uxp zip
+```
+
+### テストと型チェック
+
+```bash
+# ユニットテストを実行
+pnpm uxp test
+
+# カバレッジ付きでユニットテストを実行
+pnpm uxp test:coverage
+
+# 型チェックを実行
+pnpm uxp typecheck
 ```
 
 ### ドキュメントを実行
@@ -66,39 +83,39 @@ pnpm biome check .
 pnpm biome check . --fix
 ```
 
-## CEP開発セットアップ
+## UXP開発セットアップ
 
-### 開発用エクステンションの読み込み
+### 開発用プラグインの読み込み
 
-CEPエクステンションは、Adobeのエクステンションフォルダへのシンボリックリンクで開発環境に読み込めます。
-
-1. `pnpm lib build`でエクステンションをビルド
-2. エクステンションが自動的にCEPエクステンションフォルダにシンボリックリンクされます
-3. Adobe Premiere Proを再起動
-4. **ウィンドウ > エクステンション > PremiAnno**に移動
+1. Premiere Proの環境設定「プラグイン」で**開発者モード**を有効にする
+2. `pnpm uxp dev`を実行し、`packages/uxp/dist`へのビルドとファイル監視を開始
+3. UXP Developer Toolを開き、**Add Plugin**から`packages/uxp/dist/manifest.json`を選択
+4. **Load**（再ビルドごとに読み込み直す場合は**Load & Watch**）をクリック
+5. **ウィンドウ > UXPプラグイン > PremiAnno**からパネルを開く
 
 ### デバッグ
 
-CEPエクステンションはChromium DevToolsを使用してデバッグします：
+UXPプラグインはUXP Developer Tool経由でデバッグします：
 
-1. エクステンションディレクトリに`.debug`ファイルを作成してデバッグモードを有効化
-2. `cep.config.ts`でデバッグポートを設定（デフォルト: 8860）
-3. Chromeを開き`http://localhost:8860`に移動
-4. Console、Elements、Sourcesタブを使用してデバッグ
-
-**注意**: 開発中により信頼性の高いホットリロードを実現するため、`pnpm lib dev`を組み込みのWebSocketリロードシステムで使用してください。
+1. UDTで読み込んだプラグインの**•••**メニューから**Debug**を選択
+2. パネルに接続されたChrome DevToolsが開く
+3. Console、Elements、Sourcesタブを使用してデバッグ
 
 ## プロジェクト構造
 
 ```
 premianno/
 ├── packages/
-│   ├── lib/              # メインCEPエクステンション
+│   ├── uxp/              # メインUXPプラグイン
+│   │   ├── public/       # ビルドへコピーされる静的アセット（アイコン）
 │   │   ├── src/
-│   │   │   ├── js/       # Reactパネルアプリ + CEPブリッジ
-│   │   │   ├── jsx/      # ExtendScriptホスト関数
-│   │   │   └── shared/   # 共有型定義
-│   │   ├── dist/         # ビルド出力
+│   │   │   ├── api/      # UXPランタイム補助（テーマ、エラーハンドラ）
+│   │   │   ├── lib/      # ホスト連携、保存層、アノテーションロジック
+│   │   │   ├── shared/   # 共有型定義
+│   │   │   ├── main.tsx  # ReactパネルUI
+│   │   │   └── index.tsx # パネルのエントリーポイント
+│   │   ├── tests/        # Vitestユニットテスト
+│   │   ├── uxp.config.ts # UXPマニフェスト設定
 │   │   └── package.json
 │   └── docs/             # VitePressドキュメント
 │       ├── .vitepress/
@@ -114,22 +131,23 @@ premianno/
 
 ## アーキテクチャ
 
-### エクステンションアーキテクチャ
+### プラグインアーキテクチャ
 
 PremiAnnoは以下を使用して構築されています：
 
 - **React 19**: UIフレームワーク
 - **TypeScript**: 型安全な開発
-- **Vite**: ビルドツールと開発サーバー
-- **vite-cep-plugin**: CEP/ホスト連携とパッケージング
-- **Adobe Premiere Pro CEP/ExtendScript**: ホスト連携
+- **Vite**: ビルドツール
+- **vite-uxp-plugin**（[Bolt UXP](https://github.com/hyperbrew/bolt-uxp)）: UXPマニフェスト生成、ホットリロード、CCX/ZIPパッケージング
+- **Adobe Premiere Pro UXP API**: `premierepro`モジュール経由のホスト連携
 
 ### 主要コンポーネント
 
-- **ReactパネルUI**: スキャン/読み込み/ラベル/エクスポートの操作フロー
-- **ホストブリッジ**: パネルからExtendScript関数を呼び出し
-- **アノテーション保存層**: プロジェクト/シーケンス単位のローカルJSON保存
-- **エクスポート層**: 下流処理向けTOMLシリアライズ
+- **ReactパネルUI**（`src/main.tsx`）: スキャン/読み込み/ラベル/エクスポートの操作フロー
+- **ホストブリッジ**（`src/lib/host.ts`）: 非同期のPremiere Pro UXP APIでシーケンスとクリップ境界を取得
+- **保存層**（`src/lib/storage.ts`）: UXPのプラグインデータフォルダーへの永続化とホストのファイルピッカー呼び出し
+- **アノテーションロジック**（`src/lib/annotations.ts`、`src/lib/annotationStore.ts`）: TOMLシリアライズ、CSVパース、ラベルのマージ
+- **テーマポリフィル**（`src/api/theme.ts`）: Premiere Proが提供しない`--uxp-host-*` CSS変数を補完
 
 ## 貢献
 
@@ -150,8 +168,9 @@ PremiAnnoは以下を使用して構築されています：
 
 ### テスト
 
+- `pnpm uxp test`を実行し、ユニットテストが通ることを確認
 - Adobe Premiere Proで変更をテスト
-- ホットリロード機能を確認
+- UDTでのリロード動作を確認
 - エクスポート機能をテスト
 - コンソールエラーを確認
 
@@ -164,18 +183,19 @@ PremiAnnoは以下を使用して構築されています：
 
 ## 配布用ビルド
 
-### ZXPパッケージの作成
+### CCXパッケージの作成
 
 ```bash
 # ビルドとパッケージ化
-pnpm lib zxp
+pnpm uxp ccx
 ```
 
-これにより、`packages/lib/dist/zxp/`に配布用アーティファクトが生成されます。
+これにより`packages/uxp/ccx/premianno.ccx`が生成されます。これがGitHubリリースに添付される配布物です。`pnpm uxp zip`は同じCCXをZIPで包むだけなので、リリースには含めません。
 
 ## リソース
 
-- [Bolt CEP](https://github.com/hyperbrew/bolt-cep)
+- [Bolt UXP](https://github.com/hyperbrew/bolt-uxp)
+- [Premiere Pro UXP API](https://developer.adobe.com/premiere-pro/uxp/)
 
 ## ヘルプ
 

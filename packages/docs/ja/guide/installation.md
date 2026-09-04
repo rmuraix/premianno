@@ -4,38 +4,33 @@
 
 ## システム要件
 
-- **Adobe Premiere Pro**: 2024以降（推奨）
+- **Adobe Premiere Pro**: 25.6以降（UXPが公式サポートされた最初のバージョン）
 - **オペレーティングシステム**: Windows 10/11またはmacOS 12以降
-- **ZXP/UXP Installer**: エクステンションのインストールに必要
 
 ## インストール手順
 
-### 方法1: ZXP/UXP Installerを使用（推奨）
+### 方法1: CCXインストーラーを使用（推奨）
 
 1. **PremiAnnoをダウンロード**
    - [リリースページ](https://github.com/rmuraix/premianno/releases)にアクセス
-   - 最新の`.zxp`ファイルをダウンロード
+   - 最新の`.ccx`ファイルをダウンロード
 
-2. **ZXP/UXP Installerをインストール**
-   - [aescripts.com](https://aescripts.com/learn/zxp-installer/)からダウンロード
-   - システムにアプリケーションをインストール
-
-3. **PremiAnnoエクステンションをインストール**
-   - ZXP/UXP Installerを開く
-   - PremiAnnoの`.zxp`ファイルをインストーラーウィンドウにドラッグ＆ドロップ
+2. **PremiAnnoをインストール**
+   - ダウンロードした`.ccx`ファイルをダブルクリックし、Creative Cloudのプラグインインストーラーを起動
+   - 受け付けられない場合（PremiAnnoは自己配布であり、Creative Cloud Marketplaceには公開されていません）は、[ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)を開き、`.ccx`ファイルをドラッグ＆ドロップ
    - インストールが完了するまで待つ
 
-4. **Premiere Proを再起動**
+3. **Premiere Proを再起動**
    - 実行中の場合は、Adobe Premiere Proを閉じる
    - Premiere Proを起動
 
-5. **PremiAnnoにアクセス**
-   - Premiere Proで、**ウィンドウ > エクステンション > PremiAnno**に移動
+4. **PremiAnnoにアクセス**
+   - Premiere Proで、**ウィンドウ > UXPプラグイン > PremiAnno**に移動
    - PremiAnnoパネルが表示されます
 
-### 方法2: 手動インストール（上級者向け）
+### 方法2: ソースから読み込む（上級者向け）
 
-ソースからインストールしたい開発者や上級ユーザー向け：
+ソースから実行したい開発者や上級ユーザー向け：
 
 1. **リポジトリをクローン**
    ```bash
@@ -48,17 +43,27 @@
    pnpm install
    ```
 
-3. **エクステンションをビルド**
+3. **プラグインをビルド**
    ```bash
-   pnpm lib build
+   pnpm uxp build
    ```
 
-4. **エクステンションを読み込む**
-   - エクステンションが自動的にAdobeのCEPエクステンションフォルダにシンボリックリンクされます
-   - Adobe Premiere Proを再起動
-   - **ウィンドウ > エクステンション > PremiAnno**に移動
+4. **プラグインを読み込む**
+   - Premiere Proの環境設定「プラグイン」で**開発者モード**を有効にする
+   - [UXP Developer Tool（UDT）](https://developer.adobe.com/premiere-pro/uxp/introduction/essentials/dev-tools/)を開く
+   - `packages/uxp/dist/manifest.json`を指定してプラグインを追加
+   - **Load**をクリックし、**ウィンドウ > UXPプラグイン > PremiAnno**からパネルを開く
 
 開発環境のセットアップの詳細については、[開発ガイド](/ja/guide/development)を参照してください。
+
+## CEP版（v0.1.1以前）からの移行
+
+PremiAnnoは以前CEPエクステンションとして配布されていました。UXP版はデータの保存先が
+異なるため、**CEP版で保存したアノテーションとクラスリストは引き継がれません**：
+
+- 必要なデータは移行前にTOMLへエクスポートしてください
+- 旧データはユーザーデータディレクトリの`premianno-annotations/`に残るため、不要になったら手動で削除できます
+- パネルが二重に表示されないよう、旧CEPエクステンションはアンインストールしてください
 
 ## 検証
 
@@ -66,7 +71,7 @@
 
 1. Adobe Premiere Proを開く
 2. プロジェクトを作成または開く
-3. **ウィンドウ > 拡張機能 > PremiAnno**に移動
+3. **ウィンドウ > UXPプラグイン > PremiAnno**に移動
 4. PremiAnnoパネルが表示され、動作することを確認
 
 ## トラブルシューティング
@@ -74,13 +79,13 @@
 ### プラグインが表示されない
 
 - インストール後にPremiere Proを再起動したことを確認
-- 互換性のあるバージョンのPremiere Proを使用していることを確認
-- エクステンションを再インストールしてみる
+- Premiere Pro 25.6以降を使用していることを確認
+- プラグインを再インストールしてみる
 
 ### インストールが失敗する
 
-- ZXP/UXP Installerが最新であることを確認
-- 正しいZXPリリースアセットをダウンロードしていることを確認
+- 正しいCCXリリースアセットをダウンロードしていることを確認
+- インストール前にPremiere Proを一度は起動していることを確認
 - システムに管理者権限があることを確認
 
 ### プラグインがクラッシュする

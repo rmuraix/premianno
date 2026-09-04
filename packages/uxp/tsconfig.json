@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["@adobe/cc-ext-uxp-types", "node", "vite/client"]
+  },
+  "include": [
+    "src",
+    "tests",
+    "uxp.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
+}

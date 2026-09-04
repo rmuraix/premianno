@@ -12,7 +12,7 @@ PremiAnnoはカット境界ベースで区間を作成し、クラスCSVを読�
 
 1. Adobe Premiere Proを起動
 2. 対象プロジェクトとシーケンスを開く
-3. **ウィンドウ > 拡張機能 > PremiAnno** を選択
+3. **ウィンドウ > UXPプラグイン > PremiAnno** を選択
 
 ### 2. カットをスキャン
 
@@ -56,9 +56,10 @@ index,class
 
 ## ローカル保存仕様
 
-- アノテーションはユーザーデータ配下 `premianno-annotations/` にJSON保存
+- アノテーションはUXPがPremiAnno用に管理するプラグインデータフォルダーにJSON保存
 - 保存キーは `projectPath` + `sequence` に基づく
-- クラス一覧は同ディレクトリの `class-list.json` に保存
+- クラス一覧は同フォルダーの `class-list.json` に保存
+- このフォルダーはプラグイン単位で作成されるため、Premiere Proの更新後も保持されますが、プラグインをアンインストールすると削除されます
 
 ## トラブルシューティング
 

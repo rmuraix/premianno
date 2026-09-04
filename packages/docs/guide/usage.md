@@ -12,7 +12,7 @@ PremiAnno works on cut-based intervals. You scan the active sequence, import a c
 
 1. Launch Adobe Premiere Pro
 2. Open a project and select the target sequence
-3. Go to **Window > Extensions > PremiAnno**
+3. Go to **Window > UXP Plugins > PremiAnno**
 
 ### 2. Scan Cuts
 
@@ -56,9 +56,10 @@ Labels are saved automatically.
 
 ## Local Data Behavior
 
-- Annotation data is saved as JSON in user data directory under `premianno-annotations/`
+- Annotation data is saved as JSON in the plugin data folder that UXP manages for PremiAnno
 - Data is keyed by project path + sequence id/name
-- Class list is saved to `class-list.json` in the same directory
+- Class list is saved to `class-list.json` in the same folder
+- The folder is created per plugin, so it survives Premiere Pro updates but is removed when the plugin is uninstalled
 
 ## Troubleshooting
 

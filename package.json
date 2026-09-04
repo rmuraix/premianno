@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lib": "pnpm -C packages/lib",
+    "uxp": "pnpm -C packages/uxp",
     "docs": "pnpm -C packages/docs",
     "biome": "biome check . --fix"
   },

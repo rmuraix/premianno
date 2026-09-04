@@ -3,7 +3,7 @@ import { defineConfig } from "vitepress";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "PremiAnno",
-  description: "A Premiere Pro CEP Extension for Dataset Annotation",
+  description: "A Premiere Pro UXP Plugin for Dataset Annotation",
   base: "/premianno/",
 
   locales: {

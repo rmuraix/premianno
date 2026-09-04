@@ -1,6 +1,6 @@
 # What is PremiAnno?
 
-PremiAnno is a CEP-based extension for Adobe Premiere Pro that creates cut-based timeline intervals and lets you assign class labels to each interval.
+PremiAnno is a UXP-based plugin for Adobe Premiere Pro that creates cut-based timeline intervals and lets you assign class labels to each interval.
 
 ![PremiAnno UI](../images/overview.png)
 
@@ -23,7 +23,7 @@ PremiAnno is focused on turning edit timelines into structured interval-label da
 
 ## How It Works
 
-1. Open PremiAnno in Premiere Pro
+1. Open PremiAnno from **Window > UXP Plugins > PremiAnno**
 2. Click **Scan Cuts** to generate intervals
 3. Click **Import Classes** and load a class CSV
 4. Assign labels from the class dropdown for each interval

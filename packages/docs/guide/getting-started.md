@@ -6,25 +6,23 @@ This guide will help you get started with PremiAnno quickly.
 
 Before you begin, ensure you have:
 
-- Adobe Premiere Pro (latest version recommended)
-- [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/) for extension installation
+- Adobe Premiere Pro 25.6 or later (UXP plugins are officially supported from this version)
 
 ## Quick Start
 
 ### 1. Download PremiAnno
 
-Download the latest PremiAnno ZXP file from the [Release Page](https://github.com/rmuraix/premianno/releases).
+Download the latest PremiAnno CCX file from the [Release Page](https://github.com/rmuraix/premianno/releases).
 
-### 2. Install the Extension
+### 2. Install the Plugin
 
-1. Open ZXP/UXP Installer
-2. Drag and drop the downloaded ZXP file into the installer
-3. Follow the installation prompts
+1. Double-click the downloaded `.ccx` file
+2. Follow the installation prompts
 
 ### 3. Launch PremiAnno
 
 1. Open Adobe Premiere Pro
-2. Navigate to **Window > Extensions > PremiAnno**
+2. Navigate to **Window > UXP Plugins > PremiAnno**
 3. The PremiAnno panel will appear in your workspace
 
 ![PremiAnno panel](../images/panel.png)
