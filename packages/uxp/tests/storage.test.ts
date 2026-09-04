@@ -253,3 +253,47 @@ describe("readCsvFile", () => {
     await expect(readCsvFile()).resolves.toBe("index,class\n0,dog");
   });
 });
+
+describe("write serialization", () => {
+  it("keeps concurrent writes in the order they were requested", async () => {
+    const completed: string[] = [];
+    const makeSlowFile = (label: string, delayMs: number) => ({
+      write: vi.fn(
+        () =>
+          new Promise<void>((resolve) => {
+            setTimeout(() => {
+              completed.push(label);
+              resolve();
+            }, delayMs);
+          }),
+      ),
+    });
+
+    // The first write is the slow one: without a queue it would finish last.
+    mockFolder.createFile
+      .mockResolvedValueOnce(makeSlowFile("first", 20))
+      .mockResolvedValueOnce(makeSlowFile("second", 0));
+
+    const sequence = makeSequence();
+    await Promise.all([
+      saveAnnotationSet(makeAnnotationSet(sequence)),
+      saveAnnotationSet(makeAnnotationSet(sequence)),
+    ]);
+
+    expect(completed).toEqual(["first", "second"]);
+  });
+
+  it("keeps draining the queue after a failed write", async () => {
+    const file = makeFile();
+    mockFolder.createFile
+      .mockRejectedValueOnce(new Error("disk error"))
+      .mockResolvedValueOnce(file);
+
+    const sequence = makeSequence();
+    await expect(
+      saveAnnotationSet(makeAnnotationSet(sequence)),
+    ).rejects.toThrow("disk error");
+    await expect(saveClassList(["cat"])).resolves.toBeUndefined();
+    expect(file.write).toHaveBeenCalled();
+  });
+});

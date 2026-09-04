@@ -63,7 +63,8 @@ const getCurrentTheme = (): ThemeName => {
 export const getColorScheme = () => {
   const theme = getCurrentTheme();
   const platform = os.platform ? os.platform() : "";
-  const platformColors = platform.includes("win")
+  // "darwin" contains "win", so the Windows check has to be anchored.
+  const platformColors = platform.startsWith("win")
     ? premiereColors.win
     : premiereColors.mac;
   const colors = platformColors[theme] ?? fallbackColors[theme];

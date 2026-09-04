@@ -30,8 +30,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # The root `biome` script applies fixes; CI must only verify.
       - name: Check with biome
-        run: pnpm biome check .
+        run: pnpm exec biome check .
 
       - name: Typecheck
         run: pnpm uxp typecheck

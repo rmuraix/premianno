@@ -64,11 +64,23 @@ const readJsonFile = async <T>(fileName: string): Promise<T | null> => {
   }
 };
 
-const writeJsonFile = async (fileName: string, data: unknown) => {
-  const folder = await getDataFolder();
-  const file = await folder.createFile(fileName, { overwrite: true });
-  await file.write(JSON.stringify(data, null, 2));
+// UXP writes are asynchronous, so concurrent saves of the same file (rapid
+// label changes, for instance) would race. Every write goes through one queue
+// to keep the last change on disk the last one requested.
+let writeQueue: Promise<unknown> = Promise.resolve();
+
+const enqueueWrite = <T>(task: () => Promise<T>): Promise<T> => {
+  const run = writeQueue.then(task, task);
+  writeQueue = run.catch(() => undefined);
+  return run;
 };
+
+const writeJsonFile = (fileName: string, data: unknown) =>
+  enqueueWrite(async () => {
+    const folder = await getDataFolder();
+    const file = await folder.createFile(fileName, { overwrite: true });
+    await file.write(JSON.stringify(data, null, 2));
+  });
 
 export const loadAnnotationSet = async (
   sequence: Sequence,

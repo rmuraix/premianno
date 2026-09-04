@@ -222,6 +222,25 @@ describe("scanCutIntervals", () => {
     expect(result.intervals[0].durationFrames).toBe(1);
   });
 
+  it("handles timelines larger than one clip batch", async () => {
+    // 150 back-to-back clips exercise the batched (parallel) time lookup.
+    const clips: ClipSpec[] = Array.from(
+      { length: 150 },
+      (_, i) => [i, i + 1] as ClipSpec,
+    );
+    stubProject(makeSequence({ tracks: [clips], endSeconds: 150 }));
+
+    const result = await scanCutIntervals();
+    expect(result.intervals).toHaveLength(150);
+    expect(result.intervals[0].startSeconds).toBe(0);
+    expect(result.intervals.at(-1)?.endSeconds).toBe(150);
+    expect(
+      result.intervals.every(
+        (interval, index) => interval.orderIndex === index,
+      ),
+    ).toBe(true);
+  });
+
   it("skips tracks the host cannot resolve", async () => {
     const sequence = makeSequence({ tracks: [[[0, 2]]], endSeconds: 2 });
     sequence.getVideoTrackCount = vi.fn(async () => 2);

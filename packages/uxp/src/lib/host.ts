@@ -1,9 +1,41 @@
-import type { Project, Sequence } from "@adobe/premierepro";
+import type { Project, Sequence, TickTime } from "@adobe/premierepro";
 import { premierepro as ppro } from "../globals";
 import type { Interval, Sequence as SequenceInfo } from "../shared/annotations";
 
 const uniqueSorted = (values: number[]): number[] =>
   Array.from(new Set(values)).sort((a, b) => a - b);
+
+// Every clip time is a round trip into the host, so they are resolved in
+// parallel. The batch keeps the number of in-flight host calls bounded on
+// timelines with thousands of clips.
+const CLIP_BATCH_SIZE = 64;
+
+type ClipTrackItem = {
+  getStartTime: () => Promise<TickTime>;
+  getEndTime: () => Promise<TickTime>;
+};
+
+const collectClipBoundaries = async (clips: ClipTrackItem[]) => {
+  const boundaries: number[] = [];
+
+  for (let i = 0; i < clips.length; i += CLIP_BATCH_SIZE) {
+    const batch = clips.slice(i, i + CLIP_BATCH_SIZE);
+    const times = await Promise.all(
+      batch.map(async (clip) => {
+        const [start, end] = await Promise.all([
+          clip.getStartTime(),
+          clip.getEndTime(),
+        ]);
+        return [start.seconds, end.seconds];
+      }),
+    );
+    for (const [start, end] of times) {
+      boundaries.push(start, end);
+    }
+  }
+
+  return boundaries;
+};
 
 type ActiveSequence = {
   project: Project;
@@ -53,20 +85,16 @@ export const scanCutIntervals = async (): Promise<{
   }
 
   const { sequence, info } = active;
-  const boundaries: number[] = [0];
   const trackCount = await sequence.getVideoTrackCount();
+  const tracks = await Promise.all(
+    Array.from({ length: trackCount }, (_, i) => sequence.getVideoTrack(i)),
+  );
 
-  for (let i = 0; i < trackCount; i += 1) {
-    const track = await sequence.getVideoTrack(i);
-    if (!track) continue;
-    const items = track.getTrackItems(ppro.Constants.TrackItemType.CLIP, false);
-    for (const item of items) {
-      const start = await item.getStartTime();
-      const end = await item.getEndTime();
-      boundaries.push(start.seconds);
-      boundaries.push(end.seconds);
-    }
-  }
+  const clips = tracks.flatMap((track) =>
+    track ? track.getTrackItems(ppro.Constants.TrackItemType.CLIP, false) : [],
+  );
+
+  const boundaries: number[] = [0, ...(await collectClipBoundaries(clips))];
 
   const endTime = await sequence.getEndTime();
   const endSeconds = endTime ? endTime.seconds : 0;

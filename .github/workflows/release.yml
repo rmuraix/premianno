@@ -36,6 +36,7 @@ jobs:
         run: pnpm uxp zip
 
       - name: Create release and upload plugin assets
+        shell: bash
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           TAG_NAME: ${{ github.ref_name }}
@@ -44,11 +45,14 @@ jobs:
             gh release create "$TAG_NAME" --title "$TAG_NAME" --generate-notes
           fi
 
-          files=$(find packages/uxp/ccx packages/uxp/zip -type f)
-          if [ -z "$files" ]; then
+          files=()
+          while IFS= read -r -d '' file; do
+            files+=("$file")
+          done < <(find packages/uxp/ccx packages/uxp/zip -type f -print0)
+
+          if [ ${#files[@]} -eq 0 ]; then
             echo "No build artifacts found under packages/uxp/ccx/ or packages/uxp/zip/" >&2
             exit 1
           fi
 
-          # shellcheck disable=SC2086
-          gh release upload "$TAG_NAME" $files --clobber
+          gh release upload "$TAG_NAME" "${files[@]}" --clobber

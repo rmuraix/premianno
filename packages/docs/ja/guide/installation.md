@@ -17,7 +17,7 @@
 
 2. **PremiAnnoをインストール**
    - ダウンロードした`.ccx`ファイルをダブルクリックし、Creative Cloudのプラグインインストーラーを起動
-   - もしくは[ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)を開き、`.ccx`ファイルをドラッグ＆ドロップ
+   - 受け付けられない場合（PremiAnnoは自己配布であり、Creative Cloud Marketplaceには公開されていません）は、[ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/)を開き、`.ccx`ファイルをドラッグ＆ドロップ
    - インストールが完了するまで待つ
 
 3. **Premiere Proを再起動**
@@ -55,6 +55,15 @@
    - **Load**をクリックし、**ウィンドウ > UXPプラグイン > PremiAnno**からパネルを開く
 
 開発環境のセットアップの詳細については、[開発ガイド](/ja/guide/development)を参照してください。
+
+## CEP版（v0.1.1以前）からの移行
+
+PremiAnnoは以前CEPエクステンションとして配布されていました。UXP版はデータの保存先が
+異なるため、**CEP版で保存したアノテーションとクラスリストは引き継がれません**：
+
+- 必要なデータは移行前にTOMLへエクスポートしてください
+- 旧データはユーザーデータディレクトリの`premianno-annotations/`に残るため、不要になったら手動で削除できます
+- パネルが二重に表示されないよう、旧CEPエクステンションはアンインストールしてください
 
 ## 検証
 

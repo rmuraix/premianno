@@ -9,6 +9,8 @@ export default defineConfig({
     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
     coverage: {
       include: [
+        "src/api/errors.ts",
+        "src/api/theme.ts",
         "src/lib/annotations.ts",
         "src/lib/annotationStore.ts",
         "src/lib/host.ts",

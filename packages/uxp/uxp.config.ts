@@ -5,14 +5,23 @@ import type {
 } from "vite-uxp-plugin";
 import { version } from "./package.json";
 
+// The packaged plugin id doubles as the key of the UXP data folder that holds
+// the annotations, so it must stay identical between the development build and
+// the released package. `uniqueIds` would append the host app name to the id
+// when packaging, which only matters for multi-host plugins.
 const extraPrefs: UXP_Config_Extra = {
   hotReloadPort: 8080,
   webviewUi: false,
   webviewReloadPort: 8081,
   copyZipAssets: [],
-  uniqueIds: true,
+  uniqueIds: false,
   debugger: "udt",
 };
+
+// The hot reload socket is only needed by builds that are loaded through the
+// UXP Developer Tool, so it is kept out of the distributed manifest.
+const isPackagedBuild =
+  process.env.MODE === "package" || process.env.MODE === "zip";
 
 export const id = "com.rmurai.premianno";
 const name = "PremiAnno";
@@ -59,18 +68,17 @@ const manifest: UXP_Manifest = {
       ],
     },
   ],
-  featureFlags: {
-    enableAlerts: true,
-  },
   requiredPermissions: {
     // Annotation data lives in the plugin data folder, and import/export use
     // the host file pickers.
     localFileSystem: "request",
-    network: {
-      domains: [
-        `ws://localhost:${extraPrefs.hotReloadPort}`, // Required for hot reload
-      ],
-    },
+    ...(isPackagedBuild
+      ? {}
+      : {
+          network: {
+            domains: [`ws://localhost:${extraPrefs.hotReloadPort}`],
+          },
+        }),
     allowCodeGenerationFromStrings: false,
   },
   icons: [

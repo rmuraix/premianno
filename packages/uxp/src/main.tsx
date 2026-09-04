@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   intervalsAligned,
   mergeStoredLabels,
@@ -89,9 +89,16 @@ const IntervalRow = ({
 const MemoIntervalRow = memo(IntervalRow);
 
 export const App = () => {
-  const [annotationSet, setAnnotationSet] = useState<AnnotationSet | null>(
+  const [annotationSet, setAnnotationSetState] = useState<AnnotationSet | null>(
     null,
   );
+  // Mirrors the current annotation set so handlers can build the next one
+  // without a state updater, which has to stay free of side effects.
+  const annotationSetRef = useRef<AnnotationSet | null>(null);
+  const setAnnotationSet = useCallback((next: AnnotationSet | null) => {
+    annotationSetRef.current = next;
+    setAnnotationSetState(next);
+  }, []);
   const [status, setStatus] = useState<Status | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanWarning, setScanWarning] = useState<string | null>(null);
@@ -147,7 +154,7 @@ export const App = () => {
     } finally {
       setIsScanning(false);
     }
-  }, []);
+  }, [setAnnotationSet]);
 
   useEffect(() => {
     handleScan();
@@ -165,21 +172,25 @@ export const App = () => {
       });
   }, []);
 
-  const handleLabelChange = useCallback((id: string, value: string) => {
-    setAnnotationSet((prev) => {
-      if (!prev) return prev;
-      const updatedIntervals = updateIntervalLabel(prev.intervals, id, value);
+  const handleLabelChange = useCallback(
+    (id: string, value: string) => {
+      const prev = annotationSetRef.current;
+      if (!prev) return;
+
       const nextSet = {
         ...prev,
-        intervals: updatedIntervals,
+        intervals: updateIntervalLabel(prev.intervals, id, value),
         lastUpdatedAt: new Date().toISOString(),
       };
+      setAnnotationSet(nextSet);
+      // Writes are queued in the storage layer, so the last change requested is
+      // the one that ends up on disk.
       saveAnnotationSet(nextSet).catch((error) => {
         console.error("saveAnnotationSet failed:", error);
       });
-      return nextSet;
-    });
-  }, []);
+    },
+    [setAnnotationSet],
+  );
 
   const handleClearLabel = useCallback(
     (id: string) => {

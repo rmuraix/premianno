@@ -17,7 +17,7 @@ This guide provides detailed instructions for installing PremiAnno in Adobe Prem
 
 2. **Install PremiAnno**
    - Double-click the downloaded `.ccx` file to launch the Creative Cloud plugin installer
-   - Alternatively, open [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/) and drag and drop the `.ccx` file into it
+   - If the file is not accepted (PremiAnno is self-distributed and not published on the Creative Cloud Marketplace), open [ZXP/UXP Installer](https://aescripts.com/learn/zxp-installer/) and drag and drop the `.ccx` file into it
    - Wait for the installation to complete
 
 3. **Restart Premiere Pro**
@@ -55,6 +55,17 @@ For developers or advanced users who want to run the plugin from source:
    - Click **Load** and open the panel from **Window > UXP Plugins > PremiAnno**
 
 For more details on development setup, see the [Development Guide](/guide/development).
+
+## Upgrading from the CEP version (v0.1.1 and earlier)
+
+PremiAnno used to ship as a CEP extension. The UXP plugin stores its data in a
+different place, so **annotations and class lists saved by the CEP extension are
+not carried over**:
+
+- Export anything you still need to TOML **before** upgrading
+- The old data stays on disk in `premianno-annotations/` under your user data
+  directory, and can be removed by hand once you no longer need it
+- Uninstall the old CEP extension so both panels do not show up side by side
 
 ## Verification
 
