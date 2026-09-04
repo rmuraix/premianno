@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "dev": "cross-env MODE=dev vite build --watch",
     "build": "cross-env MODE=build vite build",
-    "ccx": "cross-env MODE=package vite build",
-    "zip": "cross-env MODE=zip vite build",
+    "ccx": "cross-env MODE=package vite build && node scripts/rename-artifacts.mjs",
+    "zip": "cross-env MODE=zip vite build && node scripts/rename-artifacts.mjs",
     "ccx-install": "cross-env BOLT_ACTION=ccx-install vite",
     "ccx-uninstall": "cross-env BOLT_ACTION=ccx-uninstall vite"
   },
