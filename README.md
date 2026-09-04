@@ -9,7 +9,7 @@ It is designed for AI research projects and media analysis workflows, allowing r
 
 By integrating annotation into Premiere Pro, PremiAnno bridges the gap between creative editing and data collection for machine learning, video understanding, and multimodal AI research.
 
-![PremiAnnoのUI](packages/docs/images/overview.png)
+![PremiAnno UI](packages/docs/images/overview.png)
 
 ## Features
 
