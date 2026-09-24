@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@adobe/cc-ext-uxp-types": "^7.3.1",
-    "@adobe/premierepro": "^26.3.0",
+    "@adobe/premierepro": "^26.5.0",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^24.13.5",
     "@types/react": "^19.3.0",
