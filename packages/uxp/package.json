@@ -15,8 +15,8 @@
     "ccx-uninstall": "cross-env BOLT_ACTION=ccx-uninstall vite"
   },
   "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react": "^19.2.9",
+    "react-dom": "^19.2.9"
   },
   "devDependencies": {
     "@adobe/cc-ext-uxp-types": "^7.3.1",
