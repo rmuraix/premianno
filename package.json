@@ -13,7 +13,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.34.9",
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
+    "@biomejs/biome": "2.6.6",
     "typescript": "^5.9.3"
   }
 }
